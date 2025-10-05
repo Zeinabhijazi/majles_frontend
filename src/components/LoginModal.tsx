@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Backdrop,
   Box,
@@ -23,6 +23,7 @@ import { z } from "zod";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { login } from "@/redux/slices/authSlice";
+import { loadUserData } from "@/redux/slices/userSlice";
 
 const style = {
   position: "absolute",
@@ -57,8 +58,9 @@ export default function LoginModal({
   const [alertText, setAlertText] = useState("");
 
   const dispatch = useDispatch<AppDispatch>();
-  const { isLoading, userData } = useSelector((state: RootState) => state.auth);
+  const { userDetails } = useSelector((state: RootState) => state.user);
 
+  
 
   const handleTogglePassword = () => {
     setShowPassword((prev) => !prev);
@@ -100,18 +102,17 @@ export default function LoginModal({
     e.preventDefault();
     try {
       if (validate()) {
-        dispatch(login({ email, password }))
-        if (userData) {
-          setAlertText("Login Successfully");
-          setSuccessAlert(true);
+        const userData = await dispatch(login({ email, password })).unwrap();// unwrap(): continue when the thunk return the respone
+        
+        console.log(userData.userType); 
+
+        if (userData.userType !== "admin") {
           setEmail("");
           setPassword("");
-          if (userData.userType === "reader") {
-            router.push("/reader");
-          } else if(userData.userType === "client") {
-            router.push("/");
-          }
-        }
+          onClose();
+          router.replace("/");      
+          window.location.reload(); 
+        } 
       }
     } catch (err: any) {
       if (err) {

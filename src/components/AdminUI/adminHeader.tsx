@@ -56,6 +56,7 @@ export default function AdminHeader() {
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
+        bgcolor: "primary.main"
       }}
     >
       <Typography

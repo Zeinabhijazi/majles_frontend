@@ -113,7 +113,7 @@ export default function AssignReaderDialog({
           sx: {
             width: 400,
             height: 250,
-            bgcolor: "background.paper",
+            bgcolor: "background.default",
             border: "1px solid #000",
             borderRadius: 5,
             boxShadow: 8,

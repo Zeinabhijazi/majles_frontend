@@ -11,7 +11,7 @@ export default function CardData({
   data,
 }: Readonly<{ text: string; data: number | null }>) {
   return (
-    <Card sx={{ width: "100%" }}>
+    <Card sx={{ width: "100%", bgcolor: "primary.main" }}>
       <CardActionArea
         sx={{
           display: "grid",

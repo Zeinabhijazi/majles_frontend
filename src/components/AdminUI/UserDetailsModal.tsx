@@ -15,7 +15,7 @@ const style = {
   transform: "translate(-50%, -50%)",
   width: 470,
   height: 380,
-  bgcolor: "background.paper",
+  bgcolor: "background.default",
   border: "1px solid #eee",
   borderRadius: 5,
   boxShadow: 8,
@@ -140,13 +140,13 @@ export default function UserDetailsModal({open, onClose, user }: Readonly<UserDe
                 <FormGroup>
                 {user.isDeleted === true ? (
                   <>
-                    <FormControlLabel control={<Checkbox size="small" checked />} label={t2('yes')} />
+                    <FormControlLabel control={<Checkbox size="small" color="secondary" checked />} label={t2('yes')} />
                     <FormControlLabel disabled control={<Checkbox size="small"/>} label={t2('no')}  />
                   </>
                 ) : (
                   <>
                     <FormControlLabel disabled control={<Checkbox size="small" />} label={t2('yes')} />
-                    <FormControlLabel  control={<Checkbox size="small" checked/>} label={t2('no')} />  
+                    <FormControlLabel  control={<Checkbox size="small" color="secondary" checked/>} label={t2('no')} />  
                   </>
                 )
                 }

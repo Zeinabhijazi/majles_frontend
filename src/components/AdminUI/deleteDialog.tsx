@@ -95,12 +95,10 @@ export default function DeleteDialog({ userId }: Readonly<DeleteDialogProps>) {
         onClose={handleCloseDelete}
         PaperProps={{
           sx: {
-            border: "1px solid #000",
+            border: "1px solid #fff",
             boxShadow: 3,
+            bgcolor: "background.default",
           },
-        }}
-        BackdropProps={{
-          style: { background: "none" },
         }}
       >
         <DialogTitle>{t("title")}</DialogTitle>

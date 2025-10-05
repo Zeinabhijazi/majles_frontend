@@ -28,10 +28,7 @@ export const login = createAsyncThunk(
         // update userSlice with details
         dispatch(loadUserData(userData));
 
-        return {
-          userData,
-          message: "Login Successfully"
-        };
+        return userData;
     } catch (error: any) {
       console.log(error);
     }

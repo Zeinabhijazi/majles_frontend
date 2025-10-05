@@ -78,7 +78,7 @@ const UserTable = () => {
       <TableContainer className="table_scrollbar" sx={{ maxHeight: 360 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
-            <TableRow>
+            <TableRow >
               {columns.map((column) => (
                 <TableCell
                   key={column.id}
@@ -92,7 +92,7 @@ const UserTable = () => {
           </TableHead>
           {/* Table Body */}
           {users && users.length > 0 && 
-            <TableBody>
+            <TableBody sx={{bgcolor: "background.default"}}>
               {users.map((row: any) => (
                   <TableRow key={row.id}>
                     <TableCell align="center">{row.id}</TableCell>
@@ -151,6 +151,7 @@ const UserTable = () => {
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
+        sx={{bgcolor: "background.default"}}
       />
     </Paper>
   );

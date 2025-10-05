@@ -17,6 +17,8 @@ import RegisterModal from "./RegisterModal";
 import { useLocale, useTranslations } from "next-intl";
 import {  Link, usePathname, useRouter } from "@/i18n/navigation";
 import AccountCircle from '@mui/icons-material/AccountCircle';
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 
 export default function MenuAppBar() {
@@ -29,7 +31,8 @@ export default function MenuAppBar() {
   const [loginOpen, setLoginOpen] = useState(false);
   const [registerOpen, setRegisterOpen] = useState(false);
   const [ isLogin, setIsLogin] = useState(false);
-  
+  const { userDetails } = useSelector((state: RootState) => state.user)
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -195,7 +198,11 @@ export default function MenuAppBar() {
                     open={Boolean(anchorElUser)}
                     onClose={handleCloseUserMenu}
                   >
-                    <MenuItem><Link href="/account">{t("myAccount")}</Link></MenuItem>
+                    {userDetails.userType === "reader" 
+                    ? <MenuItem><Link href="/reader">{t("myAccount")}</Link></MenuItem>
+                    : <MenuItem><Link href="/client">{t("myAccount")}</Link></MenuItem>
+                    }
+                    
                     <MenuItem onClick={handleLogout}>{t("logout")}</MenuItem>
                   </Menu>
                 </Box>

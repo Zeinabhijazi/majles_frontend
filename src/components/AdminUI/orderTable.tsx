@@ -91,7 +91,7 @@ const OrderTable = () => {
           </TableHead>
           {/* Table Body */}
           {orders && orders.length > 0 && 
-            <TableBody>
+            <TableBody sx={{bgcolor: "background.default"}}>
               {orders.map((row) => (
                 <TableRow key={row.id}>
                   <TableCell align="center">{row.id}</TableCell>
@@ -148,6 +148,7 @@ const OrderTable = () => {
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
+        sx={{bgcolor: "background.default"}}
       />
     </Paper>
   );

@@ -54,7 +54,7 @@ function TabPanel(props: Readonly<TabPanelProps>) {
             width: "100%",
             height: "99%",
             boxSizing: "border-box",
-            backgroundColor: "background.paper",
+            backgroundColor: "background.default",
             borderRadius: 4,
             mt: 1,
           }}
@@ -85,9 +85,9 @@ type UserDetails = {
   city: string;
   postNumber: number;
   email?: string;
-}
+};
 
-export default function AdminInformation() {
+export default function UserInformation() {
   const t = useTranslations("Form");
   const [value, setValue] = useState(0);
   const dispatch = useDispatch<AppDispatch>();
@@ -106,7 +106,7 @@ export default function AdminInformation() {
     postNumber: userDetails.postNumber,
     country: userDetails.country,
     city: userDetails.city,
-  })
+  });
   const [passwords, setPasswords] = useState<Passwords>({
     oldPassword: "",
     newPassword: "",
@@ -241,8 +241,9 @@ export default function AdminInformation() {
         setWarningAlert(true);
       }
     } catch (err: any) {
-      const msg = err.response?.data?.message ||
-        err.response?.data?.data?.message || 
+      const msg =
+        err.response?.data?.message ||
+        err.response?.data?.data?.message ||
         "An unexpected error occurred. Please try again.";
       setAlertText(msg);
       setWarningAlert(true);
@@ -262,10 +263,7 @@ export default function AdminInformation() {
   // To update data
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
-    const { firstName, lastName, gender, phoneNumber,
-        longitude, latitude, addressOne, addressTwo,
-        postNumber, country, city } = tempData;
-    dispatch(updateUser({
+    const {
       firstName,
       lastName,
       gender,
@@ -277,8 +275,23 @@ export default function AdminInformation() {
       postNumber,
       country,
       city,
-    }));
-    setFormData((prev) => ({ ...prev, ...tempData })); 
+    } = tempData;
+    dispatch(
+      updateUser({
+        firstName,
+        lastName,
+        gender,
+        phoneNumber,
+        longitude,
+        latitude,
+        addressOne,
+        addressTwo,
+        postNumber,
+        country,
+        city,
+      })
+    );
+    setFormData((prev) => ({ ...prev, ...tempData }));
     setIsEditting(false);
   };
 
@@ -406,18 +419,19 @@ export default function AdminInformation() {
             <Grid size={8}>
               {isEditting ? (
                 <RadioGroup
+                  
                   row
                   value={tempData.gender}
                   onChange={(e) => handleChange("gender", e.target.value)}
                 >
                   <FormControlLabel
                     value="male"
-                    control={<Radio size="small" />}
+                    control={<Radio color="secondary" size="small" />}
                     label={t("male")}
                   />
                   <FormControlLabel
                     value="female"
-                    control={<Radio size="small" />}
+                    control={<Radio color="secondary" size="small" />}
                     label={t("female")}
                   />
                 </RadioGroup>
@@ -723,11 +737,21 @@ export default function AdminInformation() {
           </Grid>
 
           {/* Alerts */}
-          <Snackbar anchorOrigin={{ vertical: "top", horizontal: "right" }} open={successAlert} autoHideDuration={3000} onClose={() => setSuccessAlert(false)} >
+          <Snackbar
+            anchorOrigin={{ vertical: "top", horizontal: "right" }}
+            open={successAlert}
+            autoHideDuration={3000}
+            onClose={() => setSuccessAlert(false)}
+          >
             <Alert severity="success">{alertText}</Alert>
           </Snackbar>
 
-          <Snackbar anchorOrigin={{ vertical: "top", horizontal: "right" }} open={warningAlert} autoHideDuration={3000} onClose={() => setWarningAlert(false)} >
+          <Snackbar
+            anchorOrigin={{ vertical: "top", horizontal: "right" }}
+            open={warningAlert}
+            autoHideDuration={3000}
+            onClose={() => setWarningAlert(false)}
+          >
             <Alert severity="warning">{alertText}</Alert>
           </Snackbar>
         </Box>

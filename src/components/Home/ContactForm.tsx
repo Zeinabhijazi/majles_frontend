@@ -1,9 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import { useTranslations } from "next-intl";
+import api from "@/lib/axios";
 
 export default function ContactForm() {
   const t = useTranslations("Form");
+  const [formData, setFormData] = useState({
+    firstname: "",
+    lastname: "",
+    email: "",
+    message: "",
+  });
+
+  // Handle change on input
+  const handleChange = (e: any) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
   const textFieldSx = {
     "& .MuiOutlinedInput-root": {
       borderRadius: "12px",
@@ -12,10 +26,26 @@ export default function ContactForm() {
     input: { height: "50px", padding: "0 12px" },
   };
 
+  // Function to send email
+  const sendEmail = async () => {
+    try {
+      const response = await api.post("/api/mail/send", formData);
+    } catch (error) {
+      console.error("An error occurred while sending the email", error);
+    }
+  };
+
+  // Action on submit
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    sendEmail();
+  };
+
   return (
     <Box
       component="form"
       noValidate
+      onSubmit={handleSubmit}
       autoComplete="off"
       sx={{
         display: "flex",
@@ -43,9 +73,12 @@ export default function ContactForm() {
           </Typography>
           <TextField
             fullWidth
+            name="firstname"
             variant="outlined"
             color="secondary"
             sx={textFieldSx}
+            value={formData.firstname}
+            onChange={handleChange}
           />
         </Grid>
         <Grid size={6}>
@@ -62,9 +95,12 @@ export default function ContactForm() {
           </Typography>
           <TextField
             fullWidth
+            name="lastname"
             variant="outlined"
             color="secondary"
             sx={textFieldSx}
+            value={formData.lastname}
+            onChange={handleChange}
           />
         </Grid>
       </Grid>
@@ -82,9 +118,12 @@ export default function ContactForm() {
         </Typography>
         <TextField
           fullWidth
+          name="email"
           variant="outlined"
           color="secondary"
           sx={textFieldSx}
+          value={formData.email}
+          onChange={handleChange}
         />
       </Grid>
       <Grid>
@@ -94,26 +133,31 @@ export default function ContactForm() {
           sx={{
             fontSize: "13px",
             fontWeight: 400,
-            pl: 0.5
+            pl: 0.5,
           }}
         >
           {t("message")}
         </Typography>
         <TextField
           fullWidth
+          name="message"
           variant="outlined"
           color="secondary"
+          value={formData.message}
+          onChange={handleChange}
           multiline
           rows={4}
           sx={{
-            borderRadius: "12px",
+            "& .MuiOutlinedInput-root": {
+              borderRadius: "12px",
+            }
           }}
         />
       </Grid>
       <Button
         variant="contained"
         color="secondary"
-        //type="submit"
+        type="submit"
         sx={{
           fontSize: 14,
           textAlign: "center",
@@ -121,7 +165,6 @@ export default function ContactForm() {
           fontWeight: "medium",
           textTransform: "capitalize",
         }}
-        onClick={() => {}}
       >
         {t("send")}
       </Button>

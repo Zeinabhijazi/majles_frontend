@@ -12,7 +12,7 @@ interface AdminRootLayoutProps {
   children: React.ReactNode;
 }
 
-export default function AdminRootLayout({
+export default function ReaderRootLayout({
   children,
 }: Readonly<AdminRootLayoutProps>) {
   const router = useRouter();
@@ -36,9 +36,10 @@ export default function AdminRootLayout({
   return (
       <section className="h-screen w-full flex flex-row">
         <div className="w-1/5">
-          <DashboardSideBar role={"admin"} />
+          <DashboardSideBar role={"reader"} />
         </div>
         <div className="w-4/5">
+          <div>
             <AdminHeader />
             {canAccess === true ? (
               <Paper
@@ -60,6 +61,7 @@ export default function AdminRootLayout({
               <CircularProgress color="secondary" />
             )
             }
+          </div>
         </div>
       </section>
   );

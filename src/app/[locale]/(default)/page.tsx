@@ -1,13 +1,11 @@
 "use client";
 import { use, useEffect } from "react";
 import { Box } from "@mui/material";
-import MenuAppBar from "@/components/MenuAppBar";
 import AboutUs from "@/components/Home/AboutUs";
 import ContactUs from "@/components/Home/ContactUs";
 import Banner from "@/components/Home/Banner";
 import ReaderSection from "@/components/Home/ReaderSection";
 import CountSection from "@/components/Home/CountSection";
-import Footer from "@/components/Footer";
 
 export default function Home({
   params,

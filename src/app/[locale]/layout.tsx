@@ -43,11 +43,9 @@ export default async function RootLayout({
           <NextIntlClientProvider>
             <ThemeRegistry>
               <ThemeWrapper>
-                <MenuAppBar /> 
-                 <main style={{ minHeight: "calc(100vh - 70px)", marginTop: "70px", }}>
+                 <main style={{ minHeight: "calc(100vh - 70px)"}}>
                     {children}
                   </main>
-                <Footer />
               </ThemeWrapper>
             </ThemeRegistry>
           </NextIntlClientProvider>

@@ -1,0 +1,162 @@
+{
+  "navbar": {
+    "home": "Home",
+    "about": "About US",
+    "readers": "Readers",
+    "contact": "Contact Us",
+    "login": "Login",
+    "myAccount": "My Account",
+    "logout": "Logout"
+  },
+  "Form": {
+    "login": "Login",
+    "hello": "Hello!",
+    "title": "Sign in to your account",
+    "forgetPassword": "Forget Password?",
+    "question": "Don't have an account?",
+    "create": "Create",
+    "personalInfo": "Personal Information",
+    "id": "Id",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "phoneNumber": "Phone Number",
+    "gender": "Gender",
+    "female": "Female",
+    "male": "Male",
+    "userType": "User Type",
+    "client": "Client",
+    "reader": "Reader",
+    "admin": "Admin",
+    "back": "Back",
+    "next": "Next",
+    "address": "Address",
+    "addressOne": "Address One",
+    "addressTwo": "Address Two",
+    "city": "City",
+    "postCode": "Post Code",
+    "country": "Country",
+    "longitude": "Longitude",
+    "latitude": "Latitude",
+    "date": "Date",
+    "actions":"Actions",
+    "signUp": "Sign Up",
+    "update": "Modify",
+    "pickLocation": "Pick Location",
+    "personalDetails": "Personal Details",
+    "accountDetails": "Account Details",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "changePassword": "Change Password",
+    "coordinates": "Coordinates",
+    "assign": "Assign",
+    "all": "All",
+    "time": "Time",
+    "save": "Save",
+    "isDeleted": "Deleted Users",
+    "active": "Active Users",
+    "allUser": "All Users",
+    "searchbtn": "Search",
+    "resetbtn": "Reset",
+    "send": "Send",
+    "message": "Message"
+  },
+  "AdminNavBar": { 
+    "welcome": "Welcome",
+    "dashboard": "Dashboard",
+    "users": "Users",
+    "orders": "Orders",
+    "setting": "Setting",
+    "logout": "Logout"
+  },
+  "dashboard": {
+    "clientNumber": "Number of Clients",
+    "readerNumber": "Number of Readers",
+    "orderNumber":  "Number of Orders",
+    "userOverview": "Users Overview",
+    "orderOverive": "Orders Overview",
+    "cancelled": "Cancelled",
+    "pending": "Pending",
+    "accepted": "Accepted"
+  },
+  "user": {
+    "title": "List of Users",
+    "search": "Search for a user",
+    "status": "Status",
+    "add": "Add A User"
+  },
+  "order": {
+    "title": "List of Orders",
+    "search": "Search for an order",
+    "add": "Add Order",
+    "status": "Status",
+    "assigned": "Assigned",
+    "notAssigned": "Not assigned",
+    "cancelled": "Cancelled"
+  },
+  "userDetailModal": {
+    "title": "User Details",
+    "deleted": "Deleted",
+    "yes": "Yes",
+    "no": "No"
+  },
+  "orderDetailModal": {
+    "title": "Order Details"
+  },
+  "deletedDialog": {
+    "title":"Confirm Delete",
+    "deleteBtn": "Delete",
+    "cancelBtn": "Cancel"
+  },
+  "userTable": {
+    "questionUser": "Are you sure you want to delete this user?",
+    "name": "Name",
+    "type": "Type"
+  },
+  "assignDialog": {
+    "title": "Assign Reader",
+    "select": "Select Reader",
+    "assignBtn": "Assign",
+    "cancelBtn": "Cancel",
+    "assign": "Assign"
+  },
+  "homePage": {
+    "aboutTitle": "About Us",
+    "readerTitle": "Our Readers",
+    "contactTitle": "Get In Touch"
+  },
+  "banner": {
+    "title": "Why Choose Us?",
+    "body": "By choosing us, you're not just booking a reader; you're joining community dedicated to honoring the tradistions of Ashura with respect and deiginty."
+  },
+  "accordion": {
+    "acc1": "User-friendly Interface",
+    "acc1_body": "Our platform is designed for simplicity, making it easy for users to navigate and find what they need quickly.",
+    "acc2": "Diverse Selection of Readers",
+    "acc2_body": "We offer a wide range of qualified readers specializing in Ashoura gatherings, ensuring that you can find the right fit for your need.",
+    "acc3": "Easy Booking Process",
+    "acc3_body": "With just a few clicks, you can request a booking, view availability and confirm your choice - all from the comfort of your home.",
+    "acc4": "Secure Transactions",
+    "acc4_body": "We prioritize your privacy and security, providing safe and secure booking transactions to protect your information."
+  },
+  "timeLine": {
+    "mision": "Our Mision",
+    "vision": "Our Vision",
+    "misionBody": "Our mission is to provide a user-friendly platform that simplifies the processmof the finding and booking readers for Ashoura  assemblies. We strive to empower users by offering a comprehensive directory of readers categorized by location, so they can make  informed choices. Through our commitment to excellence, we ensure that each interaction is respectful, efficient, and tailored to meet the unique needs of every user. By prioritizing accessinility and convenience, we aim to honor the tradions of Ashura and facilitate meaningful gatherings.",
+    "visionBody": "Our vision is to become the leading digital platform for connecting communities with trusted readers for Ashoura assemblies worldwide. We aspire to create a space where tradition and technology unite, offering seamless access to readers across diverse regions. By continuously enhancing our services with innovation and inclusivity, we aim to preserve cultural heritage while fostering meaningful connections. Through this vision, we seek to inspire unity, strengthen community bonds, and ensure that the values of Ashoura remain accessible for generations to come."
+  },
+  "countSection" : {
+    "readers": "Readers",
+    "clients": "Clients",
+    "orders": "Orders"
+  },
+  "footer": {
+    "text": "2025. All rights reserved."
+  }, 
+  "readers": {
+    "title": "Our Readers",
+    "addOrder": "Add order"
+  }
+}

@@ -1,0 +1,162 @@
+{
+  "navbar": {
+    "home": "Accueil",
+    "about": "À propos",
+    "readers": "Lecteurs",
+    "contact": "Nous contacter",
+    "login": "Connexion",
+    "myAccount": "Mon compte",
+    "logout": "Déconnexion"
+  },
+  "Form": {
+    "login": "Connexion",
+    "hello": "Bonjour!",
+    "title": "Connectez-vous à votre compte",
+    "forgetPassword": "Mot de passe oublié ?",
+    "question": "Vous n'avez pas de compte ?",
+    "create": "Créer",
+    "personalInfo": "Informations personnelles",
+    "id": "Identifiant",
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "email": "E-mail",
+    "password": "Mot de passe",
+    "confirmPassword": "Confirmer le mot de passe",
+    "phoneNumber": "Numéro de téléphone",
+    "gender": "Sexe",
+    "female": "Femme",
+    "male": "Homme",
+    "userType": "Type d'utilisateur",
+    "client": "Client",
+    "reader": "Lecteur",
+    "admin": "administrateur(e)",
+    "back": "Précédent",
+    "next": "Suivant",
+    "address": "Adresse",
+    "addressOne": "Adresse 1",
+    "addressTwo": "Adresse 2",
+    "city": "Ville",
+    "postCode": "Code postal",
+    "country": "Pays",
+    "longitude": "Longitude",
+    "latitude": "Latitude",
+    "date": "Date",
+    "actions":"Actions",
+    "signUp": "Inscription",
+    "update": "Modifier",
+    "pickLocation": "Choisir un emplacement",
+    "personalDetails": "Données personnelles",
+    "accountDetails": "Détails du compte",
+    "currentPassword": "Mot de passe actuel",
+    "newPassword": "Nouveau mot de passe",
+    "changePassword": "Changer le mot de passe",
+    "coordinates": "coordonner",
+    "assign": "Attribuer",
+    "all": "toutes",
+    "time": "temps",
+    "save": "Sauvegarder",
+    "isDeleted": "Utilisateurs Supprimés",
+    "active": "Utilisateurs Actifs",
+    "allUser": "Tous les utilisateurs",
+    "searchbtn": "Rechercher",
+    "resetbtn": "Réinitialiser",
+    "send": "Envoyer",
+    "message": "Message"
+  },
+  "AdminNavBar": { 
+    "welcome": "Bienvenue",
+    "dashboard": "tableau de bord",
+    "users": "Utilisateurs",
+    "orders": "Commandes",
+    "setting": "Paramètres",
+    "logout": "Déconnexion"
+  },
+  "dashboard": {
+    "clientNumber": "Nombre de clients",
+    "readerNumber": "Nombre de lecteurs",
+    "orderNumber":  "Nombre de commandes",
+    "userOverview": "utilisateurs",
+    "orderOverive": "Aperçu des commandes ",
+    "cancelled": "Annulé",
+    "pending": "En attente",
+    "accepted": "Accepté"
+  },
+  "user": {
+    "title": "Liste des utilisateurs",
+    "search": "Rechercher un utilisateur",
+    "status": "statut",
+    "add": "Ajouter un utilisateur"
+  },
+  "order": {
+    "title": "Liste des commandes",
+    "search": "Rechercher une commande",
+    "add": "Ajouter une commande",
+    "status": "statut",
+    "assigned": "Accepté",
+    "notAssigned": "Non attribué",
+    "cancelled": "Annulé"
+  },
+  "userDetailModal": {
+    "title": "Détails de l'utilisateur",
+    "deleted": "Rayer",
+    "yes": "Oui",
+    "no": "Non"
+  },
+  "orderDetailModal": {
+    "title": "Détails de la commande"
+  },
+  "deletedDialog": {
+    "title":"Confirmer la suppression",
+    "deleteBtn": "Supprimer",
+    "cancelBtn": "Annuler"
+  },
+  "userTable": {
+    "questionUser": "Voulez-vous vraiment supprimer cet utilisateur?",
+    "name": "Nom",
+    "type": "Type"
+  },
+  "assignDialog": {
+    "title": "Affecter un lecteur",
+    "select": "Sélectionner un lecteur",
+    "assignBtn": "Attribuer",
+    "cancelBtn": "Annuler",
+    "assign": "Attribuer"
+  },
+  "homePage": {
+    "aboutTitle": "À propos de nous",
+    "readerTitle": "Nos lecteurs",
+    "contactTitle": "Contactez-nous"
+  },
+  "banner": {
+    "title": "Pourquoi nous choisir ?",
+    "body": "En nous choisissant, vous ne réservez pas seulement un lecteur ; vous rejoignez une communauté qui se consacre à honorer les traditions de l'Achoura avec respect et dignité."
+  },
+  "accordion": {
+    "acc1": "Interface conviviale",
+    "acc1_body": "Notre plateforme est conçue pour être simple d'utilisation, facilitant la navigation et la recherche rapide de ce dont vous avez besoin.",
+    "acc2": "Sélection diversifiée de lecteurs",
+    "acc2_body": "Nous proposons un large éventail de lecteurs qualifiés et spécialisés dans les rassemblements de l'Achoura, vous permettant ainsi de trouver la solution idéale.",
+    "acc3": "Réservation simplifiée",
+    "acc3_body": "En quelques clics, demandez une réservation, consultez les disponibilités et confirmez votre choix, confortablement installé chez vous.",
+    "acc4": "Transactions sécurisées",
+    "acc4_body": "Nous accordons une grande importance à votre confidentialité et à votre sécurité, en vous garantissant des transactions de réservation sécurisées pour protéger vos informations."
+  },
+  "timeLine": {
+    "mision": "Notre Mission",
+    "vision": "Notre Vision",
+    "misionBody": "Notre mission est de fournir une plateforme conviviale qui simplifie la recherche et la réservation de lecteurs pour les assemblées de l'Achoura. Nous nous efforçons d'autonomiser les utilisateurs en leur proposant un répertoire complet de lecteurs classés par lieu, afin qu'ils puissent faire des choix éclairés. Grâce à notre engagement envers l'excellence, nous garantissons que chaque interaction est respectueuse, efficace et adaptée aux besoins uniques de chaque utilisateur. En privilégiant l'accessibilité et la commodité, nous souhaitons honorer les traditions de l'Achoura et faciliter des rassemblements enrichissants.",
+    "visionBody": "Notre vision est de devenir la plateforme numérique leader pour connecter les communautés avec des lecteurs de confiance pour les assemblées de l'Achoura du monde entier. Nous aspirons à créer un espace où tradition et technologie se conjuguent, offrant un accès fluide aux lecteurs de diverses régions. En améliorant continuellement nos services grâce à l'innovation et à l'inclusion, nous souhaitons préserver le patrimoine culturel tout en favorisant des liens forts. À travers cette vision, nous cherchons à inspirer l'unité, à renforcer les liens communautaires et à garantir que les valeurs de l'Achoura restent accessibles aux générations futures."
+  },
+  "countSection" : {
+    "readers": "Lecteurs",
+    "clients": "Clients",
+    "orders": "Commandes"
+  },
+  "footer": {
+    "text": "2025. Tous droits réservés."
+  }, 
+  "readers": { 
+    "title": "Nos lecteurs",
+    "addOrder": "Ajouter une commande"
+  }
+}

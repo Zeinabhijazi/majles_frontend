@@ -1,0 +1,162 @@
+{
+  "navbar": {
+    "home": "Startseite",
+    "about": "Über uns",
+    "readers": "Leser",
+    "contact": "Kontakt",
+    "login": "Anmelden",
+    "myAccount": "Mein Konto",
+    "logout": "Abmelden"
+  },
+  "Form": {
+    "login": "Anmelden",
+    "hello": "Hallo!",
+    "title": "Melden Sie sich in Ihrem Konto an.",
+    "forgetPassword": "Passwort vergessen?",
+    "question": "Sie haben noch kein Konto?",
+    "create": "Erstellen",
+    "personalInfo": "Persönliche Daten",
+    "id": "ID",
+    "firstName": "Vorname",
+    "lastName": "Nachname",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "confirmPassword": "Passwort bestätigen",
+    "phoneNumber": "Telefonnummer",
+    "gender": "Geschlecht",
+    "female": "Weiblich",
+    "male": "Männlich",
+    "userType": "Benutzertyp",
+    "client": "Kunde",
+    "reader": "Leser",
+    "admin": "Administratorin",
+    "back": "Zurück",
+    "next": "Weiter Adresse",
+    "address": "Adresse",
+    "addressOne": "Adresse 1",
+    "addressTwo": "Adresse 2",
+    "city": "Ort",
+    "postCode": "Postleitzahl",
+    "country": "Land",
+    "longitude": "Länge",
+    "latitude": "Breite",
+    "date": "Datum",
+    "actions":"Aktionen",
+    "signUp": "Anmelden",
+    "update": "Bearbeiten",
+    "pickLocation": "Standort Auswählen",
+    "personalDetails": "Persönliche Daten",
+    "accountDetails": "Kontodaten",
+    "currentPassword": "Aktuelles Passwort",
+    "newPassword": "Neues Passwort",
+    "changePassword": "Kennwort ändern",
+    "coordinates": "Koordinaten",
+    "assign": "Zuordnen",
+    "all": "alle",
+    "time": "Zeit",
+    "save": "Speichern",
+    "isDeleted": "Gelöschte Nutzer",
+    "active": "Aktive Nutzer",
+    "allUser": "Alle Nutzer",
+    "searchbtn": "Suche",
+    "resetbtn": "Zurücksetzen",
+    "send": "Schicken",
+    "message": "Nachricht"
+  },
+  "AdminNavBar": { 
+    "welcome": "Willkommen",
+    "dashboard": "Armaturenbrett",
+    "users": "Nutzer",
+    "orders": "Bestellungen",
+    "setting": "Einstellungen",
+    "logout": "Abmelden"
+  },
+  "dashboard": {
+    "clientNumber": "Anzahl der Kunden",
+    "readerNumber": "Anzahl der Leser",
+    "orderNumber": "Anzahl der Bestellungen",
+    "userOverview": "Benutzerübersicht",
+    "orderOverive": "Bestellübersicht",
+    "cancelled": "Abgebrochen",
+    "pending": "Ausstehend",
+    "accepted": "Akzeptiert"
+  },
+  "user": {
+    "title": "Liste der Benutzer",
+    "search": "Nach einem Benutzer suchen",
+    "status": "Status",
+    "add": "Benutzer hinzufügen"
+  },
+  "order": {
+    "title": "Liste der Bestellungen",
+    "search": "Nach einer Bestellung suchen",
+    "add": "Bestellung hinzufügen",
+    "status": "Status",
+    "assigned": "Zugewiesen",
+    "notAssigned": "Nicht zugeordnet",
+    "cancelled": "Nnulliert"
+  },
+  "userDetailModal": {
+    "title": "Benutzerdetails",
+    "deleted": "Gelöscht",
+    "yes": "Ja",
+    "no": "NEIN"
+  },
+  "orderDetailModal": {
+    "title": "Bestelldetails"
+  },
+  "deletedDialog": {
+    "title":"Bestätigen Sie Löschen",
+    "deleteBtn": "löschen",
+    "cancelBtn": "abbrechen"
+  },
+  "userTable": {
+    "questionUser": "Möchten Sie diesen Benutzer wirklich löschen?",
+    "name": "Name",
+    "type": "Typ"
+  },
+  "assignDialog": {
+    "title": "Leser zuweisen",
+    "select": "Leser auswählen",
+    "assignBtn": "Zuweisen",
+    "cancelBtn": "Abbrechen",
+    "assign": "Zuordnen"
+  },
+  "homePage": {
+    "aboutTitle": "Über uns",
+    "readerTitle": "Unsere Leser",
+    "contactTitle": "Kontakt"
+  },
+  "banner": {
+    "title": "Warum Sie sich für uns entscheiden sollten?",
+    "body": "Wenn Sie sich für uns entscheiden, buchen Sie nicht nur eine Leserin, sondern werden Teil einer Gemeinschaft, die sich der respektvollen und würdevollen Ehrung der Ashura-Traditionen verschrieben hat."
+  },
+  "accordion": {
+    "acc1": "Benutzerfreundliche Oberfläche",
+    "acc1_body": "Unsere Plattform ist auf Einfachheit ausgelegt, sodass Nutzer sich leicht zurechtfinden und schnell finden, was sie brauchen.",
+    "acc2": "Vielfältige Auswahl an Vorlesern",
+    "acc2_body": "Wir bieten eine große Auswahl an qualifizierten Vorlesern, die auf Aschura-Treffen spezialisiert sind. So finden Sie garantiert das Richtige für Ihre Bedürfnisse.",
+    "acc3": "Einfacher Buchungsprozess",
+    "acc3_body": "Mit nur wenigen Klicks können Sie bequem von zu Hause aus eine Buchung anfragen, die Verfügbarkeit prüfen und Ihre Auswahl bestätigen.",
+    "acc4": "Sichere Transaktionen",
+    "acc4_body": "Ihre Privatsphäre und Sicherheit stehen bei uns an erster Stelle. Wir bieten sichere Buchungstransaktionen zum Schutz Ihrer Daten."
+  },
+  "timeLine": {
+    "mision": "Unsere Mission",
+    "vision": "Unsere Vision",
+    "misionBody": "Unsere Mission ist es, eine benutzerfreundliche Plattform bereitzustellen, die die Suche und Buchung von Vorlesern für Aschura-Versammlungen vereinfacht. Wir möchten unseren Nutzern ein umfassendes Verzeichnis von Vorlesern, sortiert nach Standort, bieten, damit sie fundierte Entscheidungen treffen können. Durch unser Engagement für Exzellenz stellen wir sicher, dass jede Interaktion respektvoll, effizient und auf die individuellen Bedürfnisse jedes Nutzers zugeschnitten ist. Indem wir Zugänglichkeit und Komfort in den Vordergrund stellen, möchten wir die Traditionen von Aschura würdigen und bedeutungsvolle Zusammenkünfte ermöglichen.",
+    "visionBody": "Unsere Vision ist es, die führende digitale Plattform zu werden, die Gemeinschaften weltweit mit vertrauenswürdigen Vorlesern für Aschura-Versammlungen verbindet. Wir möchten einen Raum schaffen, in dem Tradition und Technologie vereint sind und Vorlesern aus verschiedenen Regionen einen nahtlosen Zugang ermöglichen. Durch die kontinuierliche Weiterentwicklung unserer Dienstleistungen durch Innovation und Inklusivität wollen wir das kulturelle Erbe bewahren und gleichzeitig sinnvolle Verbindungen fördern. Mit dieser Vision wollen wir Einheit fördern, Gemeinschaftsbindungen stärken und sicherstellen, dass die Werte von Aschura auch für kommende Generationen zugänglich bleiben."
+  },
+  "countSection" : {
+    "readers": "Leser",
+    "clients": "Kunden",
+    "orders": "Bestellungen"
+  },
+  "footer": {
+    "text": "2025. Alle Rechte vorbehalten."
+  }, 
+  "readers": { 
+    "title": "Unsere Leser",
+    "addOrder": "Bestellung Hinzufügen"
+  }
+}

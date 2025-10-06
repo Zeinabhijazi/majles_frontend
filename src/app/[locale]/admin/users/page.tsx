@@ -7,7 +7,6 @@ import UserSelect from "@/components/AdminUI/userSelect";
 import Search from "@/components/AdminUI/search";
 import AddIcon from "@mui/icons-material/Add";
 import { useTranslations } from "next-intl";
-import { User } from "@/types/user";
 
 export default function UsersAdminPage() {
   const t1 = useTranslations("user");

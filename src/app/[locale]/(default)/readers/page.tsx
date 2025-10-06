@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { fetchReaders } from "@/redux/slices/userSlice";
 import { AppDispatch, RootState } from "@/redux/store";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,28 +11,63 @@ import {
   CardActions,
   Grid,
   Box,
+  Button,
 } from "@mui/material";
 import { useTranslations } from "next-intl";
 import CreateOrderModal from "@/components/Reader/CreateOrderModal";
+import LoginModal from "@/components/LoginModal";
+import RegisterModal from "@/components/RegisterModal";
+import ReaderSearch from "@/components/Reader/readerSearch";
 export default function Readers() {
   const t = useTranslations("readers");
   const t1 = useTranslations("Form");
   const dispatch = useDispatch<AppDispatch>();
-  const { users } = useSelector((state: RootState) => state.user);
-  
+  const { users, userDetails } = useSelector((state: RootState) => state.user);
+
+  const [loginOpen, setLoginOpen] = useState(false);
+  const [registerOpen, setRegisterOpen] = useState(false);
+  const [createOrderOpen, setCreateOrderOpen] = useState(false);
+
+  // Actions for login modal
+  const handleCloseLogin = () => setLoginOpen(false);
+
+  // Actions for register modal
+  const handleOpenRegister = () => setRegisterOpen(true);
+  const handleCloseRegister = () => setRegisterOpen(false);
+
+  // Actions for create order modal
+  const handleCloseCreate = () => setCreateOrderOpen(false);
+
   useEffect(() => {
     dispatch(fetchReaders({}));
   }, [dispatch]);
+
+  const handleAddOrder = () => {
+    if (!userDetails?.userType) {
+      setLoginOpen(true);
+    } else {
+      setCreateOrderOpen(true);
+    }
+  };
 
   return (
     <Box
       component="section"
       sx={{
         p: 2,
-        bgcolor: "Background.default"
+        bgcolor: "Background.default",
       }}
     >
-      <Typography variant="h4"> {t("title")} </Typography>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between"
+        }}
+      >
+        <Typography variant="h4"> {t("title")} </Typography>
+        <ReaderSearch />
+      </Box>
+
       <Grid
         container
         spacing={3}
@@ -64,7 +99,7 @@ export default function Readers() {
               />
               <CardContent
                 sx={{
-                  bgcolor: "Background.default"
+                  bgcolor: "Background.default",
                 }}
               >
                 <Typography gutterBottom variant="h6" component="div">
@@ -92,11 +127,42 @@ export default function Readers() {
                 borderTopRightRadius: 4,
               }}
             >
-              <CreateOrderModal readerId={user.id}/>
+              <Button
+                size="small"
+                variant="contained"
+                color="secondary"
+                onClick={handleAddOrder}
+              >
+                {t("addOrder")}
+              </Button>
+
+              {/* Login Modal */}
+              <LoginModal
+                open={loginOpen}
+                onClose={handleCloseLogin}
+                onOpenSecond={() => {
+                  handleCloseLogin(); 
+                  handleOpenRegister(); 
+                }}
+              />
+
+              {/* Register Modal */}
+              <RegisterModal
+                open={registerOpen}
+                onClose={handleCloseRegister}
+              />
+
+              {/* Create Order Modal */}
+              <CreateOrderModal
+                open={createOrderOpen}
+                onClose={handleCloseCreate}
+              />
+
             </CardActions>
           </Grid>
         ))}
       </Grid>
+
     </Box>
   );
 }

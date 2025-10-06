@@ -58,9 +58,6 @@ export default function LoginModal({
   const [alertText, setAlertText] = useState("");
 
   const dispatch = useDispatch<AppDispatch>();
-  const { userDetails } = useSelector((state: RootState) => state.user);
-
-  
 
   const handleTogglePassword = () => {
     setShowPassword((prev) => !prev);

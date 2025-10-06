@@ -104,10 +104,15 @@ export const fetchUserDetails = createAsyncThunk(
 // Fetch all reader
 export const fetchReaders = createAsyncThunk(
   "FETCHREADERS",
-  async ({ page = 1, limit = 10 }: FetchUsersArgs, { rejectWithValue }) => {
+  async ({ page = 1, limit = 10, search }: FetchUsersArgs, { rejectWithValue }) => {
     try {
       const response = await api.get<ApiResponse<PaginationDto<User>>>(
-        `api/dashboard/allReaders?page=${page}&limit=${limit}&userType=reader`
+        `api/dashboard/allReaders?page=${page}&limit=${limit}&userType=reader`, 
+        {
+          params: {
+            ...(search ? { search } : {}),
+          }
+        }
       );
       return response.data.data;
     } catch (error: any) {

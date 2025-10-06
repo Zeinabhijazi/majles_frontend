@@ -39,12 +39,12 @@ export default function DashboardSideBar({ role }: SidebarProps) {
       { label: t('logout'), icon: <LogoutIcon color="secondary" /> },
     ],
     client: [
-      { label: t('orders'), path: "/client/orders", icon: <ListAltIcon color="secondary" /> },
+      { label: t('orders'), path: "/client", icon: <ListAltIcon color="secondary" /> },
       { label: t('setting'), path: "/client/profile", icon: <SettingsIcon color="secondary" /> },
       { label: t('logout'), icon: <LogoutIcon color="secondary" /> },
     ],
     reader: [
-      { label: t('orders'), path: "/reader/orders", icon: <ListAltIcon color="secondary" /> },
+      { label: t('orders'), path: "/reader", icon: <ListAltIcon color="secondary" /> },
       { label: t('setting'), path: "/reader/profile", icon: <SettingsIcon color="secondary" /> },
       { label: t('logout'), icon: <LogoutIcon color="secondary" /> },
     ],
@@ -57,9 +57,9 @@ export default function DashboardSideBar({ role }: SidebarProps) {
     index: number
   ) => {
     setSelectedIndex(index);
-
     const item = menuItems[index];
-    if (item.label === "logout") {
+
+    if (item.label.toLowerCase() === "logout") {
       localStorage.removeItem("token");
       localStorage.removeItem("userDetails");
       router.push("/");

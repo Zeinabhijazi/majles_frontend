@@ -1,3 +1,4 @@
+import { useRouter } from "@/i18n/navigation";
 import axios, { AxiosResponse } from "axios";
 
 const api = axios.create({
@@ -33,7 +34,7 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response: AxiosResponse) => {
     const authorization = response.headers["authorization"];
-
+    
     if (authorization) {
       // Extras.saveToken ( authorization );
     }
@@ -41,9 +42,10 @@ api.interceptors.response.use(
     return response;
   },
   (error) => {
+    const router = useRouter();
     if (error.response?.status === 401) {
       // Optional: clear token and redirect
-      
+      router.replace("/");
     }
     //return Promise.reject(error);
     console.log(error);

@@ -15,32 +15,48 @@ interface AdminRootLayoutProps {
 export default function AdminRootLayout({
   children,
 }: Readonly<AdminRootLayoutProps>) {
-  const router = useRouter();
+  const [canAccess, setCanAccess] = useState(false);
   const { userDetails } = useSelector((state: RootState) => state.user);
-  const [canAccess, setCanAccess] = useState(true);
+  const router = useRouter();
   console.log(userDetails.userType);
   
-  useEffect(()=> {
-    /*if (userDetails) {
-      console.log(userDetails.userType);
-      if(userDetails.userType === "admin") {
-        setCanAccess(true)
-      }
-      else {
-        router.replace("/");
-      }
-    } */
-  }, [])
+  /*useEffect(()=> {
+    // If userDetails is still loading or undefined, don't redirect yet
+    if (userDetails.userType === undefined || userDetails === null)  return;
+    
+    if (userDetails.userType === "admin") {
+      setCanAccess(true);
+    }
+    else {
+      setCanAccess(false);
+      router.replace("/"); // redirects to home [not admin]
+    }
+  }, [userDetails, router]);*/
+  
+  useEffect(() => {
+    const storedUser = localStorage.getItem("userDetails");
+    const parsedUser = storedUser ? JSON.parse(storedUser) : null;
 
+    if (parsedUser?.userType === "admin") {
+      setCanAccess(true);
+    } else {
+      router.replace("/");
+    }
+  }, []);
+
+  // Loading screen while checking
+  if( canAccess === null) {
+    return <CircularProgress color="secondary" />
+  }
 
   return (
-      <section className="h-screen w-full flex flex-row">
+    canAccess === true ? (
+        <section className="h-screen w-full flex flex-row">
         <div className="w-1/5">
           <DashboardSideBar role={"admin"} />
         </div>
         <div className="w-4/5">
             <AdminHeader />
-            {canAccess === true ? (
               <Paper
                 variant="elevation"
                 square
@@ -55,12 +71,11 @@ export default function AdminRootLayout({
               >
                 {children}
               </Paper>
-            ) : 
+        </div>
+      </section>
+      ) : 
             (
               <CircularProgress color="secondary" />
             )
-            }
-        </div>
-      </section>
   );
 }

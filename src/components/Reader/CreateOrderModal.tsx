@@ -22,15 +22,15 @@ type FormData = {
   longitude: number;
   latitude: number;
 };
+interface ModalProps {
+  open: boolean;
+  onClose: () => void;
+}
 
 export default function CreateOrderModal(
-  readerId: Readonly<{ readerId: number }>
-) {
-  const t1 = useTranslations("readers");
+  {open, onClose} : Readonly<ModalProps>
+  ) {
   const t = useTranslations("Form");
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
   const [date, setDate] = useState<Dayjs | null>(null);
   const [formData, setFormData] = useState({
       addressOne: "",
@@ -41,12 +41,13 @@ export default function CreateOrderModal(
       longitude: 0,
       latitude: 0,
     });
+
   const style = {
     position: "absolute",
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: 550,
+    width: 520,
     height: 500,
     bgcolor: "background.default",
     border: "1px solid #eee",
@@ -54,7 +55,6 @@ export default function CreateOrderModal(
     boxShadow: 8,
     p: 4,
   };
-
 
   // To get current location
   const handleGetLocation = () => {
@@ -96,21 +96,23 @@ export default function CreateOrderModal(
     }));
   };
 
+  // Handle submit
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+  }
+
   return (
     <div>
-      <Button
-        size="small"
-        variant="contained"
-        color="secondary"
-        sx={{ ml: "auto" }}
-        onClick={handleOpen}
-      >
-        {t1("addOrder")}
-      </Button>
       <Modal
         open={open}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
+        slotProps={{
+          backdrop: {
+            timeout: 500,
+          },
+      }}
       >
         <Box sx={style}>
           <Box
@@ -119,23 +121,24 @@ export default function CreateOrderModal(
               justifyContent: "space-between",
             }}
           >
-            <Typography variant="h4">
-              <AssignmentAddIcon color="secondary" sx={{fontSize: "40px", mr: 2}}/><strong>Add Order</strong>
+            <Typography variant="h5">
+              <AssignmentAddIcon color="secondary" sx={{fontSize: "35px", mr: 2}}/><strong>Add Order</strong>
             </Typography>
-            <CloseOutlinedIcon onClick={handleClose} sx={{ mt:1}}/>
+            <CloseOutlinedIcon onClick={onClose} sx={{ mt:1}}/>
           </Box>
           
           
           <Box
             component="form"
             noValidate
+            onSubmit={handleSubmit}
             autoComplete="off"
             sx={{
-              my: 3,
+              my: 1.5,
               width: "100%",
               display: "flex",
               flexDirection: "column",
-              gap: 2,
+              gap: 1.5,
             }}
           > 
             <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -267,6 +270,7 @@ export default function CreateOrderModal(
               size="small"
               variant="contained"
               color="secondary"
+              type="submit"
               sx={{ ml: "auto" }}
             >
               {t("save")}

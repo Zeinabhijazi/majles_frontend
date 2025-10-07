@@ -7,72 +7,81 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import { Box, Button } from "@mui/material";
-import OrderDetailsModal from "./OrderDetailsModal";
-import { useTranslations } from "next-intl";
+import { Box, Button, IconButton, Typography } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 import OpenInNew from "@mui/icons-material/OpenInNew";
-import { Order } from "@/types/order";
-import AssignReaderDialog from "./assignReaderDialog";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
-import { fetchOrders } from "@/redux/slices/orderSlice";
+import EditIcon from "@mui/icons-material/Edit";
+import { fetchOrdersForLoggedUser } from "@/redux/slices/orderSlice";
+import { Order } from "@/types/order";
+import OrderDetailsModal from "../AdminUI/OrderDetailsModal";
+import DeleteOrderDialog from "./deleteOrder";
+import { useTranslations } from "next-intl";
+
 interface Column {
-  id: "id" | "Client" | "Reader" | "Date" | "Time" | "Actions";
+  id: "ID" | "Reader" | "Date" | "Time" | "Country" | "Status" | "Actions";
   label: string;
   minWidth?: number;
   align?: "left" | "right" | "center";
 }
 
-const OrderTable = () => {
+const ClientTable = () => {
   const t1 = useTranslations("label");
-  const t2 = useTranslations("button");
-  const { orders, itemsCount } = useSelector((state: RootState) => state.order);
-  const dispatch = useDispatch<AppDispatch>();
+  const t2 = useTranslations("select");
   const columns: readonly Column[] = [
-    { id: "id", label: t1("id"), minWidth: 50, align: "center" },
-    { id: "Client", label: t1("client"), minWidth: 100, align: "center" },
+    { id: "ID", label: t1("id"), minWidth: 50, align: "center" },
     { id: "Reader", label: t1("reader"), minWidth: 100, align: "center" },
     { id: "Date", label: t1("date"), minWidth: 100, align: "center" },
     { id: "Time", label: t1("time"), minWidth: 100, align: "center" },
+    { id: "Country", label: t1("country"), minWidth: 100, align: "center" },
+    { id: "Status", label: t2("status"), minWidth: 100, align: "center" },
     { id: "Actions", label: t1("actions"), minWidth: 100, align: "center" },
   ];
-  const [page, setPage] = React.useState(0);
+
+  const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [open, setOpen] = useState(false);
+  const { orders, itemsCount } = useSelector((state: RootState) => state.order);
+  const dispatch = useDispatch<AppDispatch>();
+  const [openDetails, setOpenDetails] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
 
   useEffect(() => {
-    dispatch(fetchOrders({}));
+    dispatch(fetchOrdersForLoggedUser({}));
   }, [dispatch]);
 
-  const handleOpen = (id: number) => {
+  // Handle details modal
+  const handleOpenDetails = (id: number) => {
     const specificOrder = orders.find((o) => o.id === id) || null;
     setSelectedOrder(specificOrder);
-    setOpen(true);
+    setOpenDetails(true);
   };
 
-  const handleClose = () => {
+  const handleCloseDetails = () => {
     setSelectedOrder(null);
-    setOpen(false);
+    setOpenDetails(false);
   };
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
-    dispatch(fetchOrders({ page: newPage + 1, limit: rowsPerPage }));
+    dispatch(
+      fetchOrdersForLoggedUser({ page: newPage + 1, limit: rowsPerPage })
+    );
   };
 
   const handleChangeRowsPerPage = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const newLimit = +event.target.value;
-    setRowsPerPage(+event.target.value);
+    setRowsPerPage(newLimit);
     setPage(0);
-    dispatch(fetchOrders({ page: 1, limit: newLimit }));
+    dispatch(fetchOrdersForLoggedUser({ page: 1, limit: newLimit }));
   };
 
   return (
     <Paper sx={{ width: "100%", overflow: "hidden" }}>
-      <TableContainer className="table_scrollbar" sx={{ maxHeight: 360 }}>
+      <TableContainer className="table_scrollbar" sx={{ maxHeight: 450 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
@@ -90,12 +99,9 @@ const OrderTable = () => {
           {/* Table Body */}
           {orders && orders.length > 0 && (
             <TableBody sx={{ bgcolor: "background.default" }}>
-              {orders.map((row) => (
+              {orders.map((row: any) => (
                 <TableRow key={row.id}>
                   <TableCell align="center">{row.id}</TableCell>
-                  <TableCell align="center">
-                    {row.client.firstName} {row.client.lastName}
-                  </TableCell>
                   <TableCell align="center">
                     {row.reader?.firstName} {row.reader?.lastName}
                   </TableCell>
@@ -105,28 +111,50 @@ const OrderTable = () => {
                   <TableCell align="center">
                     {new Date(row.orderDate).toLocaleTimeString()}
                   </TableCell>
+                  <TableCell align="center">{row.country}</TableCell>
+                  <TableCell align="center">
+                    {row.isAccepted === true && row.isDeleted === false ? (
+                      <Typography variant="body2">{t2("completed")}</Typography>
+                    ) : row.isAccepted === false && row.isDeleted === false ? (
+                      <Typography variant="body2">{t2("pending")}</Typography>
+                    ) : row.isDeleted === true ? (
+                      <Typography variant="body2">{t2("rejected")}</Typography>
+                    ) : (
+                      "unknown"
+                    )}
+                  </TableCell>
                   <TableCell align="center">
                     <Box
-                      sx={{ display: "flex", gap: 1, justifyContent: "center" }}
+                      sx={{
+                        display: "flex",
+                        gap: 1,
+                        justifyContent: "center",
+                      }}
                     >
-                      <Button
-                        variant="text"
-                        color="secondary"
-                        onClick={() => handleOpen(row.id)}
-                      >
-                        <OpenInNew />
-                      </Button>
+                      <IconButton onClick={() => handleOpenDetails(row.id)}>
+                        <OpenInNew color="secondary" />
+                      </IconButton>
                       <OrderDetailsModal
-                        open={open}
-                        onClose={handleClose}
+                        open={openDetails}
+                        onClose={handleCloseDetails}
                         order={selectedOrder}
                       />
-                      {row.isAccepted === true ? (
-                        <Button variant="contained" disabled>
-                          {t2("assign")}
-                        </Button>
+                      {row.isAccepted === false && row.isDeleted === true ? (
+                        <>
+                          <Button variant="text" disabled>
+                            <DeleteIcon />
+                          </Button>
+                          <IconButton disabled>
+                            <EditIcon />
+                          </IconButton>
+                        </>
                       ) : (
-                        <AssignReaderDialog orderId={row.id} />
+                        <>
+                          <DeleteOrderDialog orderId={row.id} />
+                          <IconButton disabled>
+                            <EditIcon color="secondary" />
+                          </IconButton>
+                        </>
                       )}
                     </Box>
                   </TableCell>
@@ -149,4 +177,5 @@ const OrderTable = () => {
     </Paper>
   );
 };
-export default OrderTable;
+
+export default ClientTable;

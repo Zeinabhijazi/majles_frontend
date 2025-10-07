@@ -9,6 +9,10 @@ interface OrderState {
   error: string | null;
   pageCount: number;
   itemsCount: number;
+  itemsCountWithDel: number;
+  pendingItemsCount: number;
+  completedItemsCount: number;
+  totalOrders: number;
 }
 
 const initialState: OrderState = {
@@ -17,6 +21,10 @@ const initialState: OrderState = {
   error: null,
   pageCount: 0,
   itemsCount: 0,
+  itemsCountWithDel: 0,
+  pendingItemsCount: 0,
+  completedItemsCount: 0,
+  totalOrders: 0,
 };
 
 type FetchOrdersArgs = {
@@ -25,6 +33,7 @@ type FetchOrdersArgs = {
   status?: string;
   start?: number; // timestamp (ms)
   end?: number; // timestamp (ms)
+  search?: string;
 };
 
 export const fetchOrders = createAsyncThunk(
@@ -50,6 +59,30 @@ export const fetchOrders = createAsyncThunk(
     }
   }
 );
+
+export const fetchOrdersForLoggedUser = createAsyncThunk (
+  "FETCHORDERSFORLOGGEDUSER", 
+  async (
+    { page = 1, limit = 10, status, search}: FetchOrdersArgs,
+    { rejectWithValue }
+  ) => {
+    try {
+      const response = await api.get<ApiResponse<PaginationDto<Order>>>(
+        `api/order?page=${page}&limit=${limit}`,
+        {
+          params: {
+            ...(status && status !== "all" ? { status } : {}),
+            ...(search ? { search } : {}),
+          },
+        }
+      );
+      return response.data.data;
+    } catch (error: any) {
+      return rejectWithValue("Failed to fetch orders of this client");
+    }
+  }
+); 
+
 
 export const handleAssignReader = createAsyncThunk<
   { orderId: number; readerId: number; message: string },
@@ -93,6 +126,7 @@ const orderSlice = createSlice({
         state.orders = action.payload.content;
         state.itemsCount = action.payload.itemsCount;
         state.pageCount = action.payload.pageCount;
+        state.itemsCountWithDel = action.payload.itemsCountWithDel;
       })
       .addCase(fetchOrders.rejected, (state, action) => {
         state.error = action.error.message || "Failed to fetch orders";
@@ -108,7 +142,18 @@ const orderSlice = createSlice({
       })
       .addCase(handleAssignReader.rejected, (state, action) => {
         state.error = action.payload || "Delete failed";
-      });
+      })
+      .addCase(fetchOrdersForLoggedUser.fulfilled, (state,action) => {
+        state.orders = action.payload.content;
+        state.itemsCount = action.payload.itemsCount;
+        state.pageCount = action.payload.pageCount;
+        state.completedItemsCount =action.payload.completedItemsCount;
+        state.pendingItemsCount = action.payload.pendingItemsCount;
+        state.totalOrders = action.payload.totalOrders;
+      })
+      .addCase(fetchOrdersForLoggedUser.rejected, (state, action) => {
+        state.error = action.error.message || "Failed to fetch orders of this client";
+      })
   },
 });
 

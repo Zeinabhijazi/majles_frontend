@@ -4,128 +4,8 @@
     "about": "About US",
     "readers": "Readers",
     "contact": "Contact Us",
-    "login": "Login",
     "myAccount": "My Account",
     "logout": "Logout"
-  },
-  "Form": {
-    "login": "Login",
-    "hello": "Hello!",
-    "title": "Sign in to your account",
-    "forgetPassword": "Forget Password?",
-    "question": "Don't have an account?",
-    "create": "Create",
-    "personalInfo": "Personal Information",
-    "id": "Id",
-    "firstName": "First Name",
-    "lastName": "Last Name",
-    "email": "Email",
-    "password": "Password",
-    "confirmPassword": "Confirm Password",
-    "phoneNumber": "Phone Number",
-    "gender": "Gender",
-    "female": "Female",
-    "male": "Male",
-    "userType": "User Type",
-    "client": "Client",
-    "reader": "Reader",
-    "admin": "Admin",
-    "back": "Back",
-    "next": "Next",
-    "address": "Address",
-    "addressOne": "Address One",
-    "addressTwo": "Address Two",
-    "city": "City",
-    "postCode": "Post Code",
-    "country": "Country",
-    "longitude": "Longitude",
-    "latitude": "Latitude",
-    "date": "Date",
-    "actions":"Actions",
-    "signUp": "Sign Up",
-    "update": "Modify",
-    "pickLocation": "Pick Location",
-    "personalDetails": "Personal Details",
-    "accountDetails": "Account Details",
-    "currentPassword": "Current Password",
-    "newPassword": "New Password",
-    "changePassword": "Change Password",
-    "coordinates": "Coordinates",
-    "assign": "Assign",
-    "all": "All",
-    "time": "Time",
-    "save": "Save",
-    "isDeleted": "Deleted Users",
-    "active": "Active Users",
-    "allUser": "All Users",
-    "searchbtn": "Search",
-    "resetbtn": "Reset",
-    "send": "Send",
-    "message": "Message"
-  },
-  "AdminNavBar": { 
-    "welcome": "Welcome",
-    "dashboard": "Dashboard",
-    "users": "Users",
-    "orders": "Orders",
-    "setting": "Setting",
-    "logout": "Logout"
-  },
-  "dashboard": {
-    "clientNumber": "Number of Clients",
-    "readerNumber": "Number of Readers",
-    "orderNumber":  "Number of Orders",
-    "userOverview": "Users Overview",
-    "orderOverive": "Orders Overview",
-    "cancelled": "Cancelled",
-    "pending": "Pending",
-    "accepted": "Accepted"
-  },
-  "user": {
-    "title": "List of Users",
-    "search": "Search for a user",
-    "status": "Status",
-    "add": "Add A User"
-  },
-  "order": {
-    "title": "List of Orders",
-    "search": "Search for an order",
-    "add": "Add Order",
-    "status": "Status",
-    "assigned": "Assigned",
-    "notAssigned": "Not assigned",
-    "cancelled": "Cancelled"
-  },
-  "userDetailModal": {
-    "title": "User Details",
-    "deleted": "Deleted",
-    "yes": "Yes",
-    "no": "No"
-  },
-  "orderDetailModal": {
-    "title": "Order Details"
-  },
-  "deletedDialog": {
-    "title":"Confirm Delete",
-    "deleteBtn": "Delete",
-    "cancelBtn": "Cancel"
-  },
-  "userTable": {
-    "questionUser": "Are you sure you want to delete this user?",
-    "name": "Name",
-    "type": "Type"
-  },
-  "assignDialog": {
-    "title": "Assign Reader",
-    "select": "Select Reader",
-    "assignBtn": "Assign",
-    "cancelBtn": "Cancel",
-    "assign": "Assign"
-  },
-  "homePage": {
-    "aboutTitle": "About Us",
-    "readerTitle": "Our Readers",
-    "contactTitle": "Get In Touch"
   },
   "banner": {
     "title": "Why Choose Us?",
@@ -149,14 +29,142 @@
   },
   "countSection" : {
     "readers": "Readers",
-    "clients": "Clients",
-    "orders": "Orders"
+    "clients": "Clients"
   },
   "footer": {
     "text": "2025. All rights reserved."
-  }, 
-  "readers": {
-    "title": "Our Readers",
-    "addOrder": "Add order"
+  },
+  "loginModal": {
+    "hello": "Hello!",
+    "title": "Sign in to your account",
+    "forgetPassword": "Forget Password?",
+    "question": "Don't have an account?"
+  },
+  "registerModal": {
+    "personalInfo": "Personal Information",
+    "address": "Address"
+  },
+  "dashboard": { 
+    "welcome": "Welcome",
+    "dashboard": "Dashboard",
+    "users": "Users",
+    "orders": "Orders",
+    "setting": "Setting",
+    "logout": "Logout"
+  },
+  "adminDashboard": {
+    "clientNumber": "Number of Clients",
+    "readerNumber": "Number of Readers",
+    "orderNumber":  "Number of Orders",
+    "userOverview": "Users Overview",
+    "orderOverive": "Orders Overview",
+    "cancelled": "Cancelled",
+    "pending": "Pending",
+    "accepted": "Accepted"
+  },
+  "readerDashboard": {
+    "pendingOrder": "Pending Orders",
+    "completedOrder": "Completed Orders",
+    "allOrders": "All Orders"
+  },
+  "tab": {
+    "personalDetails": "Personal Details",
+    "accountDetails": "Account Details"
+  },
+  "radioButton": {
+    "gender": "Gender",
+    "female": "Female",
+    "male": "Male",
+    "userType": "User Type",
+    "client": "Client",
+    "reader": "Reader",
+    "admin": "Admin"
+  },
+  "select": {
+    "userType": "User Type",
+    "status": "Status",
+    "all": "All",
+    "client": "Client",
+    "reader": "Reader",
+    "admin": "Admin",
+    "active": "Active Users",
+    "isDeleted": "Deleted Users",
+    "assigned": "Assigned",
+    "notAssigned": "Not assigned",
+    "selectReader": "Select Reader",
+    "pending": "Pending",
+    "completed": "Completed",
+    "rejected": "Rejected"
+  },
+  "searchInput": {
+    "userSearch": "Search for a user",
+    "orderSearch": "Search for an order",
+    "countrySearch": "Country ..."
+  },
+  "heading": {
+    "aboutSectionTitle": "About Us",
+    "readerSectionTitle": "Our Readers",
+    "contactSectionTitle": "Get In Touch",
+    "readersPage": "Our Readers",
+    "usersPageTitle": "List of Users",
+    "ordersPageTitle": "List of Orders",
+    "userDetailsModel": "User Details",
+    "orderDetailsModel": "Order Details",
+    "deleteDialog": "Confirm Delete",
+    "deleteDialogQuestion": "Are you sure you want to delete this user?",
+    "deleteOrderDialogQuestion": "Are you sure you want to delete this order?",
+    "assignDialog": "Assign Reader",
+    "addOrderModal": "Add Order",
+    "clientPageTitle": "List of my orders"
+  },
+  "button": {
+    "login": "Login",
+    "create": "Create",
+    "back": "Back",
+    "next": "Next",
+    "signUp": "Sign Up",
+    "pickLocation": "Pick Location",
+    "addUser": "Add A User",
+    "addOrder": "Add order",
+    "search": "Search",
+    "reset": "Reset",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "assign": "Assign",
+    "save": "Save",
+    "send": "Send",
+    "changePassword": "Change Password"
+  },
+  "label": {
+    "id": "Id",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email",
+    "phoneNumber": "Phone Number",
+    "address": "Address",
+    "addressOne": "Address One",
+    "addressTwo": "Address Two",
+    "city": "City",
+    "postCode": "Post Code",
+    "country": "Country",
+    "coordinates": "Coordinates",
+    "longitude": "Longitude",
+    "latitude": "Latitude",
+    "password": "Password",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm Password",
+    "actions":"Actions",
+    "name": "Name",
+    "type": "Type",
+    "deleted": "Deleted",
+    "yes": "Yes",
+    "no": "No",
+    "client": "Client",
+    "reader": "Reader",
+    "date": "Date",
+    "time": "Time",
+    "datePickerLabel": "Select Date",
+    "message": "Message"
   }
 }

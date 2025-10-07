@@ -1,131 +1,11 @@
-{
+{ 
   "navbar": {
     "home": "Accueil",
     "about": "À propos",
     "readers": "Lecteurs",
     "contact": "Nous contacter",
-    "login": "Connexion",
     "myAccount": "Mon compte",
     "logout": "Déconnexion"
-  },
-  "Form": {
-    "login": "Connexion",
-    "hello": "Bonjour!",
-    "title": "Connectez-vous à votre compte",
-    "forgetPassword": "Mot de passe oublié ?",
-    "question": "Vous n'avez pas de compte ?",
-    "create": "Créer",
-    "personalInfo": "Informations personnelles",
-    "id": "Identifiant",
-    "firstName": "Prénom",
-    "lastName": "Nom",
-    "email": "E-mail",
-    "password": "Mot de passe",
-    "confirmPassword": "Confirmer le mot de passe",
-    "phoneNumber": "Numéro de téléphone",
-    "gender": "Sexe",
-    "female": "Femme",
-    "male": "Homme",
-    "userType": "Type d'utilisateur",
-    "client": "Client",
-    "reader": "Lecteur",
-    "admin": "administrateur(e)",
-    "back": "Précédent",
-    "next": "Suivant",
-    "address": "Adresse",
-    "addressOne": "Adresse 1",
-    "addressTwo": "Adresse 2",
-    "city": "Ville",
-    "postCode": "Code postal",
-    "country": "Pays",
-    "longitude": "Longitude",
-    "latitude": "Latitude",
-    "date": "Date",
-    "actions":"Actions",
-    "signUp": "Inscription",
-    "update": "Modifier",
-    "pickLocation": "Choisir un emplacement",
-    "personalDetails": "Données personnelles",
-    "accountDetails": "Détails du compte",
-    "currentPassword": "Mot de passe actuel",
-    "newPassword": "Nouveau mot de passe",
-    "changePassword": "Changer le mot de passe",
-    "coordinates": "coordonner",
-    "assign": "Attribuer",
-    "all": "toutes",
-    "time": "temps",
-    "save": "Sauvegarder",
-    "isDeleted": "Utilisateurs Supprimés",
-    "active": "Utilisateurs Actifs",
-    "allUser": "Tous les utilisateurs",
-    "searchbtn": "Rechercher",
-    "resetbtn": "Réinitialiser",
-    "send": "Envoyer",
-    "message": "Message"
-  },
-  "AdminNavBar": { 
-    "welcome": "Bienvenue",
-    "dashboard": "tableau de bord",
-    "users": "Utilisateurs",
-    "orders": "Commandes",
-    "setting": "Paramètres",
-    "logout": "Déconnexion"
-  },
-  "dashboard": {
-    "clientNumber": "Nombre de clients",
-    "readerNumber": "Nombre de lecteurs",
-    "orderNumber":  "Nombre de commandes",
-    "userOverview": "utilisateurs",
-    "orderOverive": "Aperçu des commandes ",
-    "cancelled": "Annulé",
-    "pending": "En attente",
-    "accepted": "Accepté"
-  },
-  "user": {
-    "title": "Liste des utilisateurs",
-    "search": "Rechercher un utilisateur",
-    "status": "statut",
-    "add": "Ajouter un utilisateur"
-  },
-  "order": {
-    "title": "Liste des commandes",
-    "search": "Rechercher une commande",
-    "add": "Ajouter une commande",
-    "status": "statut",
-    "assigned": "Accepté",
-    "notAssigned": "Non attribué",
-    "cancelled": "Annulé"
-  },
-  "userDetailModal": {
-    "title": "Détails de l'utilisateur",
-    "deleted": "Rayer",
-    "yes": "Oui",
-    "no": "Non"
-  },
-  "orderDetailModal": {
-    "title": "Détails de la commande"
-  },
-  "deletedDialog": {
-    "title":"Confirmer la suppression",
-    "deleteBtn": "Supprimer",
-    "cancelBtn": "Annuler"
-  },
-  "userTable": {
-    "questionUser": "Voulez-vous vraiment supprimer cet utilisateur?",
-    "name": "Nom",
-    "type": "Type"
-  },
-  "assignDialog": {
-    "title": "Affecter un lecteur",
-    "select": "Sélectionner un lecteur",
-    "assignBtn": "Attribuer",
-    "cancelBtn": "Annuler",
-    "assign": "Attribuer"
-  },
-  "homePage": {
-    "aboutTitle": "À propos de nous",
-    "readerTitle": "Nos lecteurs",
-    "contactTitle": "Contactez-nous"
   },
   "banner": {
     "title": "Pourquoi nous choisir ?",
@@ -149,14 +29,142 @@
   },
   "countSection" : {
     "readers": "Lecteurs",
-    "clients": "Clients",
-    "orders": "Commandes"
+    "clients": "Clients"
   },
   "footer": {
     "text": "2025. Tous droits réservés."
-  }, 
-  "readers": { 
-    "title": "Nos lecteurs",
-    "addOrder": "Ajouter une commande"
+  },
+  "loginModal": {
+    "hello": "Bonjour!",
+    "title": "Connectez-vous à votre compte",
+    "forgetPassword": "Mot de passe oublié ?",
+    "question": "Vous n'avez pas de compte ?"
+  },
+  "registerModal": {
+    "personalInfo": "Informations personnelles",
+    "address": "Adresse"
+  },
+  "dashboard": { 
+    "welcome": "Bienvenue",
+    "dashboard": "tableau de bord",
+    "users": "Utilisateurs",
+    "orders": "Commandes",
+    "setting": "Paramètres",
+    "logout": "Déconnexion"
+  },
+  "adminDashboard": {
+    "clientNumber": "Nombre de clients",
+    "readerNumber": "Nombre de lecteurs",
+    "orderNumber":  "Nombre de commandes",
+    "userOverview": "utilisateurs",
+    "orderOverive": "Aperçu des commandes ",
+    "cancelled": "Annulé",
+    "pending": "En attente",
+    "accepted": "Accepté"
+  },
+  "readerDashboard": {
+    "pendingOrder": "Commandes en attente",
+    "completedOrder": "Commandes terminées",
+    "allOrders": "Toutes les commandes"
+  },
+  "tab": { 
+    "personalDetails": "Données personnelles",
+    "accountDetails": "Détails du compte"
+  },
+  "radioButton": {
+    "gender": "Sexe",
+    "female": "Femme",
+    "male": "Homme",
+    "userType": "Type d'utilisateur",
+    "client": "Client",
+    "reader": "Lecteur",
+    "admin": "administrateur(e)"
+  },
+  "select": {
+    "userType": "Type d'utilisateur",
+    "status": "statut",
+    "all": "toutes",
+    "client": "Client",
+    "reader": "Lecteur",
+    "admin": "administrateur(e)",
+    "active": "Utilisateurs Actifs",
+    "isDeleted": "Utilisateurs Supprimés",
+    "assigned": "Accepté",
+    "notAssigned": "Non attribué",
+    "selectReader": "Sélectionner un lecteur",
+    "pending": "En attente",
+    "completed": "Complété",
+    "rejected": "rejeté"
+  },
+  "searchInput": {
+    "userSearch": "Rechercher un utilisateur",
+    "orderSearch": "Rechercher une commande",
+    "countrySearch": "Pays ..."
+  },
+  "heading": {
+    "aboutSectionTitle": "À propos de nous",
+    "readerSectionTitle": "Nos lecteurs",
+    "contactSectionTitle": "Contactez-nous",
+    "readersPage": "Nos lecteurs",
+    "usersPageTitle": "Liste des utilisateurs",
+    "ordersPageTitle": "Liste des commandes",
+    "userDetailsModel": "Détails de l'utilisateur",
+    "orderDetailsModel": "Détails de la commande",
+    "deleteDialog": "Confirmer la suppression",
+    "deleteDialogQuestion": "Voulez-vous vraiment supprimer cet utilisateur?",
+    "deleteOrderDialogQuestion": "Êtes-vous sûr de vouloir supprimer cette commande ?",
+    "assignDialog": "Affecter un lecteur",
+    "addOrderModal": "Ajouter une commande",
+    "clientPageTitle": "Liste de mes commandes"
+  },
+  "button": {
+    "login": "Connexion",
+    "create": "Créer",
+    "back": "Précédent",
+    "next": "Suivant",
+    "signUp": "Inscription",
+    "pickLocation": "Choisir un emplacement",
+    "addUser": "Ajouter un utilisateur",
+    "addOrder": "Ajouter une commande",
+    "search": "Rechercher",
+    "reset": "Réinitialiser",
+    "delete": "Supprimer",
+    "cancel": "Annuler",
+    "assign": "Attribuer",
+    "save": "Sauvegarder",
+    "send": "Envoyer",
+    "changePassword": "Changer le mot de passe"
+  },
+  "label": {
+    "id": "Identifiant",
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "email": "E-mail",
+    "phoneNumber": "Numéro de téléphone",
+    "address": "Adresse",
+    "addressOne": "Adresse 1",
+    "addressTwo": "Adresse 2",
+    "city": "Ville",
+    "postCode": "Code postal",
+    "country": "Pays",
+    "coordinates": "coordonner",
+    "longitude": "Longitude",
+    "latitude": "Latitude",
+    "password": "Mot de passe",
+    "currentPassword": "Mot de passe actuel",
+    "newPassword": "Nouveau mot de passe",
+    "confirmPassword": "Confirmer le mot de passe",
+    "actions":"Actions",
+    "name": "Nom",
+    "type": "Type",
+    "deleted": "Rayer",
+    "yes": "Oui",
+    "no": "Non",
+    "client": "Client",
+    "reader": "Lecteur",
+    "date": "Date",
+    "time": "temps",
+    "datePickerLabel": "Sélectionnez la date",
+    "message": "Message"
   }
 }

@@ -4,128 +4,8 @@
     "about": "Über uns",
     "readers": "Leser",
     "contact": "Kontakt",
-    "login": "Anmelden",
     "myAccount": "Mein Konto",
     "logout": "Abmelden"
-  },
-  "Form": {
-    "login": "Anmelden",
-    "hello": "Hallo!",
-    "title": "Melden Sie sich in Ihrem Konto an.",
-    "forgetPassword": "Passwort vergessen?",
-    "question": "Sie haben noch kein Konto?",
-    "create": "Erstellen",
-    "personalInfo": "Persönliche Daten",
-    "id": "ID",
-    "firstName": "Vorname",
-    "lastName": "Nachname",
-    "email": "E-Mail",
-    "password": "Passwort",
-    "confirmPassword": "Passwort bestätigen",
-    "phoneNumber": "Telefonnummer",
-    "gender": "Geschlecht",
-    "female": "Weiblich",
-    "male": "Männlich",
-    "userType": "Benutzertyp",
-    "client": "Kunde",
-    "reader": "Leser",
-    "admin": "Administratorin",
-    "back": "Zurück",
-    "next": "Weiter Adresse",
-    "address": "Adresse",
-    "addressOne": "Adresse 1",
-    "addressTwo": "Adresse 2",
-    "city": "Ort",
-    "postCode": "Postleitzahl",
-    "country": "Land",
-    "longitude": "Länge",
-    "latitude": "Breite",
-    "date": "Datum",
-    "actions":"Aktionen",
-    "signUp": "Anmelden",
-    "update": "Bearbeiten",
-    "pickLocation": "Standort Auswählen",
-    "personalDetails": "Persönliche Daten",
-    "accountDetails": "Kontodaten",
-    "currentPassword": "Aktuelles Passwort",
-    "newPassword": "Neues Passwort",
-    "changePassword": "Kennwort ändern",
-    "coordinates": "Koordinaten",
-    "assign": "Zuordnen",
-    "all": "alle",
-    "time": "Zeit",
-    "save": "Speichern",
-    "isDeleted": "Gelöschte Nutzer",
-    "active": "Aktive Nutzer",
-    "allUser": "Alle Nutzer",
-    "searchbtn": "Suche",
-    "resetbtn": "Zurücksetzen",
-    "send": "Schicken",
-    "message": "Nachricht"
-  },
-  "AdminNavBar": { 
-    "welcome": "Willkommen",
-    "dashboard": "Armaturenbrett",
-    "users": "Nutzer",
-    "orders": "Bestellungen",
-    "setting": "Einstellungen",
-    "logout": "Abmelden"
-  },
-  "dashboard": {
-    "clientNumber": "Anzahl der Kunden",
-    "readerNumber": "Anzahl der Leser",
-    "orderNumber": "Anzahl der Bestellungen",
-    "userOverview": "Benutzerübersicht",
-    "orderOverive": "Bestellübersicht",
-    "cancelled": "Abgebrochen",
-    "pending": "Ausstehend",
-    "accepted": "Akzeptiert"
-  },
-  "user": {
-    "title": "Liste der Benutzer",
-    "search": "Nach einem Benutzer suchen",
-    "status": "Status",
-    "add": "Benutzer hinzufügen"
-  },
-  "order": {
-    "title": "Liste der Bestellungen",
-    "search": "Nach einer Bestellung suchen",
-    "add": "Bestellung hinzufügen",
-    "status": "Status",
-    "assigned": "Zugewiesen",
-    "notAssigned": "Nicht zugeordnet",
-    "cancelled": "Nnulliert"
-  },
-  "userDetailModal": {
-    "title": "Benutzerdetails",
-    "deleted": "Gelöscht",
-    "yes": "Ja",
-    "no": "NEIN"
-  },
-  "orderDetailModal": {
-    "title": "Bestelldetails"
-  },
-  "deletedDialog": {
-    "title":"Bestätigen Sie Löschen",
-    "deleteBtn": "löschen",
-    "cancelBtn": "abbrechen"
-  },
-  "userTable": {
-    "questionUser": "Möchten Sie diesen Benutzer wirklich löschen?",
-    "name": "Name",
-    "type": "Typ"
-  },
-  "assignDialog": {
-    "title": "Leser zuweisen",
-    "select": "Leser auswählen",
-    "assignBtn": "Zuweisen",
-    "cancelBtn": "Abbrechen",
-    "assign": "Zuordnen"
-  },
-  "homePage": {
-    "aboutTitle": "Über uns",
-    "readerTitle": "Unsere Leser",
-    "contactTitle": "Kontakt"
   },
   "banner": {
     "title": "Warum Sie sich für uns entscheiden sollten?",
@@ -149,14 +29,142 @@
   },
   "countSection" : {
     "readers": "Leser",
-    "clients": "Kunden",
-    "orders": "Bestellungen"
+    "clients": "Kunden"
   },
   "footer": {
     "text": "2025. Alle Rechte vorbehalten."
   }, 
-  "readers": { 
-    "title": "Unsere Leser",
-    "addOrder": "Bestellung Hinzufügen"
+  "loginModal": {
+    "hello": "Hallo!",
+    "title": "Melden Sie sich in Ihrem Konto an.",
+    "forgetPassword": "Passwort vergessen?",
+    "question": "Sie haben noch kein Konto?"
+  },
+  "registerModal": {
+    "personalInfo": "Persönliche Daten",
+    "address": "Adresse"
+  },
+  "dashboard": { 
+    "welcome": "Willkommen",
+    "dashboard": "Armaturenbrett",
+    "users": "Nutzer",
+    "orders": "Bestellungen",
+    "setting": "Einstellungen",
+    "logout": "Abmelden"
+  },
+  "adminDashboard": {
+    "clientNumber": "Anzahl der Kunden",
+    "readerNumber": "Anzahl der Leser",
+    "orderNumber": "Anzahl der Bestellungen",
+    "userOverview": "Benutzerübersicht",
+    "orderOverive": "Bestellübersicht",
+    "cancelled": "Abgebrochen",
+    "pending": "Ausstehend",
+    "accepted": "Akzeptiert"
+  },
+  "readerDashboard": {
+    "pendingOrder": "Ausstehende Bestellungen",
+    "completedOrder": "Abgeschlossene Bestellungen",
+    "allOrders": "Alle Bestellungen"
+  },
+  "tab": {
+    "personalDetails": "Persönliche Daten",
+    "accountDetails": "Kontodaten"
+  },
+  "radioButton": {
+    "gender": "Geschlecht",
+    "female": "Weiblich",
+    "male": "Männlich",
+    "userType": "Benutzertyp",
+    "client": "Kunde",
+    "reader": "Leser",
+    "admin": "Administratorin"
+  },
+  "select": {
+    "userType": "Benutzertyp",
+    "status": "Status",
+    "all": "alle",
+    "client": "Kunde",
+    "reader": "Leser",
+    "admin": "Administratorin",
+    "active": "Aktive Nutzer",
+    "isDeleted": "Gelöschte Nutzer",
+    "assigned": "Zugewiesen",
+    "notAssigned": "Nicht zugeordnet",
+    "selectReader": "Leser auswählen",
+    "pending": "Ausstehend",
+    "completed": "vollendet",
+    "rejected": "abgelehnt"
+  },
+  "searchInput": {
+    "userSearch": "Nach einem Benutzer suchen",
+    "orderSearch": "Suche nach einer Bestellung",
+    "countrySearch": "Land ..."
+  },
+  "heading": {
+    "aboutSectionTitle": "Über uns",
+    "readerSectionTitle": "Unsere Leser",
+    "contactSectionTitle": "Kontakt",
+    "readersPage": "Unsere Leser",
+    "usersPageTitle": "Liste der Benutzer",
+    "ordersPageTitle": "Liste der Bestellungen",
+    "userDetailsModel": "Benutzerdetails",
+    "orderDetailsModel": "Bestelldetails",
+    "deleteDialog": "Bestätigen Sie Löschen",
+    "deleteDialogQuestion": "Möchten Sie diesen Benutzer wirklich löschen?",
+    "deleteOrderDialogQuestion": "Möchten Sie diese Bestellung wirklich löschen?",
+    "assignDialog": "Leser zuweisen",
+    "addOrderModal": "Bestellung hinzufügen",
+    "clientPageTitle": "Liste meiner Bestellungen"
+  },
+  "button": {
+    "login": "Anmelden",
+    "create": "Erstellen",
+    "back": "Zurück",
+    "next": "Weiter Adresse",
+    "signUp": "Anmelden",
+    "pickLocation": "Standort Auswählen",
+    "addUser": "Benutzer hinzufügen",
+    "addOrder": "Bestellung Hinzufügen",
+    "search": "Suche",
+    "reset": "Zurücksetzen",
+    "delete": "löschen",
+    "cancel": "abbrechen",
+    "assign": "Zuordnen",
+    "save": "Speichern",
+    "send": "Schicken",
+    "changePassword": "Kennwort ändern"
+  },
+  "label": {
+    "id": "ID",
+    "firstName": "Vorname",
+    "lastName": "Nachname",
+    "email": "E-Mail",
+    "phoneNumber": "Telefonnummer",
+    "address": "Adresse",
+    "addressOne": "Adresse 1",
+    "addressTwo": "Adresse 2",
+    "city": "Ort",
+    "postCode": "Postleitzahl",
+    "country": "Land",
+    "coordinates": "Koordinaten",
+    "longitude": "Länge",
+    "latitude": "Breite",
+    "password": "Passwort",
+    "currentPassword": "Aktuelles Passwort",
+    "newPassword": "Neues Passwort",
+    "confirmPassword": "Passwort bestätigen",
+    "actions":"Aktionen",
+    "name": "Name",
+    "type": "Typ",
+    "deleted": "Gelöscht",
+    "yes": "Ja",
+    "no": "NEIN",
+    "client": "Kunde",
+    "reader": "Leser",
+    "date": "Datum",
+    "time": "Zeit",
+    "datePickerLabel": "Datell auswählen",
+    "message": "Nachricht"
   }
 }

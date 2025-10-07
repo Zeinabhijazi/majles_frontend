@@ -2,15 +2,15 @@
 import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import { Button, Grid, IconButton, TextField, Typography } from "@mui/material";
 import { useTranslations } from "next-intl";
-import AddLocationAltOutlinedIcon from '@mui/icons-material/AddLocationAltOutlined';
-import AssignmentAddIcon from '@mui/icons-material/AssignmentAdd';
+import AddLocationAltOutlinedIcon from "@mui/icons-material/AddLocationAltOutlined";
+import AssignmentAddIcon from "@mui/icons-material/AssignmentAdd";
 import { Dayjs } from "dayjs";
 
 type FormData = {
@@ -27,20 +27,24 @@ interface ModalProps {
   onClose: () => void;
 }
 
-export default function CreateOrderModal(
-  {open, onClose} : Readonly<ModalProps>
-  ) {
-  const t = useTranslations("Form");
+export default function CreateOrderModal({
+  open,
+  onClose,
+}: Readonly<ModalProps>) {
+  const t1 = useTranslations("label");
+  const t2 = useTranslations("button");
+  const t3 = useTranslations("heading");
+
   const [date, setDate] = useState<Dayjs | null>(null);
   const [formData, setFormData] = useState({
-      addressOne: "",
-      addressTwo: "",
-      city: "",
-      postNumber: "",
-      country: "",
-      longitude: 0,
-      latitude: 0,
-    });
+    addressOne: "",
+    addressTwo: "",
+    city: "",
+    postNumber: "",
+    country: "",
+    longitude: 0,
+    latitude: 0,
+  });
 
   const style = {
     position: "absolute",
@@ -99,8 +103,7 @@ export default function CreateOrderModal(
   // Handle submit
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-  }
+  };
 
   return (
     <div>
@@ -112,7 +115,7 @@ export default function CreateOrderModal(
           backdrop: {
             timeout: 500,
           },
-      }}
+        }}
       >
         <Box sx={style}>
           <Box
@@ -122,12 +125,15 @@ export default function CreateOrderModal(
             }}
           >
             <Typography variant="h5">
-              <AssignmentAddIcon color="secondary" sx={{fontSize: "35px", mr: 2}}/><strong>Add Order</strong>
+              <AssignmentAddIcon
+                color="secondary"
+                sx={{ fontSize: "35px", mr: 2 }}
+              />
+              <strong>{t3("addOrderModal")}</strong>
             </Typography>
-            <CloseOutlinedIcon onClick={onClose} sx={{ mt:1}}/>
+            <CloseOutlinedIcon onClick={onClose} sx={{ mt: 1 }} />
           </Box>
-          
-          
+
           <Box
             component="form"
             noValidate
@@ -140,13 +146,13 @@ export default function CreateOrderModal(
               flexDirection: "column",
               gap: 1.5,
             }}
-          > 
+          >
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DemoContainer components={['DateTimePicker']}>
-                <DateTimePicker 
-                  label="Date"
+              <DemoContainer components={["DateTimePicker"]}>
+                <DateTimePicker
+                  label={t1("datePickerLabel")}
                   value={date}
-                  onChange = {(newValue) => setDate(newValue)}
+                  onChange={(newValue) => setDate(newValue)}
                 />
               </DemoContainer>
             </LocalizationProvider>
@@ -163,12 +169,11 @@ export default function CreateOrderModal(
                   fullWidth
                   variant="outlined"
                   color="secondary"
-                  label={t("addressOne")}
+                  label={t1("addressOne")}
                   value={formData.addressOne}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     handleChange("addressOne", e.target.value)
                   }
-                  required
                 />
               </Grid>
               <Grid size={6}>
@@ -176,12 +181,12 @@ export default function CreateOrderModal(
                   fullWidth
                   variant="outlined"
                   color="secondary"
-                  label={t("addressTwo")}
+                  label={t1("addressTwo")}
                   value={formData.addressTwo}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     handleChange("addressTwo", e.target.value)
                   }
-                />  
+                />
               </Grid>
             </Grid>
             <Grid
@@ -197,12 +202,11 @@ export default function CreateOrderModal(
                   fullWidth
                   variant="outlined"
                   color="secondary"
-                  label={t("city")}
+                  label={t1("city")}
                   value={formData.city}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     handleChange("city", e.target.value)
                   }
-                  required
                 />
               </Grid>
               <Grid size={6}>
@@ -210,12 +214,11 @@ export default function CreateOrderModal(
                   fullWidth
                   variant="outlined"
                   color="secondary"
-                  label={t("postCode")}
+                  label={t1("postCode")}
                   value={formData.postNumber}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     handleChange("postNumber", e.target.value)
                   }
-                  required
                 />
               </Grid>
             </Grid>
@@ -223,12 +226,11 @@ export default function CreateOrderModal(
               fullWidth
               variant="outlined"
               color="secondary"
-              label={t("country")}
+              label={t1("country")}
               value={formData.country}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 handleChange("country", e.target.value)
               }
-              required
             />
             <Grid
               container
@@ -244,20 +246,18 @@ export default function CreateOrderModal(
                 <TextField // Latitude
                   variant="outlined"
                   color="secondary"
-                  label={t("latitude")}
+                  label={t1("latitude")}
                   value={formData.latitude}
                   InputProps={{ readOnly: true }}
-                  required
                 />
               </Grid>
               <Grid size={5}>
                 <TextField // Longitude
                   variant="outlined"
                   color="secondary"
-                  label={t("longitude")}
+                  label={t1("longitude")}
                   value={formData.longitude}
                   InputProps={{ readOnly: true }}
-                  required
                 />
               </Grid>
               <Grid size={2}>
@@ -273,7 +273,7 @@ export default function CreateOrderModal(
               type="submit"
               sx={{ ml: "auto" }}
             >
-              {t("save")}
+              {t2("save")}
             </Button>
           </Box>
         </Box>

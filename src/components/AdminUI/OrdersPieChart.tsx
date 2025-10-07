@@ -10,19 +10,23 @@ import { fetchStatus } from "@/redux/slices/dashboardSlice";
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 export default function OrdersPieChart() {
-  const t = useTranslations('dashboard');
+  const t = useTranslations("adminDashboard");
   const { orderStatus } = useSelector((state: RootState) => state.dashboard);
   const dispatch = useDispatch<AppDispatch>();
 
-  useEffect(()=> {
+  useEffect(() => {
     dispatch(fetchStatus());
-  },[dispatch])
+  }, [dispatch]);
 
   const data = {
-    labels: [t('accepted'), t('pending'), t('cancelled')],
+    labels: [t("accepted"), t("pending"), t("cancelled")],
     datasets: [
       {
-        data: [orderStatus.accepted, orderStatus.pending, orderStatus.cancelled ],
+        data: [
+          orderStatus.accepted,
+          orderStatus.pending,
+          orderStatus.cancelled,
+        ],
         backgroundColor: ["#242329", "#212b36", "#e72544"],
         borderColor: ["#fff", "#fff", "#fff"],
         borderWidth: 1,
@@ -39,7 +43,7 @@ export default function OrdersPieChart() {
       },
       title: {
         display: true,
-        text: t('orderOverive'),
+        text: t("orderOverive"),
       },
     },
   };

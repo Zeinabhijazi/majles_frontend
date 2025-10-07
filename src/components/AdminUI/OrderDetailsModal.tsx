@@ -30,8 +30,8 @@ export default function OrderDetailsModal({
   onClose,
   order,
 }: Readonly<OrderDetailsModalProps>) {
-  const t1 = useTranslations("Form");
-  const t2 = useTranslations("orderDetailModal");
+  const t1 = useTranslations("label");
+  const t2 = useTranslations("heading");
 
   if (!order) return null;
 
@@ -44,7 +44,7 @@ export default function OrderDetailsModal({
         slotProps={{
           backdrop: {
             sx: {
-              backgroundColor: "rgba(0, 0, 0, 0.4)", 
+              backgroundColor: "rgba(0, 0, 0, 0.4)",
             },
           },
         }}
@@ -58,7 +58,7 @@ export default function OrderDetailsModal({
             }}
           >
             <Typography variant="h5" sx={{ fontWeight: "bold" }}>
-              {t2("title")}
+              {t2("orderDetailsModel")}
             </Typography>
             <CloseIcon onClick={onClose} sx={{ alignItems: "flex-end" }} />
           </Box>

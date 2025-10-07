@@ -11,14 +11,14 @@ import { fetchUserCounts } from "@/redux/slices/dashboardSlice";
 import { fetchOrders } from "@/redux/slices/orderSlice";
 
 export default function AdminPage() {
-  const t = useTranslations("dashboard");
+  const t = useTranslations("adminDashboard");
   const { userCounts } = useSelector((state: RootState) => state.dashboard);
-  const { orders } = useSelector((state: RootState) => state.order);
-  const dispatch = useDispatch<AppDispatch>();  
-  useEffect(()=> {
+  const { itemsCountWithDel } = useSelector((state: RootState) => state.order);
+  const dispatch = useDispatch<AppDispatch>();
+  useEffect(() => {
     dispatch(fetchUserCounts());
     dispatch(fetchOrders({}));
-  },[dispatch]);
+  }, [dispatch]);
 
   return (
     <Box>
@@ -33,25 +33,25 @@ export default function AdminPage() {
       >
         <CardData text={t("clientNumber")} data={userCounts.clients} />
         <CardData text={t("readerNumber")} data={userCounts.readers} />
-        <CardData text={t("orderNumber")}  data={orders.length} />
+        <CardData text={t("orderNumber")} data={itemsCountWithDel} />
       </Box>
-      <Grid 
+      <Grid
         sx={{
           display: "flex",
           flexDirection: "row",
-          width: '100%',
+          width: "100%",
         }}
       >
-        <Grid 
+        <Grid
           sx={{
-            width: '50%',
+            width: "50%",
           }}
         >
           <OrdersPieChart />
         </Grid>
-        <Grid 
+        <Grid
           sx={{
-            width: '50%',
+            width: "50%",
           }}
         >
           <UsersLineChart />

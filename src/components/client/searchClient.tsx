@@ -3,43 +3,44 @@ import React, { useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
-import { fetchReaders } from "@/redux/slices/userSlice";
 import { Button } from "@mui/material";
 import { useTranslations } from "next-intl";
+import { fetchOrdersForLoggedUser } from "@/redux/slices/orderSlice";
 
-function ReaderSearch() {
-  const t1 = useTranslations("searchInput")
+function SearchClient() {
+  const t1 = useTranslations("searchInput");
   const t2 = useTranslations("button");
+
   const [search, setSearch] = useState("");
-  const dispatch = useDispatch<AppDispatch>()
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleSearch = () => {
-    dispatch(fetchReaders({search}));
+    dispatch(fetchOrdersForLoggedUser({ search }));
   };
   const handleResetFilters = () => {
     setSearch("");
-    dispatch(fetchReaders({}));
+    dispatch(fetchOrdersForLoggedUser({}));
   };
   return (
     <div className="relative flex">
       <input
-        className="peer block w-[240px] border-1 border-gray-400 rounded-md outline-0 py-[9px] pl-10 text-sm placeholder:text-grey-700 text-white-950"
-        placeholder={t1("countrySearch")}
+        className="peer block w-[240px] border-1 border-gray-400 rounded-md outline-0 py-[9px] pl-10 text-sm placeholder:text-gray-700 text-zinc-950"
+        placeholder={t1("orderSearch")}
         value={search}
         onChange={(e) => setSearch(e.target.value)}
       />
       <SearchIcon className="absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-600 peer-focus:text-dark-900" />
-      <Button 
+      <Button
         variant="contained"
         color="secondary"
         onClick={handleSearch}
         sx={{
           mx: 0.5,
         }}
-      > 
+      >
         {t2("search")}
       </Button>
-      <Button 
+      <Button
         color="secondary"
         variant="contained"
         onClick={handleResetFilters}
@@ -48,6 +49,6 @@ function ReaderSearch() {
       </Button>
     </div>
   );
-};
+}
 
-export default ReaderSearch;
+export default SearchClient;

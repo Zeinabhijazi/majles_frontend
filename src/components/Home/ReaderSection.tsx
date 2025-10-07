@@ -4,7 +4,7 @@ import Carousel from "./Carousel";
 import { useTranslations } from "next-intl";
 
 export default function ReaderSection() {
-  const t = useTranslations("homePage");
+  const t = useTranslations("heading");
   return (
     <Box component="section" id="readers">
       <Typography
@@ -17,7 +17,7 @@ export default function ReaderSection() {
           pl: 2,
         }}
       >
-        {t("readerTitle")}
+        {t("readerSectionTitle")}
       </Typography>
       <Carousel />
     </Box>

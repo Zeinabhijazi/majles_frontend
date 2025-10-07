@@ -19,8 +19,9 @@ import LoginModal from "@/components/LoginModal";
 import RegisterModal from "@/components/RegisterModal";
 import ReaderSearch from "@/components/Reader/readerSearch";
 export default function Readers() {
-  const t = useTranslations("readers");
-  const t1 = useTranslations("Form");
+  const t1 = useTranslations("heading");
+  const t2 = useTranslations("label");
+  const t3 = useTranslations("button");
   const dispatch = useDispatch<AppDispatch>();
   const { users, userDetails } = useSelector((state: RootState) => state.user);
 
@@ -61,10 +62,10 @@ export default function Readers() {
       <Box
         sx={{
           display: "flex",
-          justifyContent: "space-between"
+          justifyContent: "space-between",
         }}
       >
-        <Typography variant="h4"> {t("title")} </Typography>
+        <Typography variant="h4"> {t1("readersPage")} </Typography>
         <ReaderSearch />
       </Box>
 
@@ -106,7 +107,7 @@ export default function Readers() {
                   {user.firstName} {user.lastName}
                 </Typography>
                 <Typography variant="body2" gutterBottom color="grey">
-                  <strong>{t1("country")}: </strong>
+                  <strong>{t2("country")}: </strong>
                   {user.country}
                 </Typography>
                 <Typography
@@ -115,7 +116,7 @@ export default function Readers() {
                   color="grey"
                   sx={{ height: " 45px" }}
                 >
-                  <strong>{t1("address")}: </strong>
+                  <strong>{t2("address")}: </strong>
                   {user.addressOne}, {user.addressTwo}, {user.postNumber},{" "}
                   {user.country}, {user.city}
                 </Typography>
@@ -133,7 +134,7 @@ export default function Readers() {
                 color="secondary"
                 onClick={handleAddOrder}
               >
-                {t("addOrder")}
+                {t3("addOrder")}
               </Button>
 
               {/* Login Modal */}
@@ -141,8 +142,8 @@ export default function Readers() {
                 open={loginOpen}
                 onClose={handleCloseLogin}
                 onOpenSecond={() => {
-                  handleCloseLogin(); 
-                  handleOpenRegister(); 
+                  handleCloseLogin();
+                  handleOpenRegister();
                 }}
               />
 
@@ -157,12 +158,10 @@ export default function Readers() {
                 open={createOrderOpen}
                 onClose={handleCloseCreate}
               />
-
             </CardActions>
           </Grid>
         ))}
       </Grid>
-
     </Box>
   );
 }

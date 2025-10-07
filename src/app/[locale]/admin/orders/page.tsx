@@ -7,7 +7,7 @@ import BasicDatePicker from "@/components/AdminUI/datePicker";
 import { useTranslations } from "next-intl";
 
 export default function OrdersAdminPage() {
-  const t = useTranslations("order");
+  const t = useTranslations("heading");
   return (
     <Box component="section">
       <Typography
@@ -19,7 +19,7 @@ export default function OrdersAdminPage() {
           mb: 2,
         }}
       >
-        {t("title")}
+        {t("ordersPageTitle")}
       </Typography>
       <Grid
         container
@@ -30,7 +30,6 @@ export default function OrdersAdminPage() {
           flexDirection: "row",
           justifyContent: "space-between",
           alignItems: "center",
-          
         }}
       >
         <Grid size={7}>

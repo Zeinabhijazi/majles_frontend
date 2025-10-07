@@ -25,13 +25,14 @@ const Transition = React.forwardRef(function Transition(
 ) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
+
 interface DeleteDialogProps {
-  userId: number;
+  orderId: number;
 }
 
-export default function DeleteDialog({ userId }: Readonly<DeleteDialogProps>) {
-  const t1 = useTranslations("button");
-  const t2 = useTranslations("heading");
+export default function DeleteOrderDialog({ orderId }: Readonly<DeleteDialogProps>) {
+  const t1 = useTranslations("heading");
+  const t2 = useTranslations("button");
   const [openDelete, setOpenDelete] = useState(false);
   const { successMessage, error } = useSelector(
     (state: RootState) => state.user
@@ -84,11 +85,7 @@ export default function DeleteDialog({ userId }: Readonly<DeleteDialogProps>) {
         message={message}
         action={action}
       />
-      <Button
-        variant="text"
-        color="secondary"
-        onClick={() => handleOpenDelete(userId)}
-      >
+      <Button variant="text" color="secondary" onClick={() => handleOpenDelete(orderId)}>
         <DeleteIcon />
       </Button>
       <Dialog
@@ -104,23 +101,11 @@ export default function DeleteDialog({ userId }: Readonly<DeleteDialogProps>) {
           },
         }}
       >
-        <DialogTitle>{t2("deleteDialog")}</DialogTitle>
-        <DialogContent>{t2("deleteDialogQuestion")}</DialogContent>
+        <DialogTitle>{t1("deleteDialog")}</DialogTitle>
+        <DialogContent>{t1("deleteOrderDialogQuestion")}</DialogContent>
         <DialogActions>
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={() => handleDelete(userId)}
-          >
-            {t1("delete")}
-          </Button>
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={handleCloseDelete}
-          >
-            {t1("cancel")}
-          </Button>
+          <Button variant="contained" color="secondary" onClick={() => handleDelete(orderId)}>{t2("delete")}</Button>
+          <Button variant="contained" color="secondary" onClick={handleCloseDelete}>{t2("cancel")}</Button>
         </DialogActions>
       </Dialog>
     </React.Fragment>

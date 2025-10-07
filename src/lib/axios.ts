@@ -30,6 +30,7 @@ api.interceptors.request.use(
   }
 );
 
+
 // Response interceptor to handle errors globally
 api.interceptors.response.use(
   (response: AxiosResponse) => {
@@ -42,10 +43,9 @@ api.interceptors.response.use(
     return response;
   },
   (error) => {
-    const router = useRouter();
     if (error.response?.status === 401) {
       // Optional: clear token and redirect
-      router.replace("/");
+      console.log("unauthorized")
     }
     //return Promise.reject(error);
     console.log(error);

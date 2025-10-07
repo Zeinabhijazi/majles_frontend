@@ -10,7 +10,8 @@ import { Button } from "@mui/material";
 import { useTranslations } from "next-intl";
 
 export default function BasicDatePicker() {
-  const t = useTranslations("Form");
+  const t1 = useTranslations("label");
+  const t2 = useTranslations("button");
   const [selectedDate, setSelectedDate] = useState<Dayjs | null>(null);
   const dispatch = useDispatch<AppDispatch>();
 
@@ -33,7 +34,7 @@ export default function BasicDatePicker() {
     <>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DatePicker
-          label="Select Date"
+          label={t1("datePickerLabel")}
           value={selectedDate}
           onChange={(newDate) => setSelectedDate(newDate)}
           sx={{
@@ -47,14 +48,14 @@ export default function BasicDatePicker() {
         onClick={handleSearchByDate}
         sx={{ mx: 0.5 }}
       >
-        {t("searchbtn")}
+        {t2("search")}
       </Button>
       <Button
         variant="contained"
         color="secondary"
         onClick={handleResetFilters}
       >
-        {t("resetbtn")}
+        {t2("reset")}
       </Button>
     </>
   );

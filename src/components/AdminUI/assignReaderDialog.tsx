@@ -41,7 +41,9 @@ interface AssignDialogProps {
 export default function AssignReaderDialog({
   orderId,
 }: Readonly<AssignDialogProps>) {
-  const t = useTranslations("assignDialog");
+  const t1 = useTranslations("heading");
+  const t2 = useTranslations("button");
+  const t3 = useTranslations("select");
   const { users } = useSelector((state: RootState) => state.user);
   const [allReaders, setAllReaders] = useState("");
   const [openAssignModal, setOpenAssignModal] = useState(false);
@@ -104,7 +106,7 @@ export default function AssignReaderDialog({
         color="secondary"
         onClick={() => handleOpenAssign()}
       >
-        {t("assign")}
+        {t2("assign")}
       </Button>
       <Dialog
         open={openAssignModal}
@@ -129,7 +131,7 @@ export default function AssignReaderDialog({
             mb: 1,
           }}
         >
-          {t("title")}
+          {t1("assignDialog")}
         </DialogTitle>
         <DialogContent
           sx={{
@@ -137,15 +139,13 @@ export default function AssignReaderDialog({
           }}
         >
           <FormControl fullWidth>
-            <InputLabel>
-              {t("select")}
-            </InputLabel>
+            <InputLabel>{t3("selectReader")}</InputLabel>
             <Select
               labelId="reader-select-label"
               id="reader-select"
               value={allReaders}
               onChange={handleChange}
-              label={t("select")}
+              label={t3("selectReader")}
             >
               {users &&
                 users.length > 0 &&
@@ -163,14 +163,14 @@ export default function AssignReaderDialog({
             color="secondary"
             onClick={() => dispatch(handleAssignReader({ orderId, readerId }))}
           >
-            {t("assignBtn")}
+            {t2("assign")}
           </Button>
           <Button
             variant="contained"
             color="secondary"
             onClick={handleCloseAssign}
           >
-            {t("cancelBtn")}
+            {t2("cancel")}
           </Button>
         </DialogActions>
       </Dialog>

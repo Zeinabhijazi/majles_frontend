@@ -47,7 +47,9 @@ export default function LoginModal({
   onClose,
   onOpenSecond,
 }: Readonly<ModalProps>) {
-  const t = useTranslations("Form");
+  const t1 = useTranslations("label");
+  const t2 = useTranslations("button");
+  const t3 = useTranslations("loginModal");
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -99,17 +101,17 @@ export default function LoginModal({
     e.preventDefault();
     try {
       if (validate()) {
-        const userData = await dispatch(login({ email, password })).unwrap();// unwrap(): continue when the thunk return the respone
-        
-        console.log(userData.userType); 
+        const userData = await dispatch(login({ email, password })).unwrap(); // unwrap(): continue when the thunk return the respone
+
+        console.log(userData.userType);
 
         if (userData.userType !== "admin") {
           setEmail("");
           setPassword("");
           onClose();
-          router.replace("/");      
-          window.location.reload(); 
-        } 
+          router.replace("/");
+          window.location.reload();
+        }
       }
     } catch (err: any) {
       if (err) {
@@ -117,7 +119,7 @@ export default function LoginModal({
       }
       setWarningAlert(true);
     }
-  }
+  };
 
   const action = (
     <IconButton
@@ -172,9 +174,9 @@ export default function LoginModal({
                   fontWeight: 500,
                 }}
               >
-                {t("hello")}
+                {t3("hello")}
               </Typography>
-              <Typography variant="h6">{t("title")}</Typography>
+              <Typography variant="h6">{t3("title")}</Typography>
             </Grid>
             <Grid
               sx={{
@@ -198,7 +200,7 @@ export default function LoginModal({
           >
             <TextField
               required
-              label={t("email")}
+              label={t1("email")}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               color="secondary"
@@ -209,7 +211,7 @@ export default function LoginModal({
               }}
             />
             <TextField
-              label={t("password")}
+              label={t1("password")}
               type={showPassword ? "text" : "password"}
               value={password}
               color="secondary"
@@ -251,7 +253,7 @@ export default function LoginModal({
                     p: 1,
                   }}
                 >
-                  {t("login")}
+                  {t2("login")}
                 </Button>
               </Grid>
               <Grid
@@ -264,7 +266,7 @@ export default function LoginModal({
                 }}
               >
                 <Link className="text-xs" href="/not-found">
-                  {t("forgetPassword")}
+                  {t3("forgetPassword")}
                 </Link>
               </Grid>
             </Grid>
@@ -282,7 +284,7 @@ export default function LoginModal({
                   mt: 1,
                 }}
               >
-                {t("question")}
+                {t3("question")}
               </Typography>
               <Button
                 variant="text"
@@ -297,7 +299,7 @@ export default function LoginModal({
                 }}
                 onClick={onOpenSecond}
               >
-                {t("create")}
+                {t2("create")}
               </Button>
               {successAlert && (
                 <Snackbar

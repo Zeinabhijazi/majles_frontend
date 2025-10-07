@@ -3,9 +3,9 @@ import React from "react";
 import { Box, Modal, Typography } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useTranslations } from "next-intl";
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
 import { User } from "@/types/user";
 
 const style = {
@@ -28,11 +28,16 @@ interface UserDetailsModalProps {
   user: User | null;
 }
 
-export default function UserDetailsModal({open, onClose, user }: Readonly<UserDetailsModalProps>) {
-  const t1 = useTranslations("Form");
-  const t2 = useTranslations("userDetailModal");
+export default function UserDetailsModal({
+  open,
+  onClose,
+  user,
+}: Readonly<UserDetailsModalProps>) {
+  const t1 = useTranslations("label");
+  const t2 = useTranslations("radioButton");
+  const t3 = useTranslations("heading");
 
-  if(!user) return null;
+  if (!user) return null;
 
   return (
     <Box component="section">
@@ -49,110 +54,140 @@ export default function UserDetailsModal({open, onClose, user }: Readonly<UserDe
         }}
       >
         <Box sx={style}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <Typography variant="h5" sx={{ fontWeight: "bold" }}>
+              {t3("userDetailsModel")}
+            </Typography>
+            <CloseIcon onClick={onClose} sx={{ alignItems: "flex-end" }} />
+          </Box>
+          <Box
+            sx={{
+              width: "100%",
+              height: "90%",
+              marginTop: 5,
+            }}
+          >
             <Box
               sx={{
                 display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
+                gap: 2,
+                mb: 2,
               }}
             >
-              <Typography variant="h5" sx={{ fontWeight: "bold" }}>
-                {t2('title')}
+              <Typography
+                variant="h5"
+                sx={{ fontSize: "18px", fontWeight: 700 }}
+              >
+                {t1("phoneNumber")}:
               </Typography>
-              <CloseIcon onClick={onClose} sx={{ alignItems: "flex-end" }} />
+              <Typography variant="h6" sx={{ fontSize: "17px" }}>
+                {user.phoneNumber}
+              </Typography>
             </Box>
             <Box
               sx={{
-                width: "100%",
-                height: "90%",
-                marginTop: 5,
+                display: "flex",
+                gap: 2,
+                mb: 2,
               }}
             >
-              <Box
-                sx={{
-                  display: "flex",
-                  gap: 2,
-                  mb: 2,
-                }}
+              <Typography
+                variant="h5"
+                sx={{ fontSize: "18px", fontWeight: 700 }}
               >
-                <Typography variant="h5" sx={{ fontSize: "18px", fontWeight: 700 }}>
-                  {t1('phoneNumber')}:
-                </Typography>
-                <Typography variant="h6" sx={{ fontSize: "17px" }}>
-                  {user.phoneNumber}
-                </Typography>
-              </Box>
-              <Box
-                sx={{
-                  display: "flex",
-                  gap: 2,
-                  mb: 2,
-                }}
+                {t1("address")}:
+              </Typography>
+              <Typography variant="h6" sx={{ fontSize: "17px" }}>
+                {user.addressOne}, {user.addressTwo}, {user.postNumber},{" "}
+                {user.country}, {user.city}
+              </Typography>
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                gap: 2,
+                mb: 2,
+              }}
+            >
+              <Typography
+                variant="h5"
+                sx={{ fontSize: "18px", fontWeight: 700 }}
               >
-                <Typography variant="h5" sx={{ fontSize: "18px", fontWeight: 700 }}>
-                  {t1('address')}:
-                </Typography>
-                <Typography variant="h6" sx={{ fontSize: "17px" }}>
-                  {user.addressOne}, {user.addressTwo}, {user.postNumber}, {user.country}, {user.city}
-                </Typography>
-              </Box>
-              <Box
-                sx={{
-                  display: "flex",
-                  gap: 2,
-                  mb: 2,
-                }}
+                {t1("coordinates")}:
+              </Typography>
+              <Typography variant="h6" sx={{ fontSize: "17px" }}>
+                {user.latitude}, {user.longitude}
+              </Typography>
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                gap: 2,
+                mb: 2,
+              }}
+            >
+              <Typography
+                variant="h5"
+                sx={{ fontSize: "18px", fontWeight: 700 }}
               >
-                <Typography variant="h5" sx={{ fontSize: "18px", fontWeight: 700 }}>
-                  {t1('coordinates')}:
-                </Typography>
-                <Typography variant="h6" sx={{ fontSize: "17px" }}>
-                  {user.latitude}, {user.longitude}
-                </Typography>
-              </Box>
-              <Box
-                sx={{
-                  display: "flex",
-                  gap: 2,
-                  mb: 2,
-                }}
+                {t2("gender")}:
+              </Typography>
+              <Typography variant="h6" sx={{ fontSize: "17px" }}>
+                {user.gender === "female" ? t2("female") : t2("male")}
+              </Typography>
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                gap: 2,
+                mb: 2,
+              }}
+            >
+              <Typography
+                variant="h5"
+                sx={{ fontSize: "18px", fontWeight: 700 }}
               >
-                <Typography variant="h5" sx={{ fontSize: "18px", fontWeight: 700 }}>
-                  {t1('gender')}:
-                </Typography>
-                <Typography
-                  variant="h6"
-                  sx={{ fontSize: "17px" }}
-                >
-                  {user.gender === "female" ? t1('female') : t1('male') }
-                </Typography>
-              </Box>
-              <Box
-                sx={{
-                  display: "flex",
-                  gap: 2,
-                  mb: 2,
-                }}
-              >
-                <Typography variant="h5" sx={{ fontSize: "18px", fontWeight: 700 }}>
-                  {t2('deleted')}:
-                </Typography>
-                <FormGroup>
+                {t1("deleted")}:
+              </Typography>
+              <FormGroup>
                 {user.isDeleted === true ? (
                   <>
-                    <FormControlLabel control={<Checkbox size="small" color="secondary" checked />} label={t2('yes')} />
-                    <FormControlLabel disabled control={<Checkbox size="small"/>} label={t2('no')}  />
+                    <FormControlLabel
+                      control={
+                        <Checkbox size="small" color="secondary" checked />
+                      }
+                      label={t1("yes")}
+                    />
+                    <FormControlLabel
+                      disabled
+                      control={<Checkbox size="small" />}
+                      label={t1("no")}
+                    />
                   </>
                 ) : (
                   <>
-                    <FormControlLabel disabled control={<Checkbox size="small" />} label={t2('yes')} />
-                    <FormControlLabel  control={<Checkbox size="small" color="secondary" checked/>} label={t2('no')} />  
+                    <FormControlLabel
+                      disabled
+                      control={<Checkbox size="small" />}
+                      label={t1("yes")}
+                    />
+                    <FormControlLabel
+                      control={
+                        <Checkbox size="small" color="secondary" checked />
+                      }
+                      label={t1("no")}
+                    />
                   </>
-                )
-                }
-                </FormGroup>
-              </Box>
+                )}
+              </FormGroup>
             </Box>
+          </Box>
         </Box>
       </Modal>
     </Box>

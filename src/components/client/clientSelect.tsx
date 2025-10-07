@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { InputLabel, FormControl, Grid, Select, MenuItem } from "@mui/material";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
-import { fetchOrders } from "@/redux/slices/orderSlice";
+import { Grid } from "@mui/material";
+import { fetchOrdersForLoggedUser } from "@/redux/slices/orderSlice";
 import { useTranslations } from "next-intl";
 
-const OrderSelect = () => {
+const ClientSelect = () => {
   const t = useTranslations("select");
   const [status, setStatus] = useState("");
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    dispatch(fetchOrders({ status: status }));
+    dispatch(fetchOrdersForLoggedUser({ status: status }));
   }, [dispatch, status]);
 
   return (
@@ -27,12 +31,13 @@ const OrderSelect = () => {
           }}
         >
           <MenuItem value="all">{t("all")}</MenuItem>
-          <MenuItem value="assigned">{t("assigned")}</MenuItem>
-          <MenuItem value="notAssigned">{t("notAssigned")}</MenuItem>
+          <MenuItem value="pending">{t("pending")}</MenuItem>
+          <MenuItem value="completed">{t("completed")}</MenuItem>
+          <MenuItem value="rejected">{t("rejected")}</MenuItem>
         </Select>
       </FormControl>
     </Grid>
   );
 };
 
-export default OrderSelect;
+export default ClientSelect;

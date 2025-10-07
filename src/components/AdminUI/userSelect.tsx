@@ -10,8 +10,7 @@ import { Grid } from "@mui/material";
 import { useTranslations } from "next-intl";
 
 const UserSelect = () => {
-  const t = useTranslations("Form");
-  const t1 = useTranslations("user");
+  const t = useTranslations("select");
   const [userType, setUserType] = useState("");
   const [isDeleted, setIsDeleted] = useState("");
   const dispatch = useDispatch<AppDispatch>();
@@ -21,12 +20,9 @@ const UserSelect = () => {
   }, [dispatch, userType, isDeleted]);
 
   return (
-    <Grid size={5} sx={{display: "flex", justifyContent: "end", gap: 2}}>
-
+    <Grid size={5} sx={{ display: "flex", justifyContent: "end", gap: 2 }}>
       <FormControl size="small">
-        <InputLabel>
-          {t("userType")}
-        </InputLabel>
+        <InputLabel>{t("userType")}</InputLabel>
         <Select
           value={userType}
           onChange={(e) => setUserType(e.target.value)}
@@ -43,9 +39,7 @@ const UserSelect = () => {
       </FormControl>
 
       <FormControl size="small">
-        <InputLabel>
-          {t1("status")}
-        </InputLabel>
+        <InputLabel>{t("status")}</InputLabel>
         <Select
           value={isDeleted}
           onChange={(e) => setIsDeleted(e.target.value)}

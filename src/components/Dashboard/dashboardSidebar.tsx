@@ -22,8 +22,8 @@ interface SidebarProps {
   role: "client" | "admin" | "reader";
 }
 
-export default function DashboardSideBar({ role }: SidebarProps) {
-  const t = useTranslations("AdminNavBar");
+export default function DashboardSidebar({ role }: SidebarProps) {
+  const t = useTranslations("dashboard");
   const router = useRouter();
   const [selectedIndex, setSelectedIndex] = useState(0);
 
@@ -32,26 +32,59 @@ export default function DashboardSideBar({ role }: SidebarProps) {
     { label: string; path?: string; icon: React.ReactNode }[]
   > = {
     admin: [
-      { label: t('dashboard'), path: "/admin", icon: <DashboardIcon color="secondary" /> },
-      { label: t('users'), path: "/admin/users", icon: <PeopleIcon color="secondary" /> },
-      { label: t('orders'), path: "/admin/orders", icon: <ListAltIcon color="secondary" /> },
-      { label: t('setting'), path: "/admin/profile", icon: <SettingsIcon color="secondary" /> },
-      { label: t('logout'), icon: <LogoutIcon color="secondary" /> },
+      {
+        label: t("dashboard"),
+        path: "/admin",
+        icon: <DashboardIcon color="secondary" />,
+      },
+      {
+        label: t("users"),
+        path: "/admin/users",
+        icon: <PeopleIcon color="secondary" />,
+      },
+      {
+        label: t("orders"),
+        path: "/admin/orders",
+        icon: <ListAltIcon color="secondary" />,
+      },
+      {
+        label: t("setting"),
+        path: "/admin/profile",
+        icon: <SettingsIcon color="secondary" />,
+      },
+      { label: t("logout"), icon: <LogoutIcon color="secondary" /> },
     ],
     client: [
-      { label: t('orders'), path: "/client", icon: <ListAltIcon color="secondary" /> },
-      { label: t('setting'), path: "/client/profile", icon: <SettingsIcon color="secondary" /> },
-      { label: t('logout'), icon: <LogoutIcon color="secondary" /> },
+      {
+        label: t("orders"),
+        path: "/client",
+        icon: <ListAltIcon color="secondary" />,
+      },
+      {
+        label: t("setting"),
+        path: "/client/profile",
+        icon: <SettingsIcon color="secondary" />,
+      },
+      { label: t("logout"), icon: <LogoutIcon color="secondary" /> },
     ],
     reader: [
-      { label: t('orders'), path: "/reader", icon: <ListAltIcon color="secondary" /> },
-      { label: t('setting'), path: "/reader/profile", icon: <SettingsIcon color="secondary" /> },
-      { label: t('logout'), icon: <LogoutIcon color="secondary" /> },
+      {
+        label: t("orders"),
+        path: "/reader",
+        icon: <ListAltIcon color="secondary" />,
+      },
+      {
+        label: t("setting"),
+        path: "/reader/profile",
+        icon: <SettingsIcon color="secondary" />,
+      },
+      { label: t("logout"), icon: <LogoutIcon color="secondary" /> },
     ],
   };
 
   const menuItems = menuConfig[role];
 
+  // Handle logout
   const handleListItemClick = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
     index: number

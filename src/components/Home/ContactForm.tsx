@@ -4,7 +4,8 @@ import { useTranslations } from "next-intl";
 import api from "@/lib/axios";
 
 export default function ContactForm() {
-  const t = useTranslations("Form");
+  const t1 = useTranslations("label");
+  const t2 = useTranslations("button");
   const [formData, setFormData] = useState({
     firstname: "",
     lastname: "",
@@ -69,7 +70,7 @@ export default function ContactForm() {
               pl: 0.5,
             }}
           >
-            {t("firstName")}
+            {t1("firstName")}
           </Typography>
           <TextField
             fullWidth
@@ -91,7 +92,7 @@ export default function ContactForm() {
               pl: 0.5,
             }}
           >
-            {t("lastName")}
+            {t1("lastName")}
           </Typography>
           <TextField
             fullWidth
@@ -114,7 +115,7 @@ export default function ContactForm() {
             pl: 0.5,
           }}
         >
-          {t("email")}
+          {t1("email")}
         </Typography>
         <TextField
           fullWidth
@@ -136,7 +137,7 @@ export default function ContactForm() {
             pl: 0.5,
           }}
         >
-          {t("message")}
+          {t1("message")}
         </Typography>
         <TextField
           fullWidth
@@ -166,7 +167,7 @@ export default function ContactForm() {
           textTransform: "capitalize",
         }}
       >
-        {t("send")}
+        {t2("send")}
       </Button>
     </Box>
   );

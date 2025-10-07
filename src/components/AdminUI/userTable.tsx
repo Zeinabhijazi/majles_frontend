@@ -7,7 +7,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import { Box, Button, IconButton } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import UserDetailsModal from "./UserDetailsModal";
 import OpenInNew from "@mui/icons-material/OpenInNew";
@@ -26,21 +26,20 @@ interface Column {
 }
 
 const UserTable = () => {
-  const t1 = useTranslations("userTable");
-  const t2 = useTranslations("Form");
+  const t1 = useTranslations("radioButton");
+  const t2 = useTranslations("label");
+
   const columns: readonly Column[] = [
     { id: "id", label: t2("id"), minWidth: 50, align: "center" },
-    { id: "Name", label: t1("name"), minWidth: 100, align: "center" },
+    { id: "Name", label: t2("name"), minWidth: 100, align: "center" },
     { id: "Email", label: t2("email"), minWidth: 100, align: "center" },
-    { id: "Type", label: t1("type"), minWidth: 100, align: "center" },
+    { id: "Type", label: t2("type"), minWidth: 100, align: "center" },
     { id: "Actions", label: t2("actions"), minWidth: 100, align: "center" },
   ];
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [open, setOpen] = useState(false);
-  const { users, itemsCount } = useSelector(
-    (state: RootState) => state.user
-  );
+  const { users, itemsCount } = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch<AppDispatch>();
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
@@ -78,7 +77,7 @@ const UserTable = () => {
       <TableContainer className="table_scrollbar" sx={{ maxHeight: 360 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
-            <TableRow >
+            <TableRow>
               {columns.map((column) => (
                 <TableCell
                   key={column.id}
@@ -91,56 +90,53 @@ const UserTable = () => {
             </TableRow>
           </TableHead>
           {/* Table Body */}
-          {users && users.length > 0 && 
-            <TableBody sx={{bgcolor: "background.default"}}>
+          {users && users.length > 0 && (
+            <TableBody sx={{ bgcolor: "background.default" }}>
               {users.map((row: any) => (
-                  <TableRow key={row.id}>
-                    <TableCell align="center">{row.id}</TableCell>
-                    <TableCell align="center">
-                      {row.firstName} {row.lastName}
-                    </TableCell>
-                    <TableCell align="center">{row.email}</TableCell>
-                    <TableCell align="center">
-                      {row.userType === "reader"
-                        ? t2("reader")
-                        : row.userType === "admin"
-                        ? t2("admin")
-                        : row.userType === "client"
-                        ? t2("client")
-                        : "Unknown"}
-                    </TableCell>
-                    <TableCell align="center">
-                      <Box
-                        sx={{
-                          display: "flex",
-                          gap: 1,
-                          justifyContent: "center",
-                        }}
-                      >
-                        <Button
-                          variant="text"
-                          onClick={() => handleOpen(row.id)}
-                        >
-                          <OpenInNew color="secondary" />
+                <TableRow key={row.id}>
+                  <TableCell align="center">{row.id}</TableCell>
+                  <TableCell align="center">
+                    {row.firstName} {row.lastName}
+                  </TableCell>
+                  <TableCell align="center">{row.email}</TableCell>
+                  <TableCell align="center">
+                    {row.userType === "reader"
+                      ? t1("reader")
+                      : row.userType === "admin"
+                      ? t1("admin")
+                      : row.userType === "client"
+                      ? t1("client")
+                      : "Unknown"}
+                  </TableCell>
+                  <TableCell align="center">
+                    <Box
+                      sx={{
+                        display: "flex",
+                        gap: 1,
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Button variant="text" onClick={() => handleOpen(row.id)}>
+                        <OpenInNew color="secondary" />
+                      </Button>
+                      <UserDetailsModal
+                        open={open}
+                        onClose={handleClose}
+                        user={selectedUser}
+                      />
+                      {row.isDeleted === true ? (
+                        <Button variant="text" color="secondary" disabled>
+                          <DeleteIcon />
                         </Button>
-                        <UserDetailsModal
-                          open={open}
-                          onClose={handleClose}
-                          user={selectedUser}
-                        />
-                        {row.isDeleted === true ? (
-                          <Button variant="text" color="secondary" disabled >
-                            <DeleteIcon />
-                          </Button>
-                        ) : (
-                          <DeleteDialog userId={row.id} />
-                        )}
-                      </Box>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                      ) : (
+                        <DeleteDialog userId={row.id} />
+                      )}
+                    </Box>
+                  </TableCell>
+                </TableRow>
+              ))}
             </TableBody>
-          }
+          )}
         </Table>
       </TableContainer>
       <TablePagination
@@ -151,7 +147,7 @@ const UserTable = () => {
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
-        sx={{bgcolor: "background.default"}}
+        sx={{ bgcolor: "background.default" }}
       />
     </Paper>
   );

@@ -1,131 +1,11 @@
-{
+{ 
   "navbar": {
     "home": "الرئيسية",
     "about": "نبذة عنا",
     "readers": "القراء",
     "contact": "تواصل معنا",
-    "login": "تسجيل الدخول",
     "myAccount": "حسابي",
     "logout": "تسجيل الخروج"
-  },
-  "Form": {
-    "login": "تسجيل الدخول",
-    "hello": "مرحباً!",
-    "title": "تسجيل الدخول إلى حسابك",
-    "forgetPassword": "نسيت كلمة المرور",
-    "question": "ليس لديك حساب",
-    "create": "إنشاء",
-    "personalInfo": "معلومات شخصية",
-    "id": "المعرف",
-    "firstName": "الاسم الأول",
-    "lastName": "اسم العائلة",
-    "email": "البريد الإلكتروني",
-    "password": "كلمة المرور",
-    "confirmPassword": "تأكيد كلمة المرور",
-    "phoneNumber": "رقم الهاتف",
-    "gender": "الجنس",
-    "female": "أنثى",
-    "male": "ذكر",
-    "userType": "نوع المستخدم",
-    "client": "عميل",
-    "reader": "قارئ",
-    "admin": "مسؤل",
-    "back": "رجوع",
-    "next": "التالي",
-    "address": "العنوان",
-    "addressOne": "العنوان الأول",
-    "addressTwo": "العنوان الثاني",
-    "city": "المدينة",
-    "postCode": "الرمز البريدي",
-    "country": "البلد",
-    "longitude": "خط الطول",
-    "latitude": "خط العرض",
-    "date": "التاريخ",
-    "actions":"الإجراءات",
-    "signUp": "التسجيل",
-    "update": "تحديث",
-    "pickLocation": "اختر الموقع",
-    "personalDetails": "التفاصيل الشخصيةs",
-    "accountDetails": "تفاصيل الحساب",
-    "currentPassword": "كلمة المرور الحالية",
-    "newPassword": "كلمة المرور الجديدة",
-    "changePassword": "تغيير كلمة المرور",
-    "coordinates": "الإحداثيات",
-    "assign": "تعيين",
-    "all": "الجميع",
-    "time": "وقت",
-    "save": "حفظ",
-    "isDeleted": "المستخدمون المحذوفون",
-    "active": "المستخدمون النشطون",
-    "allUser": "جميع المستخدمين",
-    "searchbtn": "بحث",
-    "resetbtn": "إعادة تعيين",
-    "send": "إرسال",
-    "message": "رسالة"
-  },
-  "AdminNavBar": { 
-    "welcome": "مرحبًا",
-    "dashboard": "لوحة القيادة",
-    "users": "المستخدمون",
-    "orders": "الطلبات",
-    "setting": "الإعدادات",
-    "logout": "تسجيل الخروج"
-  },
-  "dashboard": {
-    "clientNumber": "عدد العملاء",
-    "readerNumber": "عدد القراء",
-    "orderNumber": "عدد الطلبات",
-    "userOverview": "نظرة عامة على المستخدمين",
-    "orderOverive": "نظرة عامة على الطلبات",
-    "cancelled": "ملغي",
-    "pending": "معلق",
-    "accepted": "مقبول"
-  },
-  "user": {
-    "title": "قائمةالمستخدمين",
-    "search": "البحث عن مستخدم",
-    "status": "حالة",
-    "add": "إضافة مستخدم"
-  },
-  "order": {
-    "title": "قائمة الطلبات",
-    "search": "البحث عن طلب",
-    "add": "إضافة طلب",
-    "status": "حالة",
-    "assigned": "مُكَلَّف",
-    "notAssigned": "لم يتم تعيينه",
-    "cancelled": "تم الإلغاء"
-  },
-  "userDetailModal": {
-    "title": "تفاصيل المستخدم",
-    "deleted": "تم حذفه",
-    "yes": "نعم",
-    "no": "لا"
-  },
-  "orderDetailModal": {
-    "title": "تفاصيل الطلب"
-  },
-  "deletedDialog": {
-    "title":"تأكيد الحذف",
-    "deleteBtn": "حذف",
-    "cancelBtn": "إلغاء"
-  } ,
-  "userTable": {
-    "questionUser": "هل أنت متأكد من حذف هذا المستخدم؟",
-    "name": "الاسم",
-    "type": "النوع"
-  },
-  "assignDialog": {
-    "title": "تعيين قارئ",
-    "select": "اختيار قارئ",
-    "assignBtn": "تعيين",
-    "cancelBtn": "إلغاء",
-    "assign": "تعيين"
-  },
-  "homePage": {
-    "aboutTitle": "نبذة عنا",
-    "readerTitle": "قرائنا",
-    "contactTitle": "تواصل معنا"
   },
   "banner": {
     "title": "لماذا تختارنا؟",
@@ -149,14 +29,142 @@
   },
   "countSection" : {
     "readers": "القراء",
-    "clients": "العملاء",
-    "orders": "الطلبات"
+    "clients": "العملاء"
   },
   "footer": {
     "text": "جميع الحقوق محفوظة ٢٠٢٥."
   }, 
-  "readers": {
-    "title": "قرائنا",
-    "addOrder": "إضافة طلب"
+  "loginModal": {
+    "hello": "مرحباً!",
+    "title": "تسجيل الدخول إلى حسابك",
+    "forgetPassword": "نسيت كلمة المرور",
+    "question": "ليس لديك حساب"
+  },
+  "registerModal": {
+    "personalInfo": "معلومات شخصية",
+    "address": "العنوان"
+  },
+  "dashboard": { 
+    "welcome": "مرحبًا",
+    "dashboard": "لوحة القيادة",
+    "users": "المستخدمون",
+    "orders": "الطلبات",
+    "setting": "الإعدادات",
+    "logout": "تسجيل الخروج"
+  },
+  "adminDashboard": {
+    "clientNumber": "عدد العملاء",
+    "readerNumber": "عدد القراء",
+    "orderNumber": "عدد الطلبات",
+    "userOverview": "نظرة عامة على المستخدمين",
+    "orderOverive": "نظرة عامة على الطلبات",
+    "cancelled": "ملغي",
+    "pending": "معلق",
+    "accepted": "مقبول"
+  },
+  "readerDashboard": {
+    "pendingOrder": "الطلبات المعلقة",
+    "completedOrder": "الطلبات المكتملة",
+    "allOrders": "جميع الطلبات"
+  },
+  "tab": {
+    "personalDetails": "التفاصيل الشخصية",
+    "accountDetails": "تفاصيل الحساب"
+  },
+  "radioButton": {
+    "gender": "الجنس",
+    "female": "أنثى",
+    "male": "ذكر",
+    "userType": "نوع المستخدم",
+    "client": "عميل",
+    "reader": "قارئ",
+    "admin": "مسؤل"
+  },
+  "select": {
+    "userType": "نوع المستخدم",
+    "status": "حالة",
+    "all": "الجميع",
+    "client": "عميل",
+    "reader": "قارئ",
+    "admin": "مسؤل",
+    "active": "المستخدمون النشطون",
+    "isDeleted": "المستخدمون المحذوفون",
+    "assigned": "مُكَلَّف",
+    "notAssigned": "لم يتم تعيينه",
+    "selectReader": "تعيين قارئ",
+    "pending": "قيد الانتظار",
+    "completed": "مكتمل",
+    "rejected": "مرفوض"
+  },
+  "searchInput": {
+    "userSearch": "البحث عن مستخدم",
+    "orderSearch": "البحث عن طلب",
+    "countrySearch": "دولة..."
+  },
+  "heading": {
+    "aboutSectionTitle": "نبذة عنا",
+    "readerSectionTitle": "قرائنا",
+    "contactSectionTitle": "تواصل معنا",
+    "readersPage": "قرائنا",
+    "usersPageTitle": "قائمةالمستخدمين",
+    "ordersPageTitle": "قائمة الطلبات",
+    "userDetailsModel": "تفاصيل المستخدم",
+    "orderDetailsModel": " تفاصيل الطلب",
+    "deleteDialog":"تأكيد الحذف",
+    "deleteDialogQuestion": "هل أنت متأكد من حذف هذا المستخدم؟",
+    "deleteOrderDialogQuestion": "هل أنت متأكد أنك تريد حذف هذا الطلب؟",
+    "assignDialog": "اختيار قارئ",
+    "addOrderModal": "إضافة الطلب",
+    "clientPageTitle": "قائمة طلبياتي"
+  },
+  "button": {
+    "login": "تسجيل الدخول",
+    "create": "إنشاء",
+    "back": "رجوع",
+    "next": "التالي",
+    "signUp": "التسجيل",
+    "pickLocation": "اختر الموقع",
+    "addUser": "إضافة مستخدم",
+    "addOrder": "إضافة طلب",
+    "search": "بحث",
+    "reset": "إعادة تعيين",
+    "delete": "حذف",
+    "cancel": "إلغاء",
+    "assign": "تعيين",
+    "save": "حفظ",
+    "send": "إرسال",
+    "changePassword": "تغيير كلمة المرور"
+  },
+  "label": {
+    "id": "المعرف",
+    "firstName": "الاسم الأول",
+    "lastName": "اسم العائلة",
+    "email": "البريد الإلكتروني",
+    "phoneNumber": "رقم الهاتف",
+    "address": "العنوان",
+    "addressOne": "العنوان الأول",
+    "addressTwo": "العنوان الثاني",
+    "city": "المدينة",
+    "postCode": "الرمز البريدي",
+    "country": "البلد",
+    "coordinates": "الإحداثيات",
+    "longitude": "خط الطول",
+    "latitude": "خط العرض",
+    "password": "كلمة المرور",
+    "currentPassword": "كلمة المرور الحالية",
+    "newPassword": "كلمة المرور الجديدة",
+    "confirmPassword": "تأكيد كلمة المرور",
+    "actions":"الإجراءات",
+    "name": "الاسم",
+    "type": "النوع",
+    "deleted": "تم حذفه",
+    "yes": "نعم",
+    "no": "لا",
+    "client": "عميل",
+    "reader": "قارئ",
+    "date": "التاريخ",
+    "time": "وقت",
+    "datePickerLabel": "حدد التاريخ",
+    "message": "رسالة"
   }
 }

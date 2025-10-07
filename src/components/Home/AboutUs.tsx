@@ -4,7 +4,7 @@ import BasicTimeline from "./TimeLine";
 import { useTranslations } from "next-intl";
 
 export default function AboutUs() {
-  const t = useTranslations("homePage");
+  const t = useTranslations("heading");
   return (
     <Box component="section" id="about">
       <Typography
@@ -17,7 +17,7 @@ export default function AboutUs() {
           pl: 2,
         }}
       >
-        {t("aboutTitle")}
+        {t("aboutSectionTitle")}
       </Typography>
       <BasicTimeline />
     </Box>

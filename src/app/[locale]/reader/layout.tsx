@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
 import Paper from "@mui/material/Paper";
-import AdminHeader from "@/components/AdminUI/adminHeader";
-import DashboardSideBar from "@/components/AdminUI/sideBar";
+import Header from "@/components/Dashboard/Header";
+import DashboardSidebar from "@/components/Dashboard/dashboardSidebar";
 interface ReaderRootLayoutProps {
   children: React.ReactNode;
 }
@@ -13,11 +13,11 @@ export default function ReaderRootLayout({
   return (
     <section className="h-screen w-full flex flex-row">
       <div className="w-1/5">
-        <DashboardSideBar role={"reader"} />
+        <DashboardSidebar role={"reader"} />
       </div>
       <div className="w-4/5">
         <div>
-          <AdminHeader />
+          <Header />
           <Paper
             variant="elevation"
             square

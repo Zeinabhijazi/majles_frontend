@@ -61,8 +61,11 @@ export default function RegisterModal({
   open,
   onClose,
 }: Readonly<RegisterModalProps>) {
-  const t = useTranslations("Form");
-  const steps = [t("personalInfo"), t("address")];
+  const t1 = useTranslations("registerModal");
+  const t2 = useTranslations("label");
+  const t3 = useTranslations("radioButton");
+  const t4 = useTranslations("button");
+  const steps = [t1("personalInfo"), t1("address")];
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set<number>());
 
@@ -322,7 +325,7 @@ export default function RegisterModal({
         <Grid size={6}>
           <TextField //First Name
             variant="outlined"
-            label={t("firstName")}
+            label={t2("firstName")}
             value={formData.firstName}
             color="secondary"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -336,7 +339,7 @@ export default function RegisterModal({
         <Grid size={6}>
           <TextField //Last Name
             variant="outlined"
-            label={t("lastName")}
+            label={t2("lastName")}
             color="secondary"
             value={formData.lastName}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -350,7 +353,7 @@ export default function RegisterModal({
       </Grid>
       <TextField // Email
         variant="outlined"
-        label={t("email")}
+        label={t2("email")}
         color="secondary"
         value={formData.email}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -363,7 +366,7 @@ export default function RegisterModal({
       <TextField // Password
         variant="outlined"
         color="secondary"
-        label={t("password")}
+        label={t2("password")}
         type="password"
         autoComplete="current-password"
         value={formData.password}
@@ -377,7 +380,7 @@ export default function RegisterModal({
       <TextField // Confirm Password
         variant="outlined"
         color="secondary"
-        label={t("confirmPassword")}
+        label={t2("confirmPassword")}
         type="password"
         autoComplete="current-password"
         value={formData.confirmPassword}
@@ -391,7 +394,7 @@ export default function RegisterModal({
       <TextField // Phone Number
         variant="outlined"
         color="secondary"
-        label={t("phoneNumber")}
+        label={t2("phoneNumber")}
         value={formData.phoneNumber}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           handleChange("phoneNumber", e.target.value)
@@ -419,7 +422,7 @@ export default function RegisterModal({
               id="demo-controlled-radio-buttons-group"
               sx={{ fontSize: "13px" }}
             >
-              {t("gender")}
+              {t3("gender")}
             </FormLabel>
             <RadioGroup
               row
@@ -432,12 +435,12 @@ export default function RegisterModal({
               <FormControlLabel
                 value="female"
                 control={<Radio color="secondary" size="small" />}
-                label={t("female")}
+                label={t3("female")}
               />
               <FormControlLabel
                 value="male"
                 control={<Radio color="secondary" size="small" />}
-                label={t("male")}
+                label={t3("male")}
               />
             </RadioGroup>
           </FormControl>
@@ -450,7 +453,7 @@ export default function RegisterModal({
               id="demo-controlled-radio-buttons-group"
               sx={{ fontSize: "13px" }}
             >
-              {t("userType")}
+              {t3("userType")}
             </FormLabel>
             <RadioGroup
               row
@@ -462,12 +465,12 @@ export default function RegisterModal({
               <FormControlLabel
                 value="client"
                 control={<Radio color="secondary" size="small" />}
-                label={t("client")}
+                label={t3("client")}
               />
               <FormControlLabel
                 value="reader"
                 control={<Radio color="secondary" size="small" />}
-                label={t("reader")}
+                label={t3("reader")}
               />
             </RadioGroup>
           </FormControl>
@@ -494,7 +497,7 @@ export default function RegisterModal({
       <TextField // Address One
         variant="outlined"
         color="secondary"
-        label={t("addressOne")}
+        label={t2("addressOne")}
         value={formData.addressOne}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           handleChange("addressOne", e.target.value)
@@ -507,7 +510,7 @@ export default function RegisterModal({
       <TextField // Address Two
         variant="outlined"
         color="secondary"
-        label={t("addressTwo")}
+        label={t2("addressTwo")}
         value={formData.addressTwo}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           handleChange("addressTwo", e.target.value)
@@ -530,7 +533,7 @@ export default function RegisterModal({
           <TextField // City
             variant="outlined"
             color="secondary"
-            label={t("city")}
+            label={t2("city")}
             value={formData.city}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               handleChange("city", e.target.value)
@@ -544,7 +547,7 @@ export default function RegisterModal({
           <TextField // Post Code
             variant="outlined"
             color="secondary"
-            label={t("postCode")}
+            label={t2("postCode")}
             value={formData.postNumber}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               handleChange("postNumber", e.target.value)
@@ -558,7 +561,7 @@ export default function RegisterModal({
       <TextField // Country
         variant="outlined"
         color="secondary"
-        label={t("country")}
+        label={t2("country")}
         value={formData.country}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           handleChange("country", e.target.value)
@@ -581,7 +584,7 @@ export default function RegisterModal({
           <TextField // Latitude
             variant="outlined"
             color="secondary"
-            label={t("latitude")}
+            label={t2("latitude")}
             value={formData.latitude}
             InputProps={{ readOnly: true }}
             required
@@ -593,7 +596,7 @@ export default function RegisterModal({
           <TextField // Longitude
             variant="outlined"
             color="secondary"
-            label={t("longitude")}
+            label={t2("longitude")}
             value={formData.longitude}
             InputProps={{ readOnly: true }}
             required
@@ -603,7 +606,7 @@ export default function RegisterModal({
         </Grid>
       </Grid>
       <Button variant="contained" color="secondary" onClick={handleGetLocation}>
-        {t("pickLocation")}
+        {t4("pickLocation")}
       </Button>
     </Box>
   );
@@ -699,11 +702,11 @@ export default function RegisterModal({
                 onClick={handleBack}
                 sx={{ mr: 1 }}
               >
-                {t("back")}
+                {t4("back")}
               </Button>
               <Box sx={{ flex: "1 1 auto" }} />
               <Button variant="text" color="secondary" onClick={handleNext}>
-                {activeStep === steps.length - 1 ? t("signUp") : t("next")}
+                {activeStep === steps.length - 1 ? t4("signUp") : t4("next")}
               </Button>
               {successAlert && (
                 <Snackbar

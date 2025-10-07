@@ -16,20 +16,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { fetchUserDetails } from "@/redux/slices/userSlice";
 
-export default function AdminHeader() {
-  const t = useTranslations("AdminNavBar");
+export default function Header() {
+  const t = useTranslations("dashboard");
   const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
   const dispatch = useDispatch<AppDispatch>();
-  const { userDetails } = useSelector((state: RootState) => state.user) 
+  const { userDetails } = useSelector((state: RootState) => state.user);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  
+
   useEffect(() => {
     dispatch(fetchUserDetails());
-  }, [dispatch])
+  }, [dispatch]);
 
+  // Handle language
   const handleClick = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -56,7 +57,7 @@ export default function AdminHeader() {
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        bgcolor: "primary.main"
+        bgcolor: "primary.main",
       }}
     >
       <Typography
@@ -67,11 +68,11 @@ export default function AdminHeader() {
           fontWeight: "bold",
         }}
       >
-        {t("welcome")} {userDetails.firstName}{" "}{userDetails.lastName}
+        {t("welcome")} {userDetails.firstName} {userDetails.lastName}
       </Typography>
       <Box>
         <IconButton aria-controls="notification-menu" aria-haspopup="true">
-          <NotificationsIcon color="secondary"/>
+          <NotificationsIcon color="secondary" />
         </IconButton>
         <IconButton
           aria-controls={open ? "basic-menu" : undefined}
@@ -81,6 +82,7 @@ export default function AdminHeader() {
         >
           <LanguageIcon color="secondary" />
         </IconButton>
+
         {/* Language Menu */}
         <Menu
           id="language-menu"
@@ -98,6 +100,7 @@ export default function AdminHeader() {
           <MenuItem onClick={() => changeLanguage("fr")}>French</MenuItem>
           <MenuItem onClick={() => changeLanguage("de")}>Deutsch</MenuItem>
         </Menu>
+
       </Box>
     </Paper>
   );

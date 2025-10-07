@@ -65,7 +65,6 @@ function TabPanel(props: Readonly<TabPanelProps>) {
     </div>
   );
 }
-
 interface Passwords {
   oldPassword?: string;
   newPassword?: string;
@@ -88,7 +87,10 @@ type UserDetails = {
 };
 
 export default function UserInformation() {
-  const t = useTranslations("Form");
+  const t1 = useTranslations("label");
+  const t2 = useTranslations("button");
+  const t3 = useTranslations("tab");
+  const t4 = useTranslations("radioButton");
   const [value, setValue] = useState(0);
   const dispatch = useDispatch<AppDispatch>();
   const { userDetails } = useSelector((state: RootState) => state.user);
@@ -308,8 +310,8 @@ export default function UserInformation() {
           width: "100%",
         }}
       >
-        <Tab label={t("personalDetails")} sx={{ flex: 1 }} />
-        <Tab label={t("accountDetails")} sx={{ flex: 1 }} />
+        <Tab label={t3("personalDetails")} sx={{ flex: 1 }} />
+        <Tab label={t3("accountDetails")} sx={{ flex: 1 }} />
       </Tabs>
       {/* Personal */}
       <TabPanel value={value} index={0}>
@@ -350,7 +352,7 @@ export default function UserInformation() {
           <Grid container sx={{ height: 30 }}>
             <Grid size={4}>
               <Typography>
-                <strong>{t("firstName")}:</strong>
+                <strong>{t1("firstName")}:</strong>
               </Typography>
             </Grid>
             <Grid size={8}>
@@ -371,7 +373,7 @@ export default function UserInformation() {
           <Grid container sx={{ height: 30 }}>
             <Grid size={4}>
               <Typography>
-                <strong>{t("lastName")}:</strong>
+                <strong>{t1("lastName")}:</strong>
               </Typography>
             </Grid>
             <Grid size={8}>
@@ -392,7 +394,7 @@ export default function UserInformation() {
           <Grid container sx={{ height: 30 }}>
             <Grid size={4}>
               <Typography>
-                <strong>{t("phoneNumber")}:</strong>
+                <strong>{t1("phoneNumber")}:</strong>
               </Typography>
             </Grid>
             <Grid size={8}>
@@ -413,13 +415,12 @@ export default function UserInformation() {
           <Grid container sx={{ height: 30 }}>
             <Grid size={4}>
               <Typography>
-                <strong>{t("gender")}:</strong>
+                <strong>{t4("gender")}:</strong>
               </Typography>
             </Grid>
             <Grid size={8}>
               {isEditting ? (
                 <RadioGroup
-                  
                   row
                   value={tempData.gender}
                   onChange={(e) => handleChange("gender", e.target.value)}
@@ -427,17 +428,17 @@ export default function UserInformation() {
                   <FormControlLabel
                     value="male"
                     control={<Radio color="secondary" size="small" />}
-                    label={t("male")}
+                    label={t4("male")}
                   />
                   <FormControlLabel
                     value="female"
                     control={<Radio color="secondary" size="small" />}
-                    label={t("female")}
+                    label={t4("female")}
                   />
                 </RadioGroup>
               ) : (
                 <span>
-                  {formData.gender === "male" ? t("male") : t("female")}
+                  {formData.gender === "male" ? t4("male") : t4("female")}
                 </span>
               )}
             </Grid>
@@ -446,7 +447,7 @@ export default function UserInformation() {
           <Grid container sx={{ height: 30 }}>
             <Grid size={4}>
               <Typography>
-                <strong>{t("coordinates")}:</strong>
+                <strong>{t1("coordinates")}:</strong>
               </Typography>
             </Grid>
             <Grid size={8}>
@@ -479,7 +480,7 @@ export default function UserInformation() {
           <Grid container sx={{ height: 115 }}>
             <Grid size={4}>
               <Typography>
-                <strong>{t("address")}:</strong>
+                <strong>{t1("address")}:</strong>
               </Typography>
             </Grid>
             <Grid size={8}>
@@ -541,7 +542,7 @@ export default function UserInformation() {
               type="submit"
               sx={{ float: "right", width: "18%", mt: 1.2 }}
             >
-              {t("save")}
+              {t2("save")}
             </Button>
           </Grid>
         </Box>
@@ -573,7 +574,7 @@ export default function UserInformation() {
                 pl: 0.5,
               }}
             >
-              {t("email")}
+              {t1("email")}
             </Typography>
             <TextField
               fullWidth
@@ -597,7 +598,7 @@ export default function UserInformation() {
                 pl: 0.5,
               }}
             >
-              {t("currentPassword")} *
+              {t1("currentPassword")} *
             </Typography>
             <TextField
               fullWidth
@@ -640,7 +641,7 @@ export default function UserInformation() {
                 pl: 0.5,
               }}
             >
-              {t("newPassword")} *
+              {t1("newPassword")} *
             </Typography>
             <TextField
               fullWidth
@@ -683,7 +684,7 @@ export default function UserInformation() {
                 pl: 0.5,
               }}
             >
-              {t("confirmPassword")} *
+              {t1("confirmPassword")} *
             </Typography>
             <TextField
               fullWidth
@@ -732,7 +733,7 @@ export default function UserInformation() {
               }}
               onClick={() => {}}
             >
-              {t("changePassword")}
+              {t2("changePassword")}
             </Button>
           </Grid>
 

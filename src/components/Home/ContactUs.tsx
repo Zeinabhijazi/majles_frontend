@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import ContactForm from "./ContactForm";
 
 export default function ContactUs() {
-  const t = useTranslations("homePage");
+  const t = useTranslations("heading");
   return (
     <Box component="section" id="contact">
       <Typography
@@ -17,7 +17,7 @@ export default function ContactUs() {
           pl: 2,
         }}
       >
-        {t("contactTitle")}
+        {t("contactSectionTitle")}
       </Typography>
       <ContactForm />
     </Box>

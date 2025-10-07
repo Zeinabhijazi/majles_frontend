@@ -9,11 +9,13 @@ import AddIcon from "@mui/icons-material/Add";
 import { useTranslations } from "next-intl";
 
 export default function UsersAdminPage() {
-  const t1 = useTranslations("user");
+  const t1 = useTranslations("heading");
+  const t2 = useTranslations("button");
+
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  
+
   return (
     <Box component="section">
       <Grid
@@ -33,7 +35,7 @@ export default function UsersAdminPage() {
             color: "primary.main",
           }}
         >
-          {t1("title")}
+          {t1("usersPageTitle")}
         </Typography>
         <Button
           variant="contained"
@@ -45,7 +47,7 @@ export default function UsersAdminPage() {
           onClick={handleOpen}
         >
           <AddIcon sx={{ mr: 0.5 }} />
-          {t1("add")}
+          {t2("addUser")}
         </Button>
         <RegisterModal open={open} onClose={handleClose} />
       </Grid>
@@ -64,7 +66,7 @@ export default function UsersAdminPage() {
           <Search />
         </Grid>
         <UserSelect />
-      </Grid>      
+      </Grid>
       <UserTable />
     </Box>
   );

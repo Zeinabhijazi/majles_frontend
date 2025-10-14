@@ -9,8 +9,6 @@ import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import ThemeWrapper from "../../ThemeWrapper" ;
 import Providers from "@/providers/Providers";
-import MenuAppBar from "@/components/MenuAppBar";
-import Footer from "@/components/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {

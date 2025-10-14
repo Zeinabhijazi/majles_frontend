@@ -27,6 +27,7 @@ const UserSelect = () => {
           value={userType}
           onChange={(e) => setUserType(e.target.value)}
           sx={{
+            color: "primary.main",
             height: 40,
             width: 200,
           }}
@@ -44,6 +45,7 @@ const UserSelect = () => {
           value={isDeleted}
           onChange={(e) => setIsDeleted(e.target.value)}
           sx={{
+            color: "primary.main",
             height: 40,
             width: 200,
           }}

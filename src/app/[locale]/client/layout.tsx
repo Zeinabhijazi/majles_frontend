@@ -1,8 +1,10 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Paper from "@mui/material/Paper";
 import DashboardSidebar from "@/components/Dashboard/dashboardSidebar";
 import Header from "@/components/Dashboard/Header";
+import { useRouter } from "@/i18n/navigation";
+import { CircularProgress } from "@mui/material";
 interface ClientRootLayoutProps {
   children: React.ReactNode;
 }
@@ -10,7 +12,25 @@ interface ClientRootLayoutProps {
 export default function ClientRootLayout({
   children,
 }: Readonly<ClientRootLayoutProps>) {
-  return (
+  const [canAccess, setCanAccess] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("userDetails");
+    const parsedUser = storedUser ? JSON.parse(storedUser) : null;
+
+    if (parsedUser?.userType === "client") {
+      setCanAccess(true);
+    } else {
+      router.replace("/");
+    }
+  }, []);
+
+  // Loading screen while checking
+  if (canAccess === null) {
+    return <CircularProgress color="secondary" />;
+  }
+  return canAccess === true ? (
     <section className="h-screen w-full flex flex-row">
       <div className="w-1/5">
         <DashboardSidebar role={"client"} />
@@ -35,5 +55,7 @@ export default function ClientRootLayout({
         </div>
       </div>
     </section>
+  ) : (
+    <CircularProgress color="secondary" />
   );
 }

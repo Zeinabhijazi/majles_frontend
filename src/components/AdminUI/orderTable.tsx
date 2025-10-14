@@ -72,7 +72,7 @@ const OrderTable = () => {
 
   return (
     <Paper sx={{ width: "100%", overflow: "hidden" }}>
-      <TableContainer className="table_scrollbar" sx={{ maxHeight: 360 }}>
+      <TableContainer className="table_scrollbar" sx={{ maxHeight: 350 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>

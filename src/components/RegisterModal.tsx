@@ -14,7 +14,8 @@ import {
   Step,
   StepLabel,
   TextField,
-  IconButton,
+  FormHelperText,
+  Alert,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useTranslations } from "next-intl";
@@ -32,11 +33,12 @@ const style = {
   width: 480,
   height: 580,
   bgcolor: "background.default",
-  border: "1px solid #eee",
+  border: "1px solid #e9e9e9",
   borderRadius: 5,
   boxShadow: 24,
   px: 2,
   py: 3,
+  overflowY: "auto",
 };
 
 type FormData = {
@@ -57,6 +59,24 @@ type FormData = {
   userType: string;
 };
 
+const initialFormData = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+  phoneNumber: "",
+  gender: "",
+  userType: "",
+  addressOne: "",
+  addressTwo: "",
+  city: "",
+  postNumber: "",
+  country: "",
+  latitude: "",
+  longitude: "",
+};
+
 export default function RegisterModal({
   open,
   onClose,
@@ -66,47 +86,13 @@ export default function RegisterModal({
   const t3 = useTranslations("radioButton");
   const t4 = useTranslations("button");
   const steps = [t1("personalInfo"), t1("address")];
-  const [activeStep, setActiveStep] = React.useState(0);
-  const [skipped, setSkipped] = React.useState(new Set<number>());
-
-  const [error, setError] = useState<{
-    fname?: string;
-    lname?: string;
-    email?: string;
-    password?: string;
-    confPassword?: string;
-    gender?: string;
-    type?: string;
-    phone?: string;
-    addressOne?: string;
-    addressTwo?: string;
-    country?: string;
-    city?: string;
-    postcode?: number;
-    lat?: number;
-    long?: number;
-  }>({});
+  const [activeStep, setActiveStep] = useState(0);
+  const [skipped, setSkipped] = useState(new Set<number>());
+  const [error, setError] = useState<{ [key: string]: string }>({});
   const [successAlert, setSuccessAlert] = useState(false);
   const [warningAlert, setWarningAlert] = useState(false);
   const [alertText, setAlertText] = useState("");
-
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    phoneNumber: "",
-    gender: "female",
-    userType: "client",
-    addressOne: "",
-    addressTwo: "",
-    city: "",
-    postNumber: "",
-    country: "",
-    longitude: 0,
-    latitude: 0,
-  });
+  const [formData, setFormData] = useState(initialFormData);
 
   // To get current location
   const handleGetLocation = () => {
@@ -149,19 +135,28 @@ export default function RegisterModal({
   };
 
   // schema
-  const loginSchema = z.object({
+  const registerSchema = z.object({
     firstName: z.string().nonempty("First name is required"),
     lastName: z.string().nonempty("Last name is required"),
-    email: z.string().nonempty("Email is required").email("Invalid email address"),
-    phoneNumber: z.string().nonempty("Phone Number is required"),
+    email: z
+      .string()
+      .nonempty("Email is required")
+      .email("Invalid email address"),
     password: z
       .string()
       .nonempty("Password is required")
       .min(6, "Password must be at least 6 characters"),
+    phoneNumber: z.string().nonempty("Phone Number is required"),
+    gender: z.enum(["male", "female"], "Please select a gender"),
+    userType: z.enum(["reader", "admin", "client"], "Please select a type"),
+    addressOne: z.string().nonempty("Address One is required"),
+    addressTwo: z.string().optional(),
+    city: z.string().nonempty("City is required"),
     postNumber: z.preprocess(
       (val) => (val === "" ? undefined : Number(val)),
-      z.number("Post Number must be a number")
+      z.number("Post Code must be a number")
     ),
+    country: z.string().nonempty("Country is required"),
     longitude: z.preprocess(
       (val) => (val === "" ? undefined : Number(val)),
       z.number("Longitude must be a number")
@@ -170,62 +165,20 @@ export default function RegisterModal({
       (val) => (val === "" ? undefined : Number(val)),
       z.number("Latitude must be a number")
     ),
-    gender: z.enum(["male", "female"]),
-    userType: z.enum(["reader", "admin", "client"]),
-    addressOne: z.string().nonempty("Address One is required"),
-    addressTwo: z.string().optional(),
-    city: z.string().nonempty("City is required"),
-    country: z.string().nonempty("Country is required"),
   });
 
-
   const validate = (): boolean => {
-    const result = loginSchema.safeParse({
-      formData,
-    });
+    const result = registerSchema.safeParse(formData);
 
     if (result.success) {
       setError({});
       return true;
     }
 
-    const fieldErrors: {
-      fname?: string;
-      lname?: string;
-      phone?: string;
-      email?: string;
-      password?: string;
-      confpassword?: string;
-      gender?: string;
-      type?: string;
-      addressOne?: string;
-      addressTwo?: string;
-      city?: string;
-      country?: string;
-      postNumber?: string;
-      latitude?: string;
-      longitude?: string;
-    } = {};
+    const fieldErrors: { [key: string]: string } = {};
     result.error.issues.forEach((issue) => {
-      const field = issue.path[0] as
-        | "fname"
-        | "lname"
-        | "phone"
-        | "email"
-        | "password"
-        | "confpassword"
-        | "gender"
-        | "type"
-        | "addressOne"
-        | "addressTwo"
-        | "city"
-        | "country"
-        | "postNumber"
-        | "latitude"
-        | "longitude";
-      if (field) {
-        fieldErrors[field] = issue.message;
-      }
+      const fieldName = issue.path[0] as string;
+      fieldErrors[fieldName] = issue.message;
     });
 
     setError(fieldErrors);
@@ -237,39 +190,25 @@ export default function RegisterModal({
     try {
       if (validate()) {
         const response = await api.post(`api/auth/signup`, formData);
-        if (response.status === 200) {
+        if (response.data.success) {
           setAlertText("Added successfully");
           setSuccessAlert(true);
-          // Clear the inputs and close the modal
-          setFormData({
-            firstName: "",
-            lastName: "",
-            email: "",
-            password: "",
-            confirmPassword: "",
-            phoneNumber: "",
-            gender: "female",
-            userType: "client",
-            addressOne: "",
-            addressTwo: "",
-            city: "",
-            postNumber: "",
-            country: "",
-            longitude: 0,
-            latitude: 0,
-          });
+          setFormData(initialFormData);
+          setTimeout(() => setSuccessAlert(false), 2500);
         }
       }
-    } catch (err: any) {
-      if (err.response && err.response.data) {
-        const msg = Array.isArray(err.response.data.message)
-          ? err.response.data.message.join(", ")
-          : err.response.data.message;
-        setAlertText(msg);
+    } catch (error: any) {
+      // Check if the error has a response from server
+      if (error.response && error.response.data) {
+        setAlertText(error.response.data.message || "Server error");
+        setWarningAlert(true);
+        setTimeout(() => setWarningAlert(false), 3000);
       } else {
-        setAlertText("An unexpected error occurred. Please try again.");
+        console.error("Unexpected error:", error);
+        setAlertText("An unexpected error occurred");
+        setWarningAlert(true);
+        setTimeout(() => setWarningAlert(false), 3000);
       }
-      setWarningAlert(true);
     }
   };
 
@@ -331,8 +270,8 @@ export default function RegisterModal({
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               handleChange("firstName", e.target.value)
             }
-            error={!!error.fname}
-            helperText={error.fname}
+            error={!!error.firstName}
+            helperText={error.firstName}
             required
           />
         </Grid>
@@ -345,8 +284,8 @@ export default function RegisterModal({
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               handleChange("lastName", e.target.value)
             }
-            error={!!error.lname}
-            helperText={error.lname}
+            error={!!error.lastName}
+            helperText={error.lastName}
             required
           />
         </Grid>
@@ -387,8 +326,8 @@ export default function RegisterModal({
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           handleChange("confirmPassword", e.target.value)
         }
-        error={!!error.confPassword}
-        helperText={error.confPassword}
+        error={!!error.password}
+        helperText={error.password}
         required
       />
       <TextField // Phone Number
@@ -399,8 +338,8 @@ export default function RegisterModal({
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           handleChange("phoneNumber", e.target.value)
         }
-        error={!!error.phone}
-        helperText={error.phone}
+        error={!!error.phoneNumber}
+        helperText={error.phoneNumber}
         required
       />
       <Grid
@@ -442,6 +381,9 @@ export default function RegisterModal({
                 control={<Radio color="secondary" size="small" />}
                 label={t3("male")}
               />
+              <FormHelperText sx={{ color: "#d32f2f" }}>
+                {!!error.gender ? "Please select a gender" : ""}
+              </FormHelperText>
             </RadioGroup>
           </FormControl>
         </Grid>
@@ -472,6 +414,9 @@ export default function RegisterModal({
                 control={<Radio color="secondary" size="small" />}
                 label={t3("reader")}
               />
+              <FormHelperText sx={{ color: "#d32f2f" }}>
+                {!!error.userType ? "Please select a type" : ""}
+              </FormHelperText>
             </RadioGroup>
           </FormControl>
         </Grid>
@@ -552,8 +497,8 @@ export default function RegisterModal({
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               handleChange("postNumber", e.target.value)
             }
-            error={!!error.postcode}
-            helperText={error.postcode}
+            error={!!error.postNumber}
+            helperText={error.postNumber}
             required
           />
         </Grid>
@@ -588,8 +533,8 @@ export default function RegisterModal({
             value={formData.latitude}
             InputProps={{ readOnly: true }}
             required
-            error={!!error.lat}
-            helperText={error.lat}
+            error={!!error.latitude}
+            helperText={error.latitude}
           />
         </Grid>
         <Grid size={6}>
@@ -600,8 +545,8 @@ export default function RegisterModal({
             value={formData.longitude}
             InputProps={{ readOnly: true }}
             required
-            error={!!error.long}
-            helperText={error.long}
+            error={!!error.longitude}
+            helperText={error.longitude}
           />
         </Grid>
       </Grid>
@@ -609,37 +554,6 @@ export default function RegisterModal({
         {t4("pickLocation")}
       </Button>
     </Box>
-  );
-
-  const action = (
-    <IconButton
-      size="small"
-      aria-label="close"
-      color="inherit"
-      onClick={() => {
-        setSuccessAlert(false);
-        setWarningAlert(false);
-        setFormData({
-          firstName: "",
-          lastName: "",
-          email: "",
-          password: "",
-          confirmPassword: "",
-          phoneNumber: "",
-          gender: "female",
-          userType: "client",
-          addressOne: "",
-          addressTwo: "",
-          city: "",
-          postNumber: "",
-          country: "",
-          longitude: 0,
-          latitude: 0,
-        });
-      }}
-    >
-      <CloseIcon fontSize="small" />
-    </IconButton>
   );
 
   return (
@@ -653,7 +567,7 @@ export default function RegisterModal({
         justifyContent: "center",
       }}
     >
-      <Box sx={style}>
+      <Box sx={style} className="table_scrollbar">
         <CloseIcon
           onClick={onClose}
           sx={{ cursor: "pointer", float: "right" }}
@@ -696,7 +610,7 @@ export default function RegisterModal({
             {/* Step navigation */}
             <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
               <Button
-                variant="text" 
+                variant="text"
                 color="secondary"
                 disabled={activeStep === 0}
                 onClick={handleBack}
@@ -710,19 +624,19 @@ export default function RegisterModal({
               </Button>
               {successAlert && (
                 <Snackbar
-                  anchorOrigin={{ vertical: "top", horizontal: "right" }}
                   open={successAlert}
-                  message={alertText}
-                  action={action}
-                />
+                  anchorOrigin={{ vertical: "top", horizontal: "right" }}
+                >
+                  <Alert severity="success">{alertText}</Alert>
+                </Snackbar>
               )}
               {warningAlert && (
                 <Snackbar
-                  anchorOrigin={{ vertical: "top", horizontal: "right" }}
                   open={warningAlert}
-                  message={alertText}
-                  action={action}
-                />
+                  anchorOrigin={{ vertical: "top", horizontal: "right" }}
+                >
+                  <Alert severity="error">{alertText}</Alert>
+                </Snackbar>
               )}
             </Box>
           </>

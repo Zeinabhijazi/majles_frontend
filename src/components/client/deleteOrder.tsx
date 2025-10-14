@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import {
+  Alert,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-  IconButton,
   Slide,
   Snackbar,
 } from "@mui/material";
@@ -14,8 +14,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useTranslations } from "next-intl";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
-import { clearSuccessMessage, deleteUser } from "@/redux/slices/userSlice";
-import CloseIcon from "@mui/icons-material/Close";
+import { clearSuccessMessage} from "@/redux/slices/userSlice";
+import { cancelOrder } from "@/redux/slices/orderSlice";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -30,40 +30,27 @@ interface DeleteDialogProps {
   orderId: number;
 }
 
-export default function DeleteOrderDialog({ orderId }: Readonly<DeleteDialogProps>) {
+export default function DeleteOrderDialog({
+  orderId,
+}: Readonly<DeleteDialogProps>) {
   const t1 = useTranslations("heading");
   const t2 = useTranslations("button");
   const [openDelete, setOpenDelete] = useState(false);
-  const { successMessage, error } = useSelector(
-    (state: RootState) => state.user
+  const [open, setOpen] = useState(false);
+  const { successMessage, successType } = useSelector(
+    (state: RootState) => state.order
   );
   const dispatch = useDispatch<AppDispatch>();
-  const [open, setOpen] = useState(false);
-  const [message, setMessage] = useState("");
-
-  const action = (
-    <IconButton
-      size="small"
-      aria-label="close"
-      onClick={() => {
-        setOpen(false);
-        dispatch(clearSuccessMessage()); // ✅ clears Redux
-      }}
-    >
-      <CloseIcon fontSize="small" />
-    </IconButton>
-  );
 
   useEffect(() => {
-    if (successMessage) {
-      setMessage(successMessage);
+    if (successType === "cancel" && successMessage) {
       setOpen(true);
+      setTimeout(() => {
+        setOpen(false);
+        dispatch(clearSuccessMessage());
+      }, 2500);
     }
-    if (error) {
-      setMessage(error);
-      setOpen(true);
-    }
-  }, [successMessage, error]);
+  }, [successMessage, successType]);
 
   const handleOpenDelete = (id: number) => {
     setOpenDelete(true);
@@ -73,19 +60,17 @@ export default function DeleteOrderDialog({ orderId }: Readonly<DeleteDialogProp
     setOpenDelete(false);
   };
 
-  const handleDelete = (userId: number) => {
-    dispatch(deleteUser(userId));
-    handleCloseDelete();
+  const handleDelete = (orderId: number) => {
+    dispatch(cancelOrder(orderId));
   };
+
   return (
     <React.Fragment>
-      <Snackbar
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        open={open}
-        message={message}
-        action={action}
-      />
-      <Button variant="text" color="secondary" onClick={() => handleOpenDelete(orderId)}>
+      <Button
+        variant="text"
+        color="secondary"
+        onClick={() => handleOpenDelete(orderId)}
+      >
         <DeleteIcon />
       </Button>
       <Dialog
@@ -104,10 +89,31 @@ export default function DeleteOrderDialog({ orderId }: Readonly<DeleteDialogProp
         <DialogTitle>{t1("deleteDialog")}</DialogTitle>
         <DialogContent>{t1("deleteOrderDialogQuestion")}</DialogContent>
         <DialogActions>
-          <Button variant="contained" color="secondary" onClick={() => handleDelete(orderId)}>{t2("delete")}</Button>
-          <Button variant="contained" color="secondary" onClick={handleCloseDelete}>{t2("cancel")}</Button>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => handleDelete(orderId)}
+          >
+            {t2("delete")}
+          </Button>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={handleCloseDelete}
+          >
+            {t2("cancel")}
+          </Button>
         </DialogActions>
       </Dialog>
+      {successType === "cancel" && successMessage && (
+        <Snackbar
+          open={open}
+          autoHideDuration={3000}
+          anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        >
+          <Alert severity="success">{successMessage}</Alert>
+        </Snackbar>
+      )}
     </React.Fragment>
   );
 }

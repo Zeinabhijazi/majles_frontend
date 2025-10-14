@@ -22,6 +22,7 @@ const OrderSelect = () => {
           value={status}
           onChange={(e) => setStatus(e.target.value)}
           sx={{
+            color: "primary.main",
             height: 40,
             width: 200,
           }}

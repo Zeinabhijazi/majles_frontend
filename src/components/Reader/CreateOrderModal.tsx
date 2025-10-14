@@ -7,13 +7,25 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
-import { Button, Grid, IconButton, TextField, Typography } from "@mui/material";
+import {
+  Alert,
+  Button,
+  Grid,
+  IconButton,
+  Snackbar,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useTranslations } from "next-intl";
 import AddLocationAltOutlinedIcon from "@mui/icons-material/AddLocationAltOutlined";
 import AssignmentAddIcon from "@mui/icons-material/AssignmentAdd";
-import { Dayjs } from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import api from "@/lib/axios";
 
 type FormData = {
+  orderDate: Date;
   postNumber: number;
   country: string;
   city: string;
@@ -22,6 +34,7 @@ type FormData = {
   longitude: number;
   latitude: number;
 };
+
 interface ModalProps {
   open: boolean;
   onClose: () => void;
@@ -34,7 +47,6 @@ export default function CreateOrderModal({
   const t1 = useTranslations("label");
   const t2 = useTranslations("button");
   const t3 = useTranslations("heading");
-
   const [date, setDate] = useState<Dayjs | null>(null);
   const [formData, setFormData] = useState({
     addressOne: "",
@@ -42,12 +54,17 @@ export default function CreateOrderModal({
     city: "",
     postNumber: "",
     country: "",
-    longitude: 0,
-    latitude: 0,
+    longitude: "",
+    latitude: "",
   });
+  const [successAlert, setSuccessAlert] = useState(false);
+  const [warningAlert, setWarningAlert] = useState(false);
+  const [alertText, setAlertText] = useState("");
+
+  const { userDetails } = useSelector((state: RootState) => state.user);
 
   const style = {
-    position: "absolute",
+    position: "absolute" as "absolute",
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
@@ -56,43 +73,9 @@ export default function CreateOrderModal({
     bgcolor: "background.default",
     border: "1px solid #eee",
     borderRadius: 5,
-    boxShadow: 8,
     p: 4,
   };
 
-  // To get current location
-  const handleGetLocation = () => {
-    if (!navigator.geolocation) {
-      // navigator.geolocation is a built-in browser api
-      alert("Geolocation is not supported by your browser.");
-      return;
-    }
-
-    // Asking for User Location
-    navigator.geolocation.getCurrentPosition(
-      // getCurrentPosition: Asks the browser for the current GPS coordinates
-      (pos) => {
-        // (pos): success callback
-        const { latitude, longitude } = pos.coords; // Extract long and lat from pos.coords and update them
-        // Save as numbers into formData
-        handleChange("latitude", latitude);
-        handleChange("longitude", longitude);
-      },
-      (err) => {
-        // (err): error callback - Runs if user denies permission or location fails.
-        console.error("Error getting location:", err);
-        alert("Could not get your location.");
-      },
-      {
-        // Optional
-        enableHighAccuracy: true, // Use GPS if available (more precise)
-        timeout: 5000, // Wait max 5 seocnds
-        maximumAge: 0, // Don't use cashed location, always got fresh one.
-      }
-    );
-  };
-
-  // For inputs
   const handleChange = (name: keyof FormData, value: string | number) => {
     setFormData((prev) => ({
       ...prev,
@@ -100,9 +83,69 @@ export default function CreateOrderModal({
     }));
   };
 
-  // Handle submit
+  const handleGetLocation = () => {
+    if (!navigator.geolocation) {
+      alert("Geolocation is not supported by your browser.");
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const { latitude, longitude } = pos.coords;
+        handleChange("latitude", latitude);
+        handleChange("longitude", longitude);
+      },
+      (err) => {
+        console.error("Error getting location:", err);
+        alert("Could not get your location.");
+      },
+      { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+    );
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!date) {
+      setAlertText("Please select a valid date");
+      setWarningAlert(true);
+      setTimeout(() => setWarningAlert(false), 3000);
+      return;
+    }
+    const payload: FormData = {
+      orderDate: date!.toDate(), // Convert Dayjs to ISO string
+      addressOne: formData.addressOne || userDetails.addressOne || "",
+      addressTwo: formData.addressTwo || userDetails.addressTwo || "",
+      city: formData.city || userDetails.city || "",
+      postNumber: Number(formData.postNumber) || userDetails.postNumber || 0,
+      country: formData.country || userDetails.country || "",
+      latitude: Number(formData.latitude) || userDetails.latitude || 0,
+      longitude: Number(formData.longitude) || userDetails.longitude || 0,
+    };
+
+    try {
+      const response = await api.post("api/order", payload);
+      if (response.data.success) {
+        setAlertText("Order added successfully!");
+        setSuccessAlert(true);
+        setDate(null);
+        setFormData({
+          addressOne: "",
+          addressTwo: "",
+          city: "",
+          postNumber: "",
+          country: "",
+          longitude: "",
+          latitude: "",
+        });
+
+        setTimeout(() => setSuccessAlert(false), 2500);
+      }
+    } catch (error: any) {
+      setAlertText(
+        error.response?.data?.message || "An unexpected error occurred"
+      );
+      setWarningAlert(true);
+      setTimeout(() => setWarningAlert(false), 3000);
+    }
   };
 
   return (
@@ -111,11 +154,6 @@ export default function CreateOrderModal({
         open={open}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
-        slotProps={{
-          backdrop: {
-            timeout: 500,
-          },
-        }}
       >
         <Box sx={style}>
           <Box
@@ -136,9 +174,7 @@ export default function CreateOrderModal({
 
           <Box
             component="form"
-            noValidate
             onSubmit={handleSubmit}
-            autoComplete="off"
             sx={{
               my: 1.5,
               width: "100%",
@@ -278,6 +314,18 @@ export default function CreateOrderModal({
           </Box>
         </Box>
       </Modal>
+      <Snackbar
+        open={successAlert}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert severity="success">{alertText}</Alert>
+      </Snackbar>
+      <Snackbar
+        open={warningAlert}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert severity="error">{alertText}</Alert>
+      </Snackbar>
     </div>
   );
 }

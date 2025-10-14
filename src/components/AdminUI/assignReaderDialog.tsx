@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import {
+  Alert,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
   FormControl,
-  IconButton,
   InputLabel,
   MenuItem,
   Select,
@@ -19,10 +19,10 @@ import { useTranslations } from "next-intl";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "@/redux/store";
 import { fetchReaders } from "@/redux/slices/userSlice";
-import CloseIcon from "@mui/icons-material/Close";
 import {
-  clearSuccessMessage,
   handleAssignReader,
+  clearSuccessMessage,
+  fetchOrders,
 } from "@/redux/slices/orderSlice";
 
 const Transition = React.forwardRef(function Transition(
@@ -33,7 +33,6 @@ const Transition = React.forwardRef(function Transition(
 ) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
-
 interface AssignDialogProps {
   orderId: number;
 }
@@ -44,28 +43,37 @@ export default function AssignReaderDialog({
   const t1 = useTranslations("heading");
   const t2 = useTranslations("button");
   const t3 = useTranslations("select");
-  const { users } = useSelector((state: RootState) => state.user);
-  const [allReaders, setAllReaders] = useState("");
   const [openAssignModal, setOpenAssignModal] = useState(false);
-  const dispatch = useDispatch<AppDispatch>();
-  const [readerId, setReaderId] = useState<number>(0);
-  const { successMessage, error } = useSelector(
+  const { users } = useSelector((state: RootState) => state.user);
+  const { successMessage, successType, error } = useSelector(
     (state: RootState) => state.order
   );
-  const [openSnackbar, setOpenSnackbar] = useState(false);
-  const [message, setMessage] = useState("");
+  const [allReaders, setAllReaders] = useState("");
+  const [readerId, setReaderId] = useState<number>(0);
+  const dispatch = useDispatch<AppDispatch>();
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     dispatch(fetchReaders({}));
-    if (successMessage) {
-      setMessage(successMessage);
-      setOpenSnackbar(true);
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (successType === "assign" && successMessage) {
+      dispatch(fetchOrders({}));
+      setOpen(true);
+      setTimeout(() => {
+        setOpen(false);
+        dispatch(clearSuccessMessage());
+      }, 2500);
     }
     if (error) {
-      setMessage(error);
-      setOpenSnackbar(true);
+      setOpen(true);
+      setTimeout(() => {
+        setOpen(false);
+        dispatch(clearSuccessMessage());
+      }, 2500);
     }
-  }, [dispatch, successMessage, error]);
+  }, [successMessage, successType, error]);
 
   const handleChange = (event: SelectChangeEvent) => {
     setAllReaders(event.target.value);
@@ -79,28 +87,8 @@ export default function AssignReaderDialog({
     setOpenAssignModal(false);
   };
 
-  const action = (
-    <IconButton
-      size="small"
-      aria-label="close"
-      onClick={() => {
-        setOpenSnackbar(false);
-        handleCloseAssign();
-        dispatch(clearSuccessMessage()); // ✅ clears Redux
-      }}
-    >
-      <CloseIcon fontSize="small" />
-    </IconButton>
-  );
-
   return (
     <React.Fragment>
-      <Snackbar
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        open={openSnackbar}
-        message={message}
-        action={action}
-      />
       <Button
         variant="contained"
         color="secondary"
@@ -111,12 +99,13 @@ export default function AssignReaderDialog({
       <Dialog
         open={openAssignModal}
         TransitionComponent={Transition}
+        keepMounted
         PaperProps={{
           sx: {
             width: 400,
             height: 250,
             bgcolor: "background.default",
-            border: "1px solid #000",
+            border: "1px solid #eee",
             borderRadius: 5,
             boxShadow: 8,
             p: 2,
@@ -141,8 +130,6 @@ export default function AssignReaderDialog({
           <FormControl fullWidth>
             <InputLabel>{t3("selectReader")}</InputLabel>
             <Select
-              labelId="reader-select-label"
-              id="reader-select"
               value={allReaders}
               onChange={handleChange}
               label={t3("selectReader")}
@@ -174,6 +161,24 @@ export default function AssignReaderDialog({
           </Button>
         </DialogActions>
       </Dialog>
+      {successType === "assign" && successMessage && (
+        <Snackbar
+          open={open}
+          autoHideDuration={3000}
+          anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        >
+          <Alert severity="success">{successMessage}</Alert>
+        </Snackbar>
+      )}
+      {error && (
+        <Snackbar
+          open={open}
+          autoHideDuration={3000}
+          anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        >
+          <Alert severity="error">{error}</Alert>
+        </Snackbar>
+      )}
     </React.Fragment>
   );
 }

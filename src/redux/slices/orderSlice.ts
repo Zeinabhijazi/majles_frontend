@@ -3,10 +3,25 @@ import api from "@/lib/axios";
 import { ApiResponse } from "@/types/apiResponse";
 import { Order } from "@/types/order";
 import { PaginationDto } from "@/types/pagination";
+import { OrderForEdit } from "@/types/orderForEdits";
+interface OrderDetails {
+  id: number;
+  orderDate: Date | null;
+  addressOne: string;
+  addressTwo?: string;
+  city: string;
+  postNumber: number;
+  country: string;
+  latitude: number;
+  longitude: number;
+}
 interface OrderState {
+  isLoading: boolean;
   orders: Order[];
-  successMessage: string;
+  orderDetails: OrderDetails;
   error: string | null;
+  successMessage: string | null;
+  successType: "assign" | "cancel" | "update" | null;
   pageCount: number;
   itemsCount: number;
   itemsCountWithDel: number;
@@ -16,9 +31,22 @@ interface OrderState {
 }
 
 const initialState: OrderState = {
+  isLoading: false,
   orders: [],
-  successMessage: "",
+  orderDetails: {
+    id: 0,
+    orderDate: null,
+    addressOne: "",
+    addressTwo: "",
+    city: "",
+    postNumber: 0,
+    country: "",
+    latitude: 0,
+    longitude: 0,
+  },
   error: null,
+  successMessage: null,
+  successType: null,
   pageCount: 0,
   itemsCount: 0,
   itemsCountWithDel: 0,
@@ -36,6 +64,7 @@ type FetchOrdersArgs = {
   search?: string;
 };
 
+// Fetch all orders
 export const fetchOrders = createAsyncThunk(
   "FETCHORDERS",
   async (
@@ -60,10 +89,40 @@ export const fetchOrders = createAsyncThunk(
   }
 );
 
-export const fetchOrdersForLoggedUser = createAsyncThunk (
-  "FETCHORDERSFORLOGGEDUSER", 
+// Assign reader for order
+export const handleAssignReader = createAsyncThunk<
+  { orderId: number; readerId: number; message: string }, // return type
+  { readerId: number; orderId: number }, // arguments
+  { rejectValue: string }
+>("ASSIGNREADER", async ({ readerId, orderId }, { rejectWithValue }) => {
+  if (!readerId) {
+    return rejectWithValue("Please select a reader first");
+  }
+
+  try {
+    const response = await api.put(`api/admin/${orderId}`, {
+      readerId: readerId,
+    });
+
+    if (!response.data.success) {
+      return rejectWithValue("Failed to assign a reader");
+    }
+
+    return {
+      orderId,
+      readerId,
+      message: "Assigned successfully",
+    };
+  } catch (error: any) {
+    return rejectWithValue("Failed to assign reader");
+  }
+});
+
+// Fetch the orders of user
+export const fetchOrdersForLoggedUser = createAsyncThunk(
+  "FETCHORDERSFORLOGGEDUSER",
   async (
-    { page = 1, limit = 10, status, search}: FetchOrdersArgs,
+    { page = 1, limit = 10, status, search }: FetchOrdersArgs,
     { rejectWithValue }
   ) => {
     try {
@@ -81,47 +140,66 @@ export const fetchOrdersForLoggedUser = createAsyncThunk (
       return rejectWithValue("Failed to fetch orders of this client");
     }
   }
-); 
+);
 
-
-export const handleAssignReader = createAsyncThunk<
-  { orderId: number; readerId: number; message: string },
-  { readerId: number; orderId: number },
+// To cancel an order
+export const cancelOrder = createAsyncThunk<
+  { orderId: number; message: string },
+  number,
   { rejectValue: string }
->("ASSIGNREADER", async ({ readerId, orderId }, { rejectWithValue }) => {
-  if (!readerId) {
-    return rejectWithValue("Please select a reader first");
-  }
-
+>("DELETEDORDER", async (orderId, { rejectWithValue }) => {
   try {
-    const response = await api.put(`api/admin/${orderId}`, {
-      readerId: readerId,
-    });
+    const response = await api.delete(`api/order/${orderId}`);
     if (!response.data.success) {
       return rejectWithValue("Failed to delete order");
     }
     return {
       orderId,
-      readerId,
-      message: `order of id: ${orderId} assigned successfully`,
+      message: "Deleted successfully",
     };
-  } catch (error: any) {
+  } catch (error) {
     return rejectWithValue("Failed to delete order");
   }
 });
 
-// Create the slice
+// To update an order
+export const updateOrder = createAsyncThunk(
+  "UPDATEORDER",
+  async (
+    { formData, orderId }: { formData: OrderForEdit; orderId: number },
+    { rejectWithValue }
+  ) => {
+    try {
+      const response = await api.put(`api/order/${orderId}`, formData);
+
+      if (!response.data.success) {
+        return rejectWithValue("Failed to update order");
+      }
+
+      return {
+        order: response.data.data,
+        message: "Order Updated Successfully",
+      };
+    } catch (error) {
+      return rejectWithValue("Failed to update order");
+    }
+  }
+);
+
 const orderSlice = createSlice({
   name: "orders",
   initialState,
   reducers: {
     clearSuccessMessage: (state) => {
-      state.successMessage = "";
+      state.successMessage = null;
       state.error = null;
     },
-  }, // Contain the functions which will modify the state
+  },
   extraReducers: (builder) => {
     builder
+      .addCase(fetchOrders.pending, (state: any) => {
+        state.isLoading = true;
+      })
       .addCase(fetchOrders.fulfilled, (state, action) => {
         state.orders = action.payload.content;
         state.itemsCount = action.payload.itemsCount;
@@ -131,6 +209,9 @@ const orderSlice = createSlice({
       .addCase(fetchOrders.rejected, (state, action) => {
         state.error = action.error.message || "Failed to fetch orders";
       })
+      .addCase(handleAssignReader.pending, (state: any) => {
+        state.isLoading = true;
+      })
       .addCase(handleAssignReader.fulfilled, (state, action) => {
         const { orderId, readerId, message } = action.payload;
         const order = state.orders.find((o) => o.id === orderId);
@@ -139,21 +220,59 @@ const orderSlice = createSlice({
           order.readerId = readerId;
         }
         state.successMessage = message;
+        state.successType = "assign";
       })
       .addCase(handleAssignReader.rejected, (state, action) => {
-        state.error = action.payload || "Delete failed";
+        state.error = action.payload || "Failed to assign";
       })
-      .addCase(fetchOrdersForLoggedUser.fulfilled, (state,action) => {
+      .addCase(fetchOrdersForLoggedUser.pending, (state: any) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchOrdersForLoggedUser.fulfilled, (state, action) => {
         state.orders = action.payload.content;
         state.itemsCount = action.payload.itemsCount;
         state.pageCount = action.payload.pageCount;
-        state.completedItemsCount =action.payload.completedItemsCount;
+        state.completedItemsCount = action.payload.completedItemsCount;
         state.pendingItemsCount = action.payload.pendingItemsCount;
         state.totalOrders = action.payload.totalOrders;
       })
       .addCase(fetchOrdersForLoggedUser.rejected, (state, action) => {
-        state.error = action.error.message || "Failed to fetch orders of this client";
+        state.error =
+          action.error.message || "Failed to fetch orders of this client";
       })
+      .addCase(cancelOrder.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(cancelOrder.fulfilled, (state, action) => {
+        const { orderId, message } = action.payload;
+        state.orders = state.orders.map((o) =>
+          o.id === orderId ? { ...o, isDeleted: true } : o
+        );
+        state.successMessage = message;
+        state.successType = "cancel";
+      })
+      .addCase(cancelOrder.rejected, (state, action) => {
+        state.error = action.payload || "Delete failed";
+      })
+      .addCase(updateOrder.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateOrder.fulfilled, (state, action) => {
+        const updatedOrder = action.payload.order;
+        const index = state.orders.findIndex((o) => o.id === updatedOrder.id);
+        if (index !== -1) {
+          state.orders[index] = {
+            ...state.orders[index], 
+            ...updatedOrder,   
+        };
+        }
+        state.successType = "update";
+        state.successMessage = action.payload.message;
+      })
+      .addCase(updateOrder.rejected, (state, action) => {
+        state.error =
+          action.error.message || "Failed to update an order";
+      });
   },
 });
 

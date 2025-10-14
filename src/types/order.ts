@@ -13,13 +13,13 @@ export interface Order {
     lastName: string;
   } | null;
 
-  orderDate: string;
+  orderDate: Date;
   userType: string;
   longitude?: string;
   latitude?: string;
   addressOne?: string;
   addressTwo?: string;
-  postNumber?: string;
+  postNumber?: number;
   country?: string;
   city: string;
   isDeleted: boolean;

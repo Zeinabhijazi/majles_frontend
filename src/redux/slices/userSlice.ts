@@ -6,6 +6,7 @@ import { User } from "@/types/user";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 interface UserDetails {
+  id?: number;
   firstName: string;
   lastName: string;
   gender: string;
@@ -20,11 +21,11 @@ interface UserDetails {
   email?: string;
   userType?: string;
 }
-
 interface UserState {
   users: User[];
   userDetails: UserDetails;
-  successMessage: string;
+  successMessage: string | null;
+  successType: "delete" | "update" | null;
   isLoading: boolean;
   error: string | null;
   pageCount: number;
@@ -35,6 +36,7 @@ interface UserState {
 const initialState: UserState = {
   users: [],
   userDetails: {
+    id: 0,
     firstName: "",
     lastName: "",
     gender: "",
@@ -49,6 +51,7 @@ const initialState: UserState = {
     email: "",
   },
   successMessage: "",
+  successType: null,
   isLoading: false,
   error: null,
   pageCount: 0,
@@ -63,7 +66,7 @@ type FetchUsersArgs = {
   search?: string;
 };
 
-// Fetch all users or filters
+// Fetch all users
 export const fetchUsers = createAsyncThunk(
   "FETCHUSERS",
   async (
@@ -88,39 +91,6 @@ export const fetchUsers = createAsyncThunk(
   }
 );
 
-// Fetch specific user details
-export const fetchUserDetails = createAsyncThunk(
-  "FETCHUSERSDETAILS",
-  async (_, { rejectWithValue }) => {
-    try {
-      const response = await api.get<ApiResponse<UserDetails>>("api/user");
-      return response.data.data;
-    } catch (error) {
-      return rejectWithValue("Failed to fetch users");
-    }
-  }
-);
-
-// Fetch all reader
-export const fetchReaders = createAsyncThunk(
-  "FETCHREADERS",
-  async ({ page = 1, limit = 10, search }: FetchUsersArgs, { rejectWithValue }) => {
-    try {
-      const response = await api.get<ApiResponse<PaginationDto<User>>>(
-        `api/dashboard/allReaders?page=${page}&limit=${limit}&userType=reader`, 
-        {
-          params: {
-            ...(search ? { search } : {}),
-          }
-        }
-      );
-      return response.data.data;
-    } catch (error: any) {
-      return rejectWithValue("Failed to fetch users");
-    }
-  }
-);
-
 // To delete a user
 export const deleteUser = createAsyncThunk<
   { userId: number; message: string },
@@ -134,17 +104,53 @@ export const deleteUser = createAsyncThunk<
     }
     return {
       userId,
-      message: `User of id: ${userId} deleted successfully`,
+      message: "Deleted successfully",
     };
   } catch (error) {
-    return rejectWithValue("Failed to delete users");
+    return rejectWithValue("Failed to delete user");
   }
 });
+
+// Fetch all readers
+export const fetchReaders = createAsyncThunk(
+  "FETCHREADERS",
+  async (
+    { page = 1, limit = 10, search }: FetchUsersArgs,
+    { rejectWithValue }
+  ) => {
+    try {
+      const response = await api.get<ApiResponse<PaginationDto<User>>>(
+        `api/dashboard/allReaders?page=${page}&limit=${limit}&userType=reader`,
+        {
+          params: {
+            ...(search ? { search } : {}),
+          },
+        }
+      );
+      return response.data.data;
+    } catch (error: any) {
+      return rejectWithValue("Failed to fetch readers");
+    }
+  }
+);
+
+// Fetch specific user details
+export const fetchUserDetails = createAsyncThunk(
+  "FETCHUSERSDETAILS",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await api.get<ApiResponse<UserDetails>>("api/user");
+      return response.data.data;
+    } catch (error) {
+      return rejectWithValue("Failed to fetch user informations");
+    }
+  }
+);
 
 // To update a user
 export const updateUser = createAsyncThunk<
   { user: UserDetails; message: string }, // return type
-  UpdateUser, // argument type
+  UpdateUser, // argument
   { rejectValue: string }
 >("UPDATEUSER", async (formData, { rejectWithValue }) => {
   try {
@@ -155,7 +161,7 @@ export const updateUser = createAsyncThunk<
     }
     return {
       user: response.data.data,
-      message: `User Updated successfully`,
+      message: "User Updated successfully",
     };
   } catch (error) {
     return rejectWithValue("Failed to update users");
@@ -168,12 +174,14 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     clearSuccessMessage: (state) => {
-      state.successMessage = "";
+      state.successMessage = null;
       state.error = null;
     },
     loadUserData: (state) => {
-      state.userDetails = JSON.parse(localStorage.getItem("userDetails") ?? "{}")
-    } 
+      state.userDetails = JSON.parse(
+        localStorage.getItem("userDetails") ?? "{}"
+      );
+    },
   }, // Contain the functions which will modify the state
   extraReducers: (builder) => {
     builder
@@ -190,11 +198,22 @@ const userSlice = createSlice({
         state.isLoading = false;
         state.error = action.error.message || "Failed to fetch users";
       })
-      .addCase(fetchUserDetails.fulfilled, (state, action) => {
-        state.userDetails = action.payload;
+      .addCase(deleteUser.pending, (state) => {
+        state.isLoading = true;
       })
-      .addCase(fetchUserDetails.rejected, (state, action) => {
-        state.error = action.error.message || "Failed to fetch user details";
+      .addCase(deleteUser.fulfilled, (state, action) => {
+        const { userId, message } = action.payload;
+        state.users = state.users.map((u) =>
+          u.id === userId ? { ...u, isDeleted: true } : u
+        );
+        state.successMessage = message;
+        state.successType = "delete";
+      })
+      .addCase(deleteUser.rejected, (state, action) => {
+        state.error = action.payload || "Delete failed";
+      })
+      .addCase(fetchReaders.pending, (state) => {
+        state.isLoading = true;
       })
       .addCase(fetchReaders.fulfilled, (state, action) => {
         state.users = action.payload.content;
@@ -204,23 +223,27 @@ const userSlice = createSlice({
       .addCase(fetchReaders.rejected, (state, action) => {
         state.error = action.error.message || "Failed to fetch user details";
       })
-      .addCase(deleteUser.fulfilled, (state, action) => {
-        const { userId, message } = action.payload;
-        const user = state.users.find((u) => u.id === userId);
-        if (user) {
-          user.isDeleted = true;
-        }
-        state.successMessage = message;
+      .addCase(fetchUserDetails.pending, (state) => {
+        state.isLoading = true;
       })
-      .addCase(deleteUser.rejected, (state, action) => {
-        state.error = action.payload || "Delete failed";
+      .addCase(fetchUserDetails.fulfilled, (state, action) => {
+        state.userDetails = action.payload;
+      })
+      .addCase(fetchUserDetails.rejected, (state, action) => {
+        state.error =
+          action.error.message || "Failed to fetch user informations";
+      })
+      .addCase(updateUser.pending, (state) => {
+        state.isLoading = true;
       })
       .addCase(updateUser.fulfilled, (state, action) => {
-        const { message } = action.payload;
+        const { user, message } = action.payload; // update the state
+        state.userDetails = user;
         state.successMessage = message;
+        state.successType = "update";
       })
       .addCase(updateUser.rejected, (state, action) => {
-        state.error = action.payload || "Update failed";
+        state.error = action.payload || "Failed to update";
       });
   },
 });

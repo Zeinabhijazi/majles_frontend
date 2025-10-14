@@ -12,15 +12,14 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import OpenInNew from "@mui/icons-material/OpenInNew";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
-import EditIcon from "@mui/icons-material/Edit";
 import { fetchOrdersForLoggedUser } from "@/redux/slices/orderSlice";
-import { Order } from "@/types/order";
-import OrderDetailsModal from "../AdminUI/OrderDetailsModal";
 import DeleteOrderDialog from "./deleteOrder";
 import { useTranslations } from "next-intl";
+import UpdateOrderModal from "./updateOrderModal";
+import { OrderForEdit } from "@/types/orderForEdits";
 
 interface Column {
-  id: "ID" | "Reader" | "Date" | "Time" | "Country" | "Status" | "Actions";
+  id: "ID" | "Reader" | "Date" | "Time" | "Status" | "Actions";
   label: string;
   minWidth?: number;
   align?: "left" | "right" | "center";
@@ -34,18 +33,17 @@ const ClientTable = () => {
     { id: "Reader", label: t1("reader"), minWidth: 100, align: "center" },
     { id: "Date", label: t1("date"), minWidth: 100, align: "center" },
     { id: "Time", label: t1("time"), minWidth: 100, align: "center" },
-    { id: "Country", label: t1("country"), minWidth: 100, align: "center" },
     { id: "Status", label: t2("status"), minWidth: 100, align: "center" },
     { id: "Actions", label: t1("actions"), minWidth: 100, align: "center" },
   ];
 
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const { orders, itemsCount } = useSelector((state: RootState) => state.order);
   const dispatch = useDispatch<AppDispatch>();
   const [openDetails, setOpenDetails] = useState(false);
-  const [openEdit, setOpenEdit] = useState(false);
-  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+  const [selectedOrder, setSelectedOrder] = useState<OrderForEdit| null>(null);
+  const [selectedOrderId, setSelectedOrderId] = useState<number | null>(null);
 
   useEffect(() => {
     dispatch(fetchOrdersForLoggedUser({}));
@@ -54,15 +52,30 @@ const ClientTable = () => {
   // Handle details modal
   const handleOpenDetails = (id: number) => {
     const specificOrder = orders.find((o) => o.id === id) || null;
-    setSelectedOrder(specificOrder);
+    if (specificOrder) {
+      setSelectedOrder({
+        readerId: Number(specificOrder.readerId),
+        orderDate: specificOrder.orderDate,
+        longitude: Number(specificOrder.longitude),
+        latitude: Number(specificOrder.latitude),
+        addressOne: specificOrder.addressOne,
+        addressTwo: specificOrder.addressTwo,
+        country: specificOrder.country,
+        city: specificOrder.city,
+        postNumber: specificOrder.postNumber
+      });
+    }
+    setSelectedOrderId(id);
     setOpenDetails(true);
   };
 
   const handleCloseDetails = () => {
     setSelectedOrder(null);
+    setSelectedOrderId(null);
     setOpenDetails(false);
   };
 
+  // Handle table
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
     dispatch(
@@ -81,7 +94,7 @@ const ClientTable = () => {
 
   return (
     <Paper sx={{ width: "100%", overflow: "hidden" }}>
-      <TableContainer className="table_scrollbar" sx={{ maxHeight: 450 }}>
+      <TableContainer className="table_scrollbar" sx={{ maxHeight: 360 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
@@ -111,7 +124,6 @@ const ClientTable = () => {
                   <TableCell align="center">
                     {new Date(row.orderDate).toLocaleTimeString()}
                   </TableCell>
-                  <TableCell align="center">{row.country}</TableCell>
                   <TableCell align="center">
                     {row.isAccepted === true && row.isDeleted === false ? (
                       <Typography variant="body2">{t2("completed")}</Typography>
@@ -131,30 +143,18 @@ const ClientTable = () => {
                         justifyContent: "center",
                       }}
                     >
-                      <IconButton onClick={() => handleOpenDetails(row.id)}>
-                        <OpenInNew color="secondary" />
+                      <IconButton>
+                        <OpenInNew
+                          color="secondary"
+                          onClick={() => handleOpenDetails(row.id)}
+                        />
                       </IconButton>
-                      <OrderDetailsModal
-                        open={openDetails}
-                        onClose={handleCloseDetails}
-                        order={selectedOrder}
-                      />
-                      {row.isAccepted === false && row.isDeleted === true ? (
-                        <>
-                          <Button variant="text" disabled>
-                            <DeleteIcon />
-                          </Button>
-                          <IconButton disabled>
-                            <EditIcon />
-                          </IconButton>
-                        </>
+                      {row.isAccepted === true || row.isDeleted === true ? (
+                        <Button variant="text" disabled>
+                          <DeleteIcon />
+                        </Button>
                       ) : (
-                        <>
-                          <DeleteOrderDialog orderId={row.id} />
-                          <IconButton disabled>
-                            <EditIcon color="secondary" />
-                          </IconButton>
-                        </>
+                        <DeleteOrderDialog orderId={row.id} />
                       )}
                     </Box>
                   </TableCell>
@@ -164,6 +164,14 @@ const ClientTable = () => {
           )}
         </Table>
       </TableContainer>
+      {selectedOrder && selectedOrderId !== null && (
+        <UpdateOrderModal
+          orderId={selectedOrderId}
+          open={openDetails}
+          onClose={handleCloseDetails}
+          order={selectedOrder}
+        />
+      )}
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"

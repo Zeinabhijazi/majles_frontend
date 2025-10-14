@@ -5,6 +5,7 @@ import {
   Box,
   Button,
   FormControlLabel,
+  FormHelperText,
   Grid,
   IconButton,
   InputAdornment,
@@ -26,9 +27,12 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "@/redux/store";
-import { fetchUserDetails, updateUser } from "@/redux/slices/userSlice";
+import {
+  clearSuccessMessage,
+  fetchUserDetails,
+  updateUser,
+} from "@/redux/slices/userSlice";
 import z from "zod";
-
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -92,8 +96,10 @@ export default function UserInformation() {
   const t3 = useTranslations("tab");
   const t4 = useTranslations("radioButton");
   const [value, setValue] = useState(0);
+  const { userDetails, successType, successMessage } = useSelector(
+    (state: RootState) => state.user
+  );
   const dispatch = useDispatch<AppDispatch>();
-  const { userDetails } = useSelector((state: RootState) => state.user);
   const [isEditting, setIsEditting] = useState(false);
   const [formData, setFormData] = useState<UserDetails>(userDetails);
   const [tempData, setTempData] = useState<UpdateUser>({
@@ -109,32 +115,39 @@ export default function UserInformation() {
     country: userDetails.country,
     city: userDetails.city,
   });
-  const [passwords, setPasswords] = useState<Passwords>({
-    oldPassword: "",
-    newPassword: "",
-    confirmPassword: "",
-  });
   const [showPassword, setShowPassword] = useState({
     oldPassword: false,
     newPassword: false,
     confirmPassword: false,
   });
-  const [error, setError] = useState<Partial<Passwords>>({});
-  const [alertText, setAlertText] = useState("");
+  const [passwords, setPasswords] = useState<Passwords>({
+    oldPassword: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
+  const [inputErrors, setInputErrors] = useState<
+    Partial<Record<keyof UpdateUser, string>>
+  >({});
+  const [errors, setErrors] = useState<Partial<Passwords>>({});
   const [successAlert, setSuccessAlert] = useState(false);
   const [warningAlert, setWarningAlert] = useState(false);
+  const [alertText, setAlertText] = useState("");
+
+  // For Tab
+  const handleChangeTab = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
 
   useEffect(() => {
     dispatch(fetchUserDetails());
   }, [dispatch]);
 
-  // Open edit
+  // Handle edit button
   const handleEditClick = () => {
     setTempData(formData);
     setIsEditting(true);
   };
 
-  // Close edit
   const handleEditingClose = () => {
     setFormData(tempData);
     setIsEditting(false);
@@ -154,24 +167,6 @@ export default function UserInformation() {
       setFormData(userDetails);
     }
   }, [userDetails]);
-
-  // For Tab
-  const handleChangeTab = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
-  };
-
-  // Toggle visibility for a password field
-  const handleToggleShow = (key: keyof typeof showPassword) => {
-    setShowPassword((prev) => ({ ...prev, [key]: !prev[key] }));
-  };
-
-  //
-  const hanldeChangePasswordFields = (
-    key: keyof typeof passwords,
-    value: string
-  ) => {
-    setPasswords((prev) => ({ ...prev, [key]: value }));
-  };
 
   // To get the currect location
   const handleGetLocation = () => {
@@ -197,74 +192,148 @@ export default function UserInformation() {
     );
   };
 
-  // schema
+  // Toggle visibility for a password field
+  const handleToggleShow = (key: keyof typeof showPassword) => {
+    setShowPassword((prev) => ({ ...prev, [key]: !prev[key] }));
+  };
+
+  // Handle passwords
+  const hanldeChangePasswordFields = (
+    key: keyof typeof passwords,
+    value: string
+  ) => {
+    setPasswords((prev) => ({ ...prev, [key]: value }));
+  };
+
+  // Schema
+  const userSchema = z.object({
+    firstName: z.string().nonempty("First name is required"),
+    lastName: z.string().nonempty("Last name is required"),
+    phoneNumber: z.string().nonempty("Phone Number is required"),
+    gender: z.enum(["male", "female"], "Please select a gender"),
+    addressOne: z.string().nonempty("Address One is required"),
+    addressTwo: z.string().optional(),
+    city: z.string().nonempty("City is required"),
+    postNumber: z.preprocess(
+      (val) => (val === "" ? undefined : Number(val)),
+      z.number("Post Code must be a number")
+    ),
+    country: z.string().nonempty("Country is required"),
+    longitude: z.preprocess(
+      (val) => (val === "" ? undefined : Number(val)),
+      z.number("Longitude must be a number")
+    ),
+    latitude: z.preprocess(
+      (val) => (val === "" ? undefined : Number(val)),
+      z.number("Latitude must be a number")
+    ),
+  });
+
   const passwordSchema = z.object({
     oldPassword: z.string().nonempty("Current password is required"),
     newPassword: z.string().nonempty("New password is required"),
     confirmPassword: z.string().nonempty("Confirm password is required"),
   });
 
+  // Validation
+  const validateInputs = (): boolean => {
+    const result = userSchema.safeParse(tempData);
+    if (result.success) {
+      setErrors({});
+      return true;
+    }
+
+    const fieldErrors: Partial<Record<keyof UpdateUser, string>> = {};
+    result.error.issues.forEach((issue) => {
+      const field = issue.path[0] as keyof UpdateUser;
+      fieldErrors[field] = issue.message;
+    });
+    setInputErrors(fieldErrors);
+    return false;
+  };
+
+  const validatePassword = (): boolean => {
+    // Validate fields
+    const result = passwordSchema.safeParse(passwords);
+    if (result.success) {
+      setErrors({});
+      return true;
+    }
+
+    const fieldErrors: Partial<Passwords> = {};
+    result.error.issues.forEach((issue) => {
+      const field = issue.path[0] as keyof Passwords;
+      fieldErrors[field] = issue.message;
+    });
+
+    setErrors(fieldErrors);
+    return false;
+  };
+
   // To change password
   const hanldeChangePassword = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Validate fields
-    const validation = passwordSchema.safeParse(passwords);
-
-    if (!validation.success) {
-      const fieldErrors: Partial<Passwords> = {};
-      validation.error.issues.forEach((issue) => {
-        const field = issue.path[0] as keyof Passwords;
-        fieldErrors[field] = issue.message;
-      });
-      setError(fieldErrors);
-      return;
-    }
-    setError({});
-
-    // Check newPassword === confirmPassword
-    if (passwords.newPassword !== passwords.confirmPassword) {
-      setAlertText("New password and confirm password do not match.");
-      setWarningAlert(true);
-      return;
-    }
     try {
+      // Validation
+      if (!validatePassword()) return;
+
+      // Check if new and confirm password match
+      if (passwords.newPassword !== passwords.confirmPassword) {
+        setAlertText("New password and confirm password do not match.");
+        setWarningAlert(true);
+        setTimeout(() => setWarningAlert(false), 3000);
+        return;
+      }
+
       // Call backend to change password
       const response = await api.put("/api/user/changePassword", {
         oldPassword: passwords.oldPassword,
         newPassword: passwords.newPassword,
       });
 
+      // Handle backend response
       if (response.data.success) {
         setAlertText("Password changed successfully.");
         setSuccessAlert(true);
-        setPasswords({ oldPassword: "", newPassword: "", confirmPassword: "" });
+        setPasswords({
+          oldPassword: "",
+          newPassword: "",
+          confirmPassword: "",
+        });
+
+        setTimeout(() => setSuccessAlert(false), 3000);
       } else {
-        setAlertText(response.data?.message || "Failed to change password.");
+        setAlertText(response.data.message || "Failed to change password.");
         setWarningAlert(true);
+        setTimeout(() => setWarningAlert(false), 3000);
       }
     } catch (err: any) {
-      const msg =
+      // Handle errors (like wrong old password)
+      const message =
         err.response?.data?.message ||
-        err.response?.data?.data?.message ||
         "An unexpected error occurred. Please try again.";
-      setAlertText(msg);
+      setAlertText(message);
       setWarningAlert(true);
+      setTimeout(() => setWarningAlert(false), 3000);
     }
   };
 
-  const textFieldSx = {
-    "& .MuiOutlinedInput-root": {
-      borderRadius: "4px",
-      width: "100%",
-      height: "50px",
-      color: "#fff",
-    },
-    input: { height: "50px", padding: "0 12px" },
-  };
+  useEffect(() => {
+    if (successType === "update" && successMessage) {
+      setAlertText(successMessage);
+      setSuccessAlert(true);
+      setTimeout(() => {
+        setSuccessAlert(false);
+        dispatch(clearSuccessMessage());
+      }, 2500);
+    }
+  }, [successMessage, successType]);
 
   // To update data
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
+    // Validation
+    if (!validateInputs()) return;
     const {
       firstName,
       lastName,
@@ -297,6 +366,16 @@ export default function UserInformation() {
     setIsEditting(false);
   };
 
+  const textFieldSx = {
+    "& .MuiOutlinedInput-root": {
+      borderRadius: "4px",
+      width: "100%",
+      height: "50px",
+      color: "#fff",
+    },
+    input: { height: "50px", padding: "0 12px" },
+  };
+
   return (
     <Box component="section">
       <Tabs
@@ -316,6 +395,7 @@ export default function UserInformation() {
       {/* Personal */}
       <TabPanel value={value} index={0}>
         <Box
+          className="table_scrollbar"
           component="form"
           noValidate
           onSubmit={handleSave}
@@ -327,6 +407,8 @@ export default function UserInformation() {
             margin: "auto",
             gap: 2,
             height: "100%",
+            overflowY: "auto",
+            pr: 2,
           }}
         >
           {!isEditting ? (
@@ -349,7 +431,7 @@ export default function UserInformation() {
             </IconButton>
           )}
 
-          <Grid container sx={{ height: 30 }}>
+          <Grid container>
             <Grid size={4}>
               <Typography>
                 <strong>{t1("firstName")}:</strong>
@@ -361,8 +443,18 @@ export default function UserInformation() {
                   value={tempData.firstName}
                   onChange={(e) => handleChange("firstName", e.target.value)}
                   size="small"
-                  sx={{ width: "50%" }}
+                  sx={{
+                    width: "50%",
+                    "& .MuiFormHelperText-root": {
+                      marginTop: "4px", // space between input and helper text
+                      fontSize: "0.75rem",
+                      lineHeight: 1.2,
+                      color: "#f44336", // red for visibility in dark mode
+                    },
+                  }}
                   required
+                  error={!!inputErrors.firstName}
+                  helperText={inputErrors.firstName}
                 />
               ) : (
                 <span>{formData.firstName}</span>
@@ -370,7 +462,7 @@ export default function UserInformation() {
             </Grid>
           </Grid>
 
-          <Grid container sx={{ height: 30 }}>
+          <Grid container>
             <Grid size={4}>
               <Typography>
                 <strong>{t1("lastName")}:</strong>
@@ -384,6 +476,8 @@ export default function UserInformation() {
                   size="small"
                   sx={{ width: "50%" }}
                   required
+                  error={!!inputErrors.lastName}
+                  helperText={inputErrors.lastName}
                 />
               ) : (
                 <span>{formData.lastName}</span>
@@ -391,7 +485,7 @@ export default function UserInformation() {
             </Grid>
           </Grid>
 
-          <Grid container sx={{ height: 30 }}>
+          <Grid container>
             <Grid size={4}>
               <Typography>
                 <strong>{t1("phoneNumber")}:</strong>
@@ -405,6 +499,8 @@ export default function UserInformation() {
                   size="small"
                   sx={{ width: "50%" }}
                   required
+                  error={!!inputErrors.phoneNumber}
+                  helperText={inputErrors.phoneNumber}
                 />
               ) : (
                 <span>{formData.phoneNumber}</span>
@@ -412,7 +508,7 @@ export default function UserInformation() {
             </Grid>
           </Grid>
 
-          <Grid container sx={{ height: 30 }}>
+          <Grid container>
             <Grid size={4}>
               <Typography>
                 <strong>{t4("gender")}:</strong>
@@ -435,6 +531,9 @@ export default function UserInformation() {
                     control={<Radio color="secondary" size="small" />}
                     label={t4("female")}
                   />
+                  <FormHelperText sx={{ color: "#d32f2f" }}>
+                    {!!inputErrors.gender ? "Please select a gender" : ""}
+                  </FormHelperText>
                 </RadioGroup>
               ) : (
                 <span>
@@ -444,7 +543,7 @@ export default function UserInformation() {
             </Grid>
           </Grid>
 
-          <Grid container sx={{ height: 30 }}>
+          <Grid container>
             <Grid size={4}>
               <Typography>
                 <strong>{t1("coordinates")}:</strong>
@@ -458,12 +557,16 @@ export default function UserInformation() {
                     size="small"
                     sx={{ width: "50%" }}
                     InputProps={{ readOnly: true }}
+                    error={!!inputErrors.latitude}
+                    helperText={inputErrors.latitude}
                   />
                   <TextField
                     value={tempData.longitude}
                     size="small"
                     sx={{ width: "50%" }}
                     InputProps={{ readOnly: true }}
+                    error={!!inputErrors.longitude}
+                    helperText={inputErrors.longitude}
                   />
                   <IconButton onClick={handleGetLocation}>
                     <EditLocationAltIcon color="secondary" />
@@ -477,7 +580,7 @@ export default function UserInformation() {
             </Grid>
           </Grid>
 
-          <Grid container sx={{ height: 115 }}>
+          <Grid container>
             <Grid size={4}>
               <Typography>
                 <strong>{t1("address")}:</strong>
@@ -494,6 +597,8 @@ export default function UserInformation() {
                       }
                       size="small"
                       fullWidth
+                      error={!!inputErrors.addressOne}
+                      helperText={inputErrors.addressOne}
                     />
                     <TextField
                       value={tempData.addressTwo}
@@ -502,6 +607,8 @@ export default function UserInformation() {
                       }
                       size="small"
                       fullWidth
+                      error={!!inputErrors.addressTwo}
+                      helperText={inputErrors.addressTwo}
                     />
                   </Box>
                   <Box sx={{ display: "flex", gap: 1 }}>
@@ -510,6 +617,8 @@ export default function UserInformation() {
                       onChange={(e) => handleChange("city", e.target.value)}
                       size="small"
                       fullWidth
+                      error={!!inputErrors.city}
+                      helperText={inputErrors.city}
                     />
                     <TextField
                       value={tempData.postNumber}
@@ -518,6 +627,8 @@ export default function UserInformation() {
                       }
                       size="small"
                       fullWidth
+                      error={!!inputErrors.postNumber}
+                      helperText={inputErrors.postNumber}
                     />
                   </Box>
                   <TextField
@@ -525,6 +636,8 @@ export default function UserInformation() {
                     onChange={(e) => handleChange("country", e.target.value)}
                     size="small"
                     fullWidth
+                    error={!!inputErrors.country}
+                    helperText={inputErrors.country}
                   />
                 </Box>
               ) : (
@@ -535,6 +648,7 @@ export default function UserInformation() {
               )}
             </Grid>
           </Grid>
+
           <Grid>
             <Button
               variant="contained"
@@ -609,8 +723,8 @@ export default function UserInformation() {
                 hanldeChangePasswordFields("oldPassword", e.target.value)
               }
               sx={textFieldSx}
-              error={!!error.oldPassword}
-              helperText={error.oldPassword}
+              error={!!errors.oldPassword}
+              helperText={errors.oldPassword}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
@@ -648,8 +762,8 @@ export default function UserInformation() {
               variant="outlined"
               type={showPassword.newPassword ? "text" : "password"}
               value={passwords.newPassword}
-              error={!!error.newPassword}
-              helperText={error.newPassword}
+              error={!!errors.newPassword}
+              helperText={errors.newPassword}
               onChange={(e) =>
                 hanldeChangePasswordFields("newPassword", e.target.value)
               }
@@ -691,8 +805,8 @@ export default function UserInformation() {
               variant="outlined"
               type={showPassword.confirmPassword ? "text" : "password"}
               value={passwords.confirmPassword}
-              error={!!error.confirmPassword}
-              helperText={error.confirmPassword}
+              error={!!errors.confirmPassword}
+              helperText={errors.confirmPassword}
               onChange={(e) =>
                 hanldeChangePasswordFields("confirmPassword", e.target.value)
               }
@@ -736,27 +850,21 @@ export default function UserInformation() {
               {t2("changePassword")}
             </Button>
           </Grid>
-
-          {/* Alerts */}
-          <Snackbar
-            anchorOrigin={{ vertical: "top", horizontal: "right" }}
-            open={successAlert}
-            autoHideDuration={3000}
-            onClose={() => setSuccessAlert(false)}
-          >
-            <Alert severity="success">{alertText}</Alert>
-          </Snackbar>
-
-          <Snackbar
-            anchorOrigin={{ vertical: "top", horizontal: "right" }}
-            open={warningAlert}
-            autoHideDuration={3000}
-            onClose={() => setWarningAlert(false)}
-          >
-            <Alert severity="warning">{alertText}</Alert>
-          </Snackbar>
         </Box>
       </TabPanel>
+      {/* Alerts */}
+      <Snackbar
+        open={successAlert}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert severity="success">{alertText}</Alert>
+      </Snackbar>
+      <Snackbar
+        open={warningAlert}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert severity="warning">{alertText}</Alert>
+      </Snackbar>
     </Box>
   );
 }

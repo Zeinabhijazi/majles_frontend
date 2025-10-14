@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import {
+  Alert,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-  IconButton,
   Slide,
   Snackbar,
 } from "@mui/material";
@@ -15,7 +15,6 @@ import { useTranslations } from "next-intl";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { clearSuccessMessage, deleteUser } from "@/redux/slices/userSlice";
-import CloseIcon from "@mui/icons-material/Close";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -33,36 +32,21 @@ export default function DeleteDialog({ userId }: Readonly<DeleteDialogProps>) {
   const t1 = useTranslations("button");
   const t2 = useTranslations("heading");
   const [openDelete, setOpenDelete] = useState(false);
-  const { successMessage, error } = useSelector(
+  const [open, setOpen] = useState(false);
+  const { successMessage, successType } = useSelector(
     (state: RootState) => state.user
   );
   const dispatch = useDispatch<AppDispatch>();
-  const [open, setOpen] = useState(false);
-  const [message, setMessage] = useState("");
-
-  const action = (
-    <IconButton
-      size="small"
-      aria-label="close"
-      onClick={() => {
-        setOpen(false);
-        dispatch(clearSuccessMessage()); // ✅ clears Redux
-      }}
-    >
-      <CloseIcon fontSize="small" />
-    </IconButton>
-  );
 
   useEffect(() => {
-    if (successMessage) {
-      setMessage(successMessage);
+    if (successType === "delete" && successMessage) {
       setOpen(true);
+      setTimeout(() => {
+        setOpen(false);
+        dispatch(clearSuccessMessage())
+      }, 2500);
     }
-    if (error) {
-      setMessage(error);
-      setOpen(true);
-    }
-  }, [successMessage, error]);
+  }, [successMessage, successType]);
 
   const handleOpenDelete = (id: number) => {
     setOpenDelete(true);
@@ -72,18 +56,13 @@ export default function DeleteDialog({ userId }: Readonly<DeleteDialogProps>) {
     setOpenDelete(false);
   };
 
+  // Handle submit
   const handleDelete = (userId: number) => {
     dispatch(deleteUser(userId));
-    handleCloseDelete();
   };
+
   return (
     <React.Fragment>
-      <Snackbar
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        open={open}
-        message={message}
-        action={action}
-      />
       <Button
         variant="text"
         color="secondary"
@@ -95,7 +74,6 @@ export default function DeleteDialog({ userId }: Readonly<DeleteDialogProps>) {
         open={openDelete}
         TransitionComponent={Transition}
         keepMounted
-        onClose={handleCloseDelete}
         PaperProps={{
           sx: {
             border: "1px solid #fff",
@@ -123,6 +101,15 @@ export default function DeleteDialog({ userId }: Readonly<DeleteDialogProps>) {
           </Button>
         </DialogActions>
       </Dialog>
+      {successType === "delete" && successMessage && (
+        <Snackbar
+          open={open}
+          autoHideDuration={3000}
+          anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        >
+          <Alert severity="success">{successMessage}</Alert>
+        </Snackbar>
+      )}
     </React.Fragment>
   );
 }

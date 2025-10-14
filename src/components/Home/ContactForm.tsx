@@ -1,7 +1,17 @@
 import React, { useState } from "react";
-import { Box, Button, Grid, TextField, Typography } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  Grid,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useTranslations } from "next-intl";
 import api from "@/lib/axios";
+import CheckIcon from "@mui/icons-material/Check";
+import z from "zod";
 
 export default function ContactForm() {
   const t1 = useTranslations("label");
@@ -12,6 +22,10 @@ export default function ContactForm() {
     email: "",
     message: "",
   });
+  const [error, setError] = useState<{ [key: string]: string }>({});
+  const [successAlert, setSuccessAlert] = useState(false);
+  const [warningAlert, setWarningAlert] = useState(false);
+  const [alertText, setAlertText] = useState("");
 
   // Handle change on input
   const handleChange = (e: any) => {
@@ -27,10 +41,60 @@ export default function ContactForm() {
     input: { height: "50px", padding: "0 12px" },
   };
 
+  // schema
+  const formSchema = z.object({
+    firstname: z.string("Should be a Character"),
+    lastname: z.string("Should be a Character"),
+    email: z.string().email("Invalid email"),
+    message: z
+      .string()
+      .min(5, "Message should be clear and at least 5 characters"),
+  });
+
+  const validate = (): boolean => {
+    const result = formSchema.safeParse(formData);
+
+    if (result.success) {
+      setError({}); // clear previous errors
+      return true;
+    }
+
+    // Build the fieldErrors object from Zod errors
+    const fieldErrors: { [key: string]: string } = {};
+    result.error.issues.forEach((err) => {
+      const fieldName = err.path[0] as string;
+      fieldErrors[fieldName] = err.message;
+    });
+
+    setError(fieldErrors);
+    return false;
+  };
+
   // Function to send email
   const sendEmail = async () => {
     try {
       const response = await api.post("/api/mail/send", formData);
+      if (response.data.success) {
+        setAlertText("Email sent");
+        setSuccessAlert(true);
+        // Clear the inputs
+        setFormData({
+          firstname: "",
+          lastname: "",
+          email: "",
+          message: "",
+        });
+        // Hide alert after 3 seconds
+        setTimeout(() => {
+          setSuccessAlert(false);
+        }, 2500);
+      } else {
+        setAlertText("Failed to send email");
+        setWarningAlert(true);
+        setTimeout(() => {
+          setWarningAlert(false);
+        }, 3000);
+      }
     } catch (error) {
       console.error("An error occurred while sending the email", error);
     }
@@ -39,7 +103,9 @@ export default function ContactForm() {
   // Action on submit
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    sendEmail();
+    if (validate()) {
+      sendEmail();
+    }
   };
 
   return (
@@ -80,6 +146,8 @@ export default function ContactForm() {
             sx={textFieldSx}
             value={formData.firstname}
             onChange={handleChange}
+            error={!!error.firstname}
+            helperText={error.firstname}
           />
         </Grid>
         <Grid size={6}>
@@ -102,6 +170,8 @@ export default function ContactForm() {
             sx={textFieldSx}
             value={formData.lastname}
             onChange={handleChange}
+            error={!!error.lastname}
+            helperText={error.lastname}
           />
         </Grid>
       </Grid>
@@ -125,6 +195,8 @@ export default function ContactForm() {
           sx={textFieldSx}
           value={formData.email}
           onChange={handleChange}
+          error={!!error.email}
+          helperText={error.email}
         />
       </Grid>
       <Grid>
@@ -145,13 +217,15 @@ export default function ContactForm() {
           variant="outlined"
           color="secondary"
           value={formData.message}
+          error={!!error.message}
+          helperText={error.message}
           onChange={handleChange}
           multiline
           rows={4}
           sx={{
             "& .MuiOutlinedInput-root": {
               borderRadius: "12px",
-            }
+            },
           }}
         />
       </Grid>
@@ -169,6 +243,22 @@ export default function ContactForm() {
       >
         {t2("send")}
       </Button>
+      <Stack>
+        {successAlert && (
+          <Alert
+            sx={{ margin: "10px" }}
+            icon={<CheckIcon fontSize="inherit" />}
+            severity="success"
+          >
+            {alertText}
+          </Alert>
+        )}
+        {warningAlert && (
+          <Alert sx={{ margin: "10px" }} severity="error">
+            {alertText}
+          </Alert>
+        )}
+      </Stack>
     </Box>
   );
 }

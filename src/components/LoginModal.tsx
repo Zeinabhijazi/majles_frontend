@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Backdrop,
   Box,
@@ -11,6 +11,8 @@ import {
   TextField,
   Typography,
   IconButton,
+  Alert,
+  Stack,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useTranslations } from "next-intl";
@@ -18,12 +20,11 @@ import { Link, useRouter } from "@/i18n/navigation";
 import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import Snackbar from "@mui/material/Snackbar";
 import { z } from "zod";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/redux/store";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/redux/store";
 import { login } from "@/redux/slices/authSlice";
-import { loadUserData } from "@/redux/slices/userSlice";
+import CheckIcon from "@mui/icons-material/Check";
 
 const style = {
   position: "absolute",
@@ -35,7 +36,6 @@ const style = {
   boxShadow: 24,
   p: 3,
 };
-
 interface ModalProps {
   open: boolean;
   onClose: () => void;
@@ -103,39 +103,33 @@ export default function LoginModal({
       if (validate()) {
         const userData = await dispatch(login({ email, password })).unwrap(); // unwrap(): continue when the thunk return the respone
 
-        console.log(userData.userType);
-
         if (userData.userType !== "admin") {
+          setAlertText("Login Successfully.");
+          setSuccessAlert(true);
+          // Clear the inputs
           setEmail("");
           setPassword("");
-          onClose();
-          router.replace("/");
-          window.location.reload();
+          // Hide alert after 3 seconds
+          setTimeout(() => {
+            setSuccessAlert(false);
+            onClose();
+            router.replace("/");
+            window.location.reload();
+          }, 2500);
         }
       }
     } catch (err: any) {
       if (err) {
+        setAlertText(err);
+        setWarningAlert(true);
+        setTimeout(() => {
+          setWarningAlert(false);
+        }, 3000);
+      } else {
         setAlertText("An unexpected error occurred. Please try again.");
       }
-      setWarningAlert(true);
     }
   };
-
-  const action = (
-    <IconButton
-      size="small"
-      aria-label="close"
-      color="inherit"
-      onClick={() => {
-        setSuccessAlert(false);
-        setWarningAlert(false);
-        setEmail("");
-        setPassword("");
-      }}
-    >
-      <CloseIcon fontSize="small" />
-    </IconButton>
-  );
 
   return (
     <Modal
@@ -195,7 +189,7 @@ export default function LoginModal({
             sx={{
               width: "100%",
               height: "70%",
-              my: 2,
+              mt: 2,
             }}
           >
             <TextField
@@ -274,6 +268,7 @@ export default function LoginModal({
               sx={{
                 display: "flex",
                 flexDirection: "row",
+                mb: 2,
               }}
             >
               <Typography
@@ -301,23 +296,23 @@ export default function LoginModal({
               >
                 {t2("create")}
               </Button>
+            </Box>
+            <Stack>
               {successAlert && (
-                <Snackbar
-                  anchorOrigin={{ vertical: "top", horizontal: "right" }}
-                  open={successAlert}
-                  message={alertText}
-                  action={action}
-                />
+                <Alert
+                  sx={{ margin: "10px" }}
+                  icon={<CheckIcon fontSize="inherit" />}
+                  severity="success"
+                >
+                  {alertText}
+                </Alert>
               )}
               {warningAlert && (
-                <Snackbar
-                  anchorOrigin={{ vertical: "top", horizontal: "right" }}
-                  open={warningAlert}
-                  message={alertText}
-                  action={action}
-                />
+                <Alert sx={{ margin: "10px" }} severity="error">
+                  {alertText}
+                </Alert>
               )}
-            </Box>
+            </Stack>
           </FormControl>
         </Box>
       </Slide>

@@ -1,36 +1,36 @@
-import api from "@/lib/axios";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import api from "@/lib/axios";
 import { loadUserData } from "./userSlice";
-
 interface AuthState {
   isLoading: boolean;
   error: string | null;
-  successMessage: string;
 }
 
 const initialState: AuthState = {
-  isLoading: false, 
+  isLoading: false,
   error: null,
-  successMessage: "",
 };
 
 export const login = createAsyncThunk(
   "LOGIN",
-  async ({ email, password }: { email: string; password: string }, { dispatch }) => {
+  async (
+    { email, password }: { email: string; password: string },
+    { dispatch, rejectWithValue }
+  ) => {
     try {
-        const response = await api.post("api/auth/signin", { email, password });
+      const response = await api.post("api/auth/signin", { email, password });
 
-        // Save token to LocalStorage
-        const {token, ...userData} = response.data.data;
-        localStorage.setItem("token", token);
-        localStorage.setItem("userDetails", JSON.stringify(userData));
-        
-        // update userSlice with details
-        dispatch(loadUserData(userData));
+      // Save token and user data to LocalStorage
+      const { token, ...userData } = response.data.data;
+      localStorage.setItem("token", token);
+      localStorage.setItem("userDetails", JSON.stringify(userData));
 
-        return userData;
+      // update userSlice with details
+      dispatch(loadUserData(userData));
+
+      return userData;
     } catch (error: any) {
-      console.log(error);
+      return rejectWithValue("Failed to Login");
     }
   }
 );
@@ -38,20 +38,20 @@ export const login = createAsyncThunk(
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {}, 
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(login.pending, (state) => {
         state.isLoading = true;
         state.error = null;
       })
-      .addCase(login.fulfilled, (state, action) => {
+      .addCase(login.fulfilled, (state) => {
         state.isLoading = false;
       })
       .addCase(login.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message || "Failed to login";
-      })
+      });
   },
 });
 

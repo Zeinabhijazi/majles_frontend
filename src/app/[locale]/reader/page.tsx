@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect } from "react";
 import { Box, Grid, Typography } from "@mui/material";
-import CardData from "@/components/AdminUI/dataCard";
+import CardData from "@/components/Statistics/dataCard";
 import { AppDispatch, RootState } from "@/redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchOrdersForLoggedUser } from "@/redux/slices/orderSlice";

@@ -14,9 +14,9 @@ import {
   Button,
 } from "@mui/material";
 import { useTranslations } from "next-intl";
-import CreateOrderModal from "@/components/Reader/CreateOrderModal";
-import LoginModal from "@/components/LoginModal";
-import RegisterModal from "@/components/RegisterModal";
+import CreateOrderModal from "@/components/Forms/CreateOrderModal";
+import LoginModal from "@/components/Forms/LoginModal";
+import RegisterModal from "@/components/Forms/RegisterModal";
 import ReaderSearch from "@/components/Reader/readerSearch";
 export default function Readers() {
   const t1 = useTranslations("heading");

@@ -13,7 +13,7 @@ export default function ThemeRegistry({ children }: Readonly<{ children: React.R
   
   useEffect(() => {
     dispatch(loadUserData());  
-  }, []);
+  }, [dispatch]);
 
   return <CacheProvider value={cache}>{children}</CacheProvider>;
 }

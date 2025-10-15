@@ -13,10 +13,10 @@ import OpenInNew from "@mui/icons-material/OpenInNew";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { fetchOrdersForLoggedUser } from "@/redux/slices/orderSlice";
-import DeleteOrderDialog from "./deleteOrder";
 import { useTranslations } from "next-intl";
-import UpdateOrderModal from "./updateOrderModal";
+import UpdateOrderModal from "../Forms/updateOrderModal";
 import { OrderForEdit } from "@/types/orderForEdits";
+import DeleteOrderDialog from "../Dialog/deleteOrder";
 
 interface Column {
   id: "ID" | "Reader" | "Date" | "Time" | "Status" | "Actions";

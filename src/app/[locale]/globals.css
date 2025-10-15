@@ -21,19 +21,40 @@ body {
   top: 140px !important;
 }
 
-.table_scrollbar::-webkit-scrollbar {
-  width: 6px; /* Set the width of the scrollbar */
+.table_scrollbar::-webkit-scrollbar,
+.css-1ablnqd::-webkit-scrollbar {
+  width: 6px !important; /* Set the width of the scrollbar */
 }
 
-.table_scrollbar::-webkit-scrollbar-track {
-  background: "red"; 
+.table_scrollbar::-webkit-scrollbar-track,
+.css-1ablnqd::-webkit-scrollbar-track {
+  background: "red" !important; 
 }
 
-.table_scrollbar::-webkit-scrollbar-thumb {
-  background: #e72544;
-  border-radius: 3px; 
+.table_scrollbar::-webkit-scrollbar-thumb,
+.css-1ablnqd::-webkit-scrollbar-thumb {
+  background: #e72544 !important;
+  border-radius: 3px !important; 
 }
 
-.table_scrollbar::-webkit-scrollbar-thumb:hover {
-  background-color: #e72544; 
+.table_scrollbar::-webkit-scrollbar-thumb:hover,
+.css-1ablnqd::-webkit-scrollbar-thumb:hover {
+  background-color: #e72544 !important;
 }
+
+.css-735piw,
+.css-1tdeh38 {
+  display: none !important;
+}
+
+
+.css-wbhcvm-MuiDataGrid-root .MuiDataGrid-row:hover {
+  background-color: transparent !important;
+}
+
+.css-wbhcvm-MuiDataGrid-root .MuiDataGrid-columnHeader,
+.css-wbhcvm-MuiDataGrid-root .MuiDataGrid-columnHeaders .MuiDataGrid-scrollbarFiller,
+.css-wbhcvm-MuiDataGrid-root .MuiDataGrid-columnHeaders .MuiDataGrid-filler {
+  background-color: #242329 !important; 
+}
+

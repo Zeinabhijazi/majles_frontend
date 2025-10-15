@@ -8,14 +8,14 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { Box, Button } from "@mui/material";
-import OrderDetailsModal from "./OrderDetailsModal";
 import { useTranslations } from "next-intl";
 import OpenInNew from "@mui/icons-material/OpenInNew";
 import { Order } from "@/types/order";
-import AssignReaderDialog from "./assignReaderDialog";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { fetchOrders } from "@/redux/slices/orderSlice";
+import OrderDetailsModal from "../Modals/OrderDetailsModal";
+import AssignReaderDialog from "../Dialog/assignReaderDialog";
 interface Column {
   id: "id" | "Client" | "Reader" | "Date" | "Time" | "Actions";
   label: string;

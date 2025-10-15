@@ -1,10 +1,10 @@
 "use client";
 import React, { useEffect } from "react";
 import { Box, Grid } from "@mui/material";
-import CardData from "@/components/AdminUI/dataCard";
+import CardData from "@/components/Statistics/dataCard";
 import { useTranslations } from "next-intl";
-import OrdersPieChart from "@/components/AdminUI/OrdersPieChart";
-import UsersLineChart from "@/components/AdminUI/UsersLineChart";
+import OrdersPieChart from "@/components/Statistics/OrdersPieChart";
+import UsersLineChart from "@/components/Statistics/UsersLineChart";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { fetchUserCounts } from "@/redux/slices/dashboardSlice";

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, MouseEvent, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   AppBar,
   Box,
@@ -11,29 +11,30 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import LanguageIcon from "@mui/icons-material/Language";
-import LoginModal from "./LoginModal";
-import RegisterModal from "./RegisterModal";
-import { useLocale, useTranslations } from "next-intl";
-import { Link, usePathname, useRouter } from "@/i18n/navigation";
-import AccountCircle from "@mui/icons-material/AccountCircle";
+import { Link } from "@/i18n/navigation";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+import { useTranslations } from "next-intl";
+import Language from "./Language";
+import LoginModal from "../Forms/LoginModal";
+import RegisterModal from "../Forms/RegisterModal";
+import AccountCircle from "@mui/icons-material/AccountCircle";
+
+
 
 export default function MenuAppBar() {
   const t1 = useTranslations("navbar");
   const t2 = useTranslations("button");
-  const locale = useLocale();
-  const router = useRouter();
-  const pathname = usePathname();
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  const [loginOpen, setLoginOpen] = useState(false);
+  const [registerOpen, setRegisterOpen] = useState(false);
+
+  const [isLogin, setIsLogin] = useState(false);
+  const { userDetails } = useSelector((state: RootState) => state.user);
+
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
-  const [loginOpen, setLoginOpen] = useState(false);
-  const [registerOpen, setRegisterOpen] = useState(false);
-  const [isLogin, setIsLogin] = useState(false);
-  const { userDetails } = useSelector((state: RootState) => state.user);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -43,12 +44,6 @@ export default function MenuAppBar() {
       setIsLogin(false);
     }
   }, []);
-
-  const handleClick = (event: MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => setAnchorEl(null);
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
@@ -62,16 +57,7 @@ export default function MenuAppBar() {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("userDetails");
-    window.location.reload(); // refresh
-  };
-
-  // Change Language
-  const changeLanguage = (lng: string) => {
-    if (lng !== locale) {
-      router.replace(pathname, { locale: lng });
-      router.refresh();
-    }
-    handleClose();
+    window.location.reload();
   };
 
   // Actions for login modal
@@ -118,12 +104,13 @@ export default function MenuAppBar() {
                 flexGrow: 1,
               }}
             >
-              <Link href="/#">{t1("home")}</Link>
+              <Link href="/">{t1("home")}</Link>
               <Link href="/#about">{t1("about")}</Link>
               <Link href="/#contact">{t1("contact")}</Link>
               <Link href="/readers">{t1("readers")}</Link>
             </Box>
 
+            
             <LoginModal
               open={loginOpen}
               onClose={handleCloseLogin}
@@ -132,28 +119,8 @@ export default function MenuAppBar() {
                 handleOpenRegister(); // Open the second modal
               }}
             />
-
             <RegisterModal open={registerOpen} onClose={handleCloseRegister} />
-
-            <IconButton
-              aria-controls="language-menu"
-              aria-haspopup="true"
-              onClick={handleClick}
-            >
-              <LanguageIcon color="secondary" />
-            </IconButton>
-            {/* Language Menu */}
-            <Menu
-              id="language-menu"
-              anchorEl={anchorEl}
-              open={Boolean(anchorEl)}
-              onClose={handleClose}
-            >
-              <MenuItem onClick={() => changeLanguage("en")}>English</MenuItem>
-              <MenuItem onClick={() => changeLanguage("ar")}>Arabic</MenuItem>
-              <MenuItem onClick={() => changeLanguage("fr")}>French</MenuItem>
-              <MenuItem onClick={() => changeLanguage("de")}>Deutsch</MenuItem>
-            </Menu>
+            <Language />  
 
             {!isLogin ? (
               <Button

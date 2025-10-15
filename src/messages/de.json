@@ -69,7 +69,7 @@
   },
   "tab": {
     "personalDetails": "Persönliche Daten",
-    "accountDetails": "Kontodaten"
+    "accountDetails": "Sicherheit"
   },
   "radioButton": {
     "gender": "Geschlecht",
@@ -165,6 +165,7 @@
     "date": "Datum",
     "time": "Zeit",
     "datePickerLabel": "Datell auswählen",
-    "message": "Nachricht"
+    "message": "Nachricht",
+    "subject": "Thema"
   }
 }

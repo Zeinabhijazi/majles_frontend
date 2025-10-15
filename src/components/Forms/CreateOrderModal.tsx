@@ -154,6 +154,13 @@ export default function CreateOrderModal({
         open={open}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
+        slotProps={{
+          backdrop: {
+            sx: {
+              backgroundColor: "rgba(0, 0, 0, 0.1)", // less black, more transparent
+            },
+          },
+        }}
       >
         <Box sx={style}>
           <Box

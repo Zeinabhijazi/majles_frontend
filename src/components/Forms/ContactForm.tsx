@@ -20,6 +20,8 @@ export default function ContactForm() {
     firstname: "",
     lastname: "",
     email: "",
+    phoneNumber: "",
+    subject: "",
     message: "",
   });
   const [error, setError] = useState<{ [key: string]: string }>({});
@@ -46,6 +48,10 @@ export default function ContactForm() {
     firstname: z.string("Should be a Character"),
     lastname: z.string("Should be a Character"),
     email: z.string().email("Invalid email"),
+    phoneNumber: z.number().min(8),
+    subject: z
+      .string()
+      .min(5, "Subject is required."),
     message: z
       .string()
       .min(5, "Message should be clear and at least 5 characters"),
@@ -82,6 +88,8 @@ export default function ContactForm() {
           firstname: "",
           lastname: "",
           email: "",
+          phoneNumber: "",
+          subject: "",
           message: "",
         });
         // Hide alert after 3 seconds
@@ -197,6 +205,54 @@ export default function ContactForm() {
           onChange={handleChange}
           error={!!error.email}
           helperText={error.email}
+        />
+      </Grid>
+      <Grid>
+        <Typography
+          variant="h6"
+          color="grey"
+          sx={{
+            fontSize: "13px",
+            fontWeight: 400,
+            pl: 0.5,
+          }}
+        >
+          {t1("phoneNumber")}
+        </Typography>
+        <TextField
+          fullWidth
+          name="phoneNumber"
+          variant="outlined"
+          color="secondary"
+          sx={textFieldSx}
+          value={formData.phoneNumber}
+          onChange={handleChange}
+          error={!!error.phoneNumber}
+          helperText={error.phoneNumber}
+        />
+      </Grid>
+      <Grid>
+        <Typography
+          variant="h6"
+          color="grey"
+          sx={{
+            fontSize: "13px",
+            fontWeight: 400,
+            pl: 0.5,
+          }}
+        >
+          {t1("subject")}
+        </Typography>
+        <TextField
+          fullWidth
+          name="subject"
+          variant="outlined"
+          color="secondary"
+          sx={textFieldSx}
+          value={formData.subject}
+          onChange={handleChange}
+          error={!!error.subject}
+          helperText={error.subject}
         />
       </Grid>
       <Grid>

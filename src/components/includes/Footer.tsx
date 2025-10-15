@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { Box, Typography } from "@mui/material";
 import CopyrightIcon from "@mui/icons-material/Copyright";
@@ -15,7 +16,7 @@ export default function Footer() {
         justifyContent: "end",
         alignItems: "center",
         boxShadow: 24,
-        pr: 2,
+        paddingInlineStart: 5
       }}
     >
       <CopyrightIcon sx={{ fontSize: "20px", pr: 0.5 }} />

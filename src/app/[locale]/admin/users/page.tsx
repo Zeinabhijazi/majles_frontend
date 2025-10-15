@@ -1,20 +1,32 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Button, Grid, Typography } from "@mui/material";
-import UserTable from "@/components/AdminUI/userTable";
-import RegisterModal from "@/components/RegisterModal";
-import UserSelect from "@/components/AdminUI/userSelect";
+import RegisterModal from "@/components/Forms/RegisterModal";
 import Search from "@/components/AdminUI/search";
 import AddIcon from "@mui/icons-material/Add";
 import { useTranslations } from "next-intl";
+import AppSelect from "@/components/Forms/AppSelect";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/redux/store";
+import { fetchUsers } from "@/redux/slices/userSlice";
+import UserTable from "@/components/Tables/user";
 
 export default function UsersAdminPage() {
+  const t = useTranslations("select");
   const t1 = useTranslations("heading");
   const t2 = useTranslations("button");
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const [userType, setUserType] = useState("");
+  const [isDeleted, setIsDeleted] = useState("");
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    dispatch(fetchUsers({ userType: userType, isDeleted: isDeleted }));
+  }, [dispatch, userType, isDeleted]);
 
   return (
     <Box component="section">
@@ -65,7 +77,30 @@ export default function UsersAdminPage() {
         <Grid size={7}>
           <Search />
         </Grid>
-        <UserSelect />
+        <Grid size={5} sx={{ display: "flex", justifyContent: "end", gap: 2 }}>
+          <AppSelect
+            value={userType}
+            onChange={(e) => setUserType(e.target.value as string)}
+            placeholder={t("userType")}
+            options={[
+              { value: "all", label: t("all") },
+              { value: "admin", label: t("admin") },
+              { value: "client", label: t("client") },
+              { value: "reader", label: t("reader") },
+            ]}
+          />
+
+          <AppSelect
+            value={isDeleted}
+            onChange={(e) => setIsDeleted(e.target.value as string)}
+            placeholder={t("status")}
+            options={[
+              { value: "all", label: t("all") },
+              { value: "false", label: t("active") },
+              { value: "true", label: t("isDeleted") },
+            ]}
+          />
+        </Grid>
       </Grid>
       <UserTable />
     </Box>

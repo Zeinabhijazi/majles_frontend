@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { fetchOrdersForLoggedUser } from "@/redux/slices/orderSlice";
 import { useTranslations } from "next-intl";
-import AssignReaderDialog from "../AdminUI/assignReaderDialog";
+import AssignReaderDialog from "../Dialog/assignReaderDialog";
 
 interface Column {
   id: "ID" | "Date" | "Time" | "Country" | "Action";

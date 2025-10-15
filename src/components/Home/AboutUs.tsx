@@ -11,7 +11,7 @@ export default function AboutUs() {
         variant="h4"
         sx={{
           fontWeight: "700",
-          textAlign: "left",
+          textAlign: "start",
           mt: 7,
           mb: 5,
           pl: 2,

@@ -1,10 +1,11 @@
 "use client";
-import React, { useState } from "react";
-import SearchIcon from "@mui/icons-material/Search";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { fetchUsers } from "@/redux/slices/userSlice";
-import { Button } from "@mui/material";
+import { TextField, InputAdornment, IconButton } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+import ClearIcon from "@mui/icons-material/Clear";
 import { useTranslations } from "next-intl";
 
 function Search() {
@@ -13,39 +14,56 @@ function Search() {
   const [search, setSearch] = useState("");
   const dispatch = useDispatch<AppDispatch>();
 
-  const handleSearch = () => {
-    dispatch(fetchUsers({ search }));
-  };
-  const handleResetFilters = () => {
+  // Debounce effect (auto-search after 500ms of no typing)
+  useEffect(() => {
+    const delayDebounce = setTimeout(() => {
+      dispatch(fetchUsers({ search }));
+    }, 500);
+
+    return () => clearTimeout(delayDebounce);
+  }, [search, dispatch]);
+
+  // Clear input handler
+  const handleClear = () => {
     setSearch("");
     dispatch(fetchUsers({}));
   };
+
   return (
-    <div className="relative flex">
-      <input
-        className="peer block w-[240px] border-1 border-gray-400 rounded-md outline-0 py-[9px] pl-10 text-sm placeholder:text-gray-700 text-zinc-950"
+    <div className="flex items-center space-x-2">
+      <TextField
+        variant="outlined"
+        size="small"
         placeholder={t2("userSearch")}
         value={search}
         onChange={(e) => setSearch(e.target.value)}
-      />
-      <SearchIcon className="absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-600 peer-focus:text-dark-900" />
-      <Button
-        variant="contained"
-        color="secondary"
-        onClick={handleSearch}
-        sx={{
-          mx: 0.5,
+        sx={{ 
+          width: 260, 
+          "& .MuiOutlinedInput-input": {
+            color: "primary.main", 
+          },
+          "& .MuiOutlinedInput-input::placeholder": {
+            color: "gray",
+            opacity: 1,
+          },
         }}
-      >
-        {t1("search")}
-      </Button>
-      <Button
-        color="secondary"
-        variant="contained"
-        onClick={handleResetFilters}
-      >
-        {t1("reset")}
-      </Button>
+        slotProps={{
+          input: {
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon color="primary" />
+              </InputAdornment>
+            ),
+            endAdornment: search && (
+              <InputAdornment position="end">
+                <IconButton size="small" onClick={handleClear}>
+                  <ClearIcon />
+                </IconButton>
+              </InputAdornment>
+            ),
+          },
+        }}
+      />
     </div>
   );
 }

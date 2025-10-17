@@ -92,7 +92,7 @@ export default function DashboardSidebar({ role }: SidebarProps) {
     setSelectedIndex(index);
     const item = menuItems[index];
 
-    if (item.label.toLowerCase() === "logout") {
+    if (item.label === "Logout") {
       localStorage.removeItem("token");
       localStorage.removeItem("userDetails");
       router.push("/");
@@ -135,7 +135,7 @@ export default function DashboardSidebar({ role }: SidebarProps) {
           {menuItems.map((item, index) => (
             <ListItem key={item.label} disablePadding>
               {item.path ? (
-                <Link href={item.path}>
+                <Link href={item.path} className="w-full">
                   <ListItemButton
                     selected={selectedIndex === index}
                     onClick={(event) => handleListItemClick(event, index)}

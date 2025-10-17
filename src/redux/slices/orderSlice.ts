@@ -21,7 +21,7 @@ interface OrderState {
   orderDetails: OrderDetails;
   error: string | null;
   successMessage: string | null;
-  successType: "assign" | "cancel" | "update" | null;
+  successType: "assign" | "cancel" | "update" | "accept" | null;
   pageCount: number;
   itemsCount: number;
   itemsCountWithDel: number;
@@ -166,7 +166,7 @@ export const cancelOrder = createAsyncThunk<
 export const updateOrder = createAsyncThunk(
   "UPDATEORDER",
   async (
-    { formData, orderId }: { formData: OrderForEdit; orderId: number },
+    { formData, orderId }: { formData: OrderForEdit; orderId: number | null },
     { rejectWithValue }
   ) => {
     try {
@@ -185,6 +185,33 @@ export const updateOrder = createAsyncThunk(
     }
   }
 );
+
+// Accept order by reader
+export const handleAccept = createAsyncThunk(
+  "ACCEPTORDER", 
+  async (
+    { orderId, readerId } : { orderId: number, readerId: number}, 
+    { rejectWithValue }
+  ) => {
+  try {
+    const response = await api.put(`api/order/${orderId}`, {
+      readerId: readerId,
+    });
+
+    if (!response.data.success) {
+      return rejectWithValue("Failed to accept this order");
+    }
+
+    return {
+      orderId,
+      readerId,
+      message: "Accepted successfully",
+    };
+  } catch (error: any) {
+    return rejectWithValue("Failed to accept order");
+  }
+});
+
 
 const orderSlice = createSlice({
   name: "orders",
@@ -272,6 +299,23 @@ const orderSlice = createSlice({
       .addCase(updateOrder.rejected, (state, action) => {
         state.error =
           action.error.message || "Failed to update an order";
+      })
+      .addCase(handleAccept.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(handleAccept.fulfilled, (state, action) => {
+        const { orderId, readerId } = action.payload;
+        const order = state.orders.find((o) => o.id === orderId);
+        if (order) {
+          order.isAccepted = true;
+          order.readerId = readerId;
+        }
+        state.successType = "accept";
+        state.successMessage = action.payload.message;
+      })
+      .addCase(handleAccept.rejected, (state, action) => {
+        state.error =
+          action.error.message || "Failed to accept order";
       });
   },
 });

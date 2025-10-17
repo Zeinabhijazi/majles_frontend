@@ -1,13 +1,30 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Grid, Typography } from "@mui/material";
-import ClientSelect from "@/components/client/clientSelect";
-import ClientTable from "@/components/client/clientTable";
-import SearchClient from "@/components/client/searchClient";
 import { useTranslations } from "next-intl";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/redux/store";
+import { fetchOrdersForLoggedUser } from "@/redux/slices/orderSlice";
+import SearchInput from "@/components/Forms/SearchInput";
+import AppSelect from "@/components/Forms/AppSelect";
+import ClientDataGrid from "@/components/Tables/order/client";
 
 export default function ClientPage() {
-  const t = useTranslations("heading")
+  const t1 = useTranslations("heading");
+  const t2 = useTranslations("select");
+  const t3 = useTranslations("searchInput");
+
+  const [status, setStatus] = useState("");
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    dispatch(fetchOrdersForLoggedUser({ status: status }));
+  }, [dispatch, status]);
+
+  const handleUserSearch = (value: string) => {
+    dispatch(fetchOrdersForLoggedUser({ search: value }));
+  };
+
   return (
     <Box component={"section"}>
       <Typography
@@ -18,7 +35,7 @@ export default function ClientPage() {
           color: "primary.main",
         }}
       >
-        {t("clientPageTitle")}
+        {t1("clientPageTitle")}
       </Typography>
       <Grid
         spacing={10}
@@ -30,10 +47,23 @@ export default function ClientPage() {
           my: 2,
         }}
       >
-        <SearchClient />
-        <ClientSelect />
+        <AppSelect
+          value={status}
+          onChange={(e) => setStatus(e.target.value as string)}
+          placeholder={t2("status")}
+          options={[
+            { value: "all", label: t2("all") },
+            { value: "pending", label: t2("pending") },
+            { value: "completed", label: t2("completed") },
+            { value: "rejected", label: t2("rejected") },
+          ]}
+        />
+        <SearchInput
+          placeholder={t3("orderSearch")}
+          onSearch={handleUserSearch}
+        />
       </Grid>
-      <ClientTable />
+      <ClientDataGrid />
     </Box>
   );
 }

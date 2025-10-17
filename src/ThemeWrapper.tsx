@@ -13,7 +13,7 @@ export default function ThemeWrapper({ children }: Readonly<{ children: React.Re
 
   if (!mounted) {
     // Prevent mismatched render between server and client
-    return null;
+    return <></>;
   }
   return (
     <ThemeProvider theme={darkTheme}>

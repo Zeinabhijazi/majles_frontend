@@ -1,18 +1,13 @@
 "use client";
 import React, { useEffect } from "react";
 import { Box, Grid, Typography } from "@mui/material";
-import CardData from "@/components/AdminUI/dataCard";
+import CardData from "@/components/Statistics/dataCard";
 import { AppDispatch, RootState } from "@/redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchOrdersForLoggedUser } from "@/redux/slices/orderSlice";
 import { useTranslations } from "next-intl";
-import ReaderCompletedTable from "@/components/Reader/readerCompletedTable";
-import ReaderPendingTable from "@/components/Reader/readerPendingTable";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import { date } from "zod";
+import PendingOrdersDataGrid from "@/components/Tables/order/pendingOrders";
+import ReaderDataGrid from "@/components/Tables/order/reader";
 
 export default function ReaderPage() {
   const t = useTranslations("readerDashboard");
@@ -39,20 +34,21 @@ export default function ReaderPage() {
         <CardData text={t("completedOrder")} data={completedItemsCount} />
         <CardData text={t("allOrders")} data={totalOrders} />
       </Box>
-      <Grid container sx={{ border: "1px solid red", height: 420, display: "flex", flexDirection: "row" }}>
-        <Grid size={12} sx={{ display: "flex", height: 210, flexDirection: "column" }}>
-            <Typography variant="h6" color="primary">
-                {" "}
-                Pending Orders
-            </Typography>
-          <ReaderPendingTable />
+      <Grid
+        container
+        sx={{ height: 430, display: "flex", flexDirection: "row", gap: 2, mt: 2 }}
+      >
+        <Grid size={6}>
+          <Typography variant="h5" color="primary">
+            Pending Orders:
+          </Typography>
+          <PendingOrdersDataGrid />
         </Grid>
-        <Grid size={12} sx={{ display: "flex", height: 210, flexDirection: "column" }}>
-            <Typography variant="h6" color="primary">
-              {" "}
-              Completed Orders
-            </Typography>
-          <ReaderCompletedTable />
+        <Grid size={5.8}>
+          <Typography variant="h5" color="primary">
+            Orders in this month:
+          </Typography>
+          <ReaderDataGrid />
         </Grid>
       </Grid>
     </Box>

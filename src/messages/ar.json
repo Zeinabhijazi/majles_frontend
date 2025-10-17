@@ -69,7 +69,7 @@
   },
   "tab": {
     "personalDetails": "التفاصيل الشخصية",
-    "accountDetails": "تفاصيل الحساب"
+    "accountDetails": "الأمن"
   },
   "radioButton": {
     "gender": "الجنس",
@@ -133,7 +133,8 @@
     "assign": "تعيين",
     "save": "حفظ",
     "send": "إرسال",
-    "changePassword": "تغيير كلمة المرور"
+    "changePassword": "تغيير كلمة المرور",
+    "accept": "يقبل"
   },
   "label": {
     "id": "المعرف",
@@ -165,6 +166,7 @@
     "date": "التاريخ",
     "time": "وقت",
     "datePickerLabel": "حدد التاريخ",
-    "message": "رسالة"
+    "message": "رسالة",
+    "subject": "موضوع"
   }
 }

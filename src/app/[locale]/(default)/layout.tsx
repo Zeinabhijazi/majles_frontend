@@ -1,13 +1,13 @@
-import MenuAppBar from "@/components/MenuAppBar";
-import Footer from "@/components/Footer";
+import MenuAppBar from "@/components/includes/MenuAppBar";
+import Footer from "@/components/includes/Footer";
 
 export default function DefaultLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <MenuAppBar />
-      <main style={{ minHeight: "calc(100vh - 70px)", marginTop: "70px" }}>
+      <section style={{ minHeight: "calc(100vh - 70px)", marginTop: "70px" }}>
         {children}
-      </main>
+      </section>
       <Footer />
     </>
   );

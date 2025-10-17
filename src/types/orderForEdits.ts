@@ -1,4 +1,3 @@
-// types/OrderForEdit.ts
 export interface OrderForEdit {
   orderDate?: Date;
   longitude?: number;

@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
 import { useTranslations } from "next-intl";
-import ContactForm from "./ContactForm";
+import ContactForm from "../Forms/ContactForm";
 
 export default function ContactUs() {
   const t = useTranslations("heading");

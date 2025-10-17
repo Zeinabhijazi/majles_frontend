@@ -69,7 +69,7 @@
   },
   "tab": {
     "personalDetails": "Personal Details",
-    "accountDetails": "Account Details"
+    "accountDetails": "Security"
   },
   "radioButton": {
     "gender": "Gender",
@@ -133,7 +133,8 @@
     "assign": "Assign",
     "save": "Save",
     "send": "Send",
-    "changePassword": "Change Password"
+    "changePassword": "Change Password",
+    "accept": "Accept"
   },
   "label": {
     "id": "Id",
@@ -165,6 +166,7 @@
     "date": "Date",
     "time": "Time",
     "datePickerLabel": "Select Date",
-    "message": "Message"
+    "message": "Message",
+    "subject": "Subject"
   }
 }

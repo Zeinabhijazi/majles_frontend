@@ -7,7 +7,7 @@ import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { routing } from "@/i18n/routing";
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
-import ThemeWrapper from "../../ThemeWrapper" ;
+import ThemeWrapper from "../../ThemeWrapper";
 import Providers from "@/providers/Providers";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -34,16 +34,25 @@ export default async function RootLayout({
   }
   // allow to pass local to all server components
   setRequestLocale(locale);
+
+  // Load messages for this locale
+  let messages;
+  try {
+    messages = require(`@/messages/${locale}.json`);
+  } catch (error) {
+    notFound();
+  }
+
   return (
     <html lang={locale} dir="ltr">
       <body className={inter.className}>
         <Providers>
-          <NextIntlClientProvider>
+          <NextIntlClientProvider locale={locale} messages={messages}>
             <ThemeRegistry>
               <ThemeWrapper>
-                 <main style={{ minHeight: "calc(100vh - 70px)"}}>
-                    {children}
-                  </main>
+                <main style={{ minHeight: "calc(100vh - 70px)" }}>
+                  {children}
+                </main>
               </ThemeWrapper>
             </ThemeRegistry>
           </NextIntlClientProvider>

@@ -69,7 +69,7 @@
   },
   "tab": { 
     "personalDetails": "Données personnelles",
-    "accountDetails": "Détails du compte"
+    "accountDetails": "Sécurité"
   },
   "radioButton": {
     "gender": "Sexe",
@@ -133,7 +133,8 @@
     "assign": "Attribuer",
     "save": "Sauvegarder",
     "send": "Envoyer",
-    "changePassword": "Changer le mot de passe"
+    "changePassword": "Changer le mot de passe",
+    "accept": "accepter"
   },
   "label": {
     "id": "Identifiant",
@@ -165,6 +166,7 @@
     "date": "Date",
     "time": "temps",
     "datePickerLabel": "Sélectionnez la date",
-    "message": "Message"
+    "message": "Message",
+    "subject": "sujette"
   }
 }

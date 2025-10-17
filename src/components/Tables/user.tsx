@@ -104,7 +104,6 @@ export default function UserDataGrid() {
   return (
     <Paper sx={{ overflow: "hidden", width: "100%" }} >
       <DataGrid<User>
-        columnHeaderHeight={50}
         className="table_scrollbar"
         rows={users}
         columns={columns}

@@ -133,7 +133,8 @@
     "assign": "Zuordnen",
     "save": "Speichern",
     "send": "Schicken",
-    "changePassword": "Kennwort ändern"
+    "changePassword": "Kennwort ändern",
+    "accept": "akzeptieren"
   },
   "label": {
     "id": "ID",

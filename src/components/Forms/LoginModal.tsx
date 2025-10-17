@@ -102,6 +102,12 @@ export default function LoginModal({
     try {
       if (validate()) {
         const userData = await dispatch(login({ email, password })).unwrap(); // unwrap(): continue when the thunk return the respone
+        if (userData.userType === "admin") { 
+          // Clear the inputs
+          setEmail("");
+          setPassword("");
+          onClose();
+        }
 
         if (userData.userType !== "admin") {
           setAlertText("Login Successfully.");

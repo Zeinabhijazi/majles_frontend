@@ -17,17 +17,24 @@ import { useTranslations } from "next-intl";
 import CreateOrderModal from "@/components/Forms/CreateOrderModal";
 import LoginModal from "@/components/Forms/LoginModal";
 import RegisterModal from "@/components/Forms/RegisterModal";
-import ReaderSearch from "@/components/Reader/readerSearch";
+import SearchInput from "@/components/Forms/SearchInput";
+
 export default function Readers() {
   const t1 = useTranslations("heading");
   const t2 = useTranslations("label");
   const t3 = useTranslations("button");
+  const t4 = useTranslations("searchInput");
+
   const dispatch = useDispatch<AppDispatch>();
   const { users, userDetails } = useSelector((state: RootState) => state.user);
 
   const [loginOpen, setLoginOpen] = useState(false);
   const [registerOpen, setRegisterOpen] = useState(false);
   const [createOrderOpen, setCreateOrderOpen] = useState(false);
+
+  const handleReaderSearch = (value: string) => {
+    dispatch(fetchReaders({ search: value }));
+  };
 
   // Actions for login modal
   const handleCloseLogin = () => setLoginOpen(false);
@@ -66,7 +73,10 @@ export default function Readers() {
         }}
       >
         <Typography variant="h4"> {t1("readersPage")} </Typography>
-        <ReaderSearch />
+        <SearchInput
+          placeholder={t4("countrySearch")}
+          onSearch={handleReaderSearch}
+        />
       </Box>
 
       <Grid

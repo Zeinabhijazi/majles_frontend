@@ -1,32 +1,33 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/redux/store";
-import { fetchUsers } from "@/redux/slices/userSlice";
 import { TextField, InputAdornment, IconButton } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import ClearIcon from "@mui/icons-material/Clear";
-import { useTranslations } from "next-intl";
 
-function Search() {
-  const t1 = useTranslations("button");
-  const t2 = useTranslations("searchInput");
-  const [search, setSearch] = useState("");
-  const dispatch = useDispatch<AppDispatch>();
+interface SearchInputProps {
+  placeholder: string;
+  onSearch: (value: string) => void;
+}
 
-  // Debounce effect (auto-search after 500ms of no typing)
+const SearchInput: React.FC<SearchInputProps> = ({
+  placeholder,
+  onSearch
+}) => {
+  const [value, setValue] = useState("");
+
+  // Debounce effect
   useEffect(() => {
     const delayDebounce = setTimeout(() => {
-      dispatch(fetchUsers({ search }));
+      if (onSearch) onSearch(value);
     }, 500);
 
     return () => clearTimeout(delayDebounce);
-  }, [search, dispatch]);
+  }, [value]);
 
   // Clear input handler
   const handleClear = () => {
-    setSearch("");
-    dispatch(fetchUsers({}));
+    setValue("");
+    if (onSearch) onSearch("");
   };
 
   return (
@@ -34,9 +35,9 @@ function Search() {
       <TextField
         variant="outlined"
         size="small"
-        placeholder={t2("userSearch")}
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
+        placeholder={placeholder}
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
         sx={{ 
           width: 260, 
           "& .MuiOutlinedInput-input": {
@@ -54,7 +55,7 @@ function Search() {
                 <SearchIcon color="primary" />
               </InputAdornment>
             ),
-            endAdornment: search && (
+            endAdornment: value && (
               <InputAdornment position="end">
                 <IconButton size="small" onClick={handleClear}>
                   <ClearIcon />
@@ -68,4 +69,4 @@ function Search() {
   );
 }
 
-export default Search;
+export default SearchInput;

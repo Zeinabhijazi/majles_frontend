@@ -27,7 +27,7 @@ export default function OrdersPieChart() {
           orderStatus.pending,
           orderStatus.cancelled,
         ],
-        backgroundColor: ["#242329", "#212b36", "#e72544"],
+        backgroundColor: ["#242329", "#2d2b35", "#363441"],
         borderColor: ["#fff", "#fff", "#fff"],
         borderWidth: 1,
       },

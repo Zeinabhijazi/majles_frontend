@@ -133,7 +133,8 @@
     "assign": "تعيين",
     "save": "حفظ",
     "send": "إرسال",
-    "changePassword": "تغيير كلمة المرور"
+    "changePassword": "تغيير كلمة المرور",
+    "accept": "يقبل"
   },
   "label": {
     "id": "المعرف",

@@ -133,7 +133,8 @@
     "assign": "Attribuer",
     "save": "Sauvegarder",
     "send": "Envoyer",
-    "changePassword": "Changer le mot de passe"
+    "changePassword": "Changer le mot de passe",
+    "accept": "accepter"
   },
   "label": {
     "id": "Identifiant",

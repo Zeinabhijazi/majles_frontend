@@ -133,7 +133,8 @@
     "assign": "Assign",
     "save": "Save",
     "send": "Send",
-    "changePassword": "Change Password"
+    "changePassword": "Change Password",
+    "accept": "Accept"
   },
   "label": {
     "id": "Id",

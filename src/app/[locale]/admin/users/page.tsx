@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from "react";
 import { Box, Button, Grid, Typography } from "@mui/material";
 import RegisterModal from "@/components/Forms/RegisterModal";
-import Search from "@/components/AdminUI/search";
 import AddIcon from "@mui/icons-material/Add";
 import { useTranslations } from "next-intl";
 import AppSelect from "@/components/Forms/AppSelect";
@@ -10,11 +9,13 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { fetchUsers } from "@/redux/slices/userSlice";
 import UserTable from "@/components/Tables/user";
+import SearchInput from "@/components/Forms/SearchInput";
 
 export default function UsersAdminPage() {
   const t = useTranslations("select");
   const t1 = useTranslations("heading");
   const t2 = useTranslations("button");
+  const t3 = useTranslations("searchInput");
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -23,6 +24,10 @@ export default function UsersAdminPage() {
   const [userType, setUserType] = useState("");
   const [isDeleted, setIsDeleted] = useState("");
   const dispatch = useDispatch<AppDispatch>();
+
+  const handleUserSearch = (value: string) => {
+    dispatch(fetchUsers({ search: value }));
+  };
 
   useEffect(() => {
     dispatch(fetchUsers({ userType: userType, isDeleted: isDeleted }));
@@ -75,7 +80,10 @@ export default function UsersAdminPage() {
         }}
       >
         <Grid size={7}>
-          <Search />
+          <SearchInput
+            placeholder={t3("userSearch")}
+            onSearch={handleUserSearch}
+          />
         </Grid>
         <Grid size={5} sx={{ display: "flex", justifyContent: "end", gap: 2 }}>
           <AppSelect

@@ -94,7 +94,8 @@
     "selectReader": "Leser auswählen",
     "pending": "Ausstehend",
     "completed": "vollendet",
-    "rejected": "abgelehnt"
+    "rejected": "abgelehnt",
+    "accepted": "Akzeptiert"
   },
   "searchInput": {
     "userSearch": "Nach einem Benutzer suchen",
@@ -126,8 +127,6 @@
     "pickLocation": "Standort Auswählen",
     "addUser": "Benutzer hinzufügen",
     "addOrder": "Bestellung Hinzufügen",
-    "search": "Suche",
-    "reset": "Zurücksetzen",
     "delete": "löschen",
     "cancel": "abbrechen",
     "assign": "Zuordnen",
@@ -167,6 +166,7 @@
     "time": "Zeit",
     "datePickerLabel": "Datell auswählen",
     "message": "Nachricht",
-    "subject": "Thema"
+    "subject": "Thema",
+    "day": "Tag"
   }
 }

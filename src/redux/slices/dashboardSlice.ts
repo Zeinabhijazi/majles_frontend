@@ -47,13 +47,13 @@ const dashboardSlice = createSlice({
         state.userCounts = action.payload;
       })
       .addCase(fetchUserCounts.rejected, (state, action) => {
-        state.error = action.error.message || "Failed to fetch users";
+        state.error = action.error.message || "Failed to fetch users counts";
       })
       .addCase(fetchStatus.fulfilled, (state, action) => {
         state.orderStatus = action.payload;
       })
       .addCase(fetchStatus.rejected, (state, action) => {
-        state.error = action.error.message || "Failed to fetch order status";
+        state.error = action.error.message || "Failed to fetch orders status";
       });
   },
 });

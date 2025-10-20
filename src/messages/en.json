@@ -94,7 +94,8 @@
     "selectReader": "Select Reader",
     "pending": "Pending",
     "completed": "Completed",
-    "rejected": "Rejected"
+    "rejected": "Rejected",
+    "accepted": "Accepted"
   },
   "searchInput": {
     "userSearch": "Search for a user",
@@ -126,8 +127,6 @@
     "pickLocation": "Pick Location",
     "addUser": "Add A User",
     "addOrder": "Add order",
-    "search": "Search",
-    "reset": "Reset",
     "delete": "Delete",
     "cancel": "Cancel",
     "assign": "Assign",
@@ -167,6 +166,7 @@
     "time": "Time",
     "datePickerLabel": "Select Date",
     "message": "Message",
-    "subject": "Subject"
+    "subject": "Subject",
+    "day": "Day"
   }
 }

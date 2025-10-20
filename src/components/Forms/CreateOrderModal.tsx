@@ -19,7 +19,7 @@ import {
 import { useTranslations } from "next-intl";
 import AddLocationAltOutlinedIcon from "@mui/icons-material/AddLocationAltOutlined";
 import AssignmentAddIcon from "@mui/icons-material/AssignmentAdd";
-import dayjs, { Dayjs } from "dayjs";
+import { Dayjs } from "dayjs";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import api from "@/lib/axios";
@@ -212,7 +212,7 @@ export default function CreateOrderModal({
                   fullWidth
                   variant="outlined"
                   color="secondary"
-                  label={t1("addressOne")}
+                  placeholder={t1("addressOne")}
                   value={formData.addressOne}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     handleChange("addressOne", e.target.value)
@@ -224,7 +224,7 @@ export default function CreateOrderModal({
                   fullWidth
                   variant="outlined"
                   color="secondary"
-                  label={t1("addressTwo")}
+                  placeholder={t1("addressTwo")}
                   value={formData.addressTwo}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     handleChange("addressTwo", e.target.value)
@@ -245,7 +245,7 @@ export default function CreateOrderModal({
                   fullWidth
                   variant="outlined"
                   color="secondary"
-                  label={t1("city")}
+                  placeholder={t1("city")}
                   value={formData.city}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     handleChange("city", e.target.value)
@@ -257,7 +257,7 @@ export default function CreateOrderModal({
                   fullWidth
                   variant="outlined"
                   color="secondary"
-                  label={t1("postCode")}
+                  placeholder={t1("postCode")}
                   value={formData.postNumber}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     handleChange("postNumber", e.target.value)
@@ -269,7 +269,7 @@ export default function CreateOrderModal({
               fullWidth
               variant="outlined"
               color="secondary"
-              label={t1("country")}
+              placeholder={t1("country")}
               value={formData.country}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 handleChange("country", e.target.value)
@@ -289,7 +289,7 @@ export default function CreateOrderModal({
                 <TextField // Latitude
                   variant="outlined"
                   color="secondary"
-                  label={t1("latitude")}
+                  placeholder={t1("latitude")}
                   value={formData.latitude}
                   InputProps={{ readOnly: true }}
                 />
@@ -298,7 +298,7 @@ export default function CreateOrderModal({
                 <TextField // Longitude
                   variant="outlined"
                   color="secondary"
-                  label={t1("longitude")}
+                  placeholder={t1("longitude")}
                   value={formData.longitude}
                   InputProps={{ readOnly: true }}
                 />

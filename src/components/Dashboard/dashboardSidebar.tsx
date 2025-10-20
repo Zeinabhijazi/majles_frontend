@@ -92,7 +92,7 @@ export default function DashboardSidebar({ role }: SidebarProps) {
     setSelectedIndex(index);
     const item = menuItems[index];
 
-    if (item.label === "Logout") {
+    if (item.label === t("logout")) {
       localStorage.removeItem("token");
       localStorage.removeItem("userDetails");
       router.push("/");

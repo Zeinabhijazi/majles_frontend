@@ -5,9 +5,9 @@ import CardData from "@/components/Statistics/dataCard";
 import { AppDispatch, RootState } from "@/redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchOrdersForLoggedUser } from "@/redux/slices/orderSlice";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import PendingOrdersDataGrid from "@/components/Tables/order/pendingOrders";
-import ReaderDataGrid from "@/components/Tables/order/reader";
+import ReaderDataGrid from "@/components/Tables/order/ReaderDataGrid";
 
 export default function ReaderPage() {
   const t = useTranslations("readerDashboard");
@@ -19,6 +19,9 @@ export default function ReaderPage() {
   useEffect(() => {
     dispatch(fetchOrdersForLoggedUser({}));
   }, [dispatch]);
+
+  const locale = useLocale();
+  const currentMonth = new Date().toLocaleString(locale, { month: "long" });
 
   return (
     <Box component="section">
@@ -46,7 +49,7 @@ export default function ReaderPage() {
         </Grid>
         <Grid size={5.8}>
           <Typography variant="h5" color="primary">
-            Orders in this month:
+            Orders in this {currentMonth}:
           </Typography>
           <ReaderDataGrid />
         </Grid>

@@ -121,7 +121,7 @@ export default function LoginModal({
             onClose();
             router.replace("/");
             window.location.reload();
-          }, 2500);
+          }, 1000);
         }
       }
     } catch (err: any) {
@@ -200,7 +200,7 @@ export default function LoginModal({
           >
             <TextField
               required
-              label={t1("email")}
+              placeholder={t1("email")}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               color="secondary"
@@ -211,7 +211,7 @@ export default function LoginModal({
               }}
             />
             <TextField
-              label={t1("password")}
+              placeholder={t1("password")}
               type={showPassword ? "text" : "password"}
               value={password}
               color="secondary"

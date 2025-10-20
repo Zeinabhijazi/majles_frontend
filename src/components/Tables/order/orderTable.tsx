@@ -9,9 +9,15 @@ import { Order } from "@/types/order";
 interface OrderTableProps {
   columns: GridColDef<Order>[]; 
   fetchFn: (params: { page: number; limit: number }) => any; 
+  filters?: {
+    status?: string;
+    search?: string;
+    start?: number;
+    end?: number;
+  };
 }
 
-const OrderTable: React.FC<OrderTableProps> = ({ columns, fetchFn }) => {
+const OrderTable: React.FC<OrderTableProps> = ({ columns, fetchFn, filters }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { orders, itemsCount } = useSelector((state: RootState) => state.order);
 
@@ -25,10 +31,15 @@ const OrderTable: React.FC<OrderTableProps> = ({ columns, fetchFn }) => {
       fetchFn({
         page: paginationModel.page + 1,
         limit: paginationModel.pageSize,
+        ...filters, // keep filters when paginating
       })
     );
-  }, [dispatch, fetchFn, paginationModel]);
+  }, [dispatch, fetchFn, paginationModel, filters]);
 
+  useEffect(() => {
+    setPaginationModel((prev) => ({ ...prev, page: 0 }));
+  }, [filters]);
+  
   return (
     <Paper sx={{ overflow: "hidden", width: "100%" }}>
       <DataGrid<Order>

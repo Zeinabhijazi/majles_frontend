@@ -6,7 +6,8 @@ import { useTranslations } from "next-intl";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import { User } from "@/types/user";
+import { RootState } from "@/redux/store";
+import { useSelector } from "react-redux";
 
 const style = {
   position: "absolute",
@@ -18,26 +19,28 @@ const style = {
   bgcolor: "background.default",
   border: "1px solid #eee",
   borderRadius: 5,
-  boxShadow: 8,
   p: 3,
 };
 
 interface UserDetailsModalProps {
   open: boolean;
   onClose: () => void;
-  user: User | null;
+  userId: number;
 }
 
 export default function UserDetailsModal({
   open,
   onClose,
-  user,
+  userId,
 }: Readonly<UserDetailsModalProps>) {
   const t1 = useTranslations("label");
   const t2 = useTranslations("radioButton");
   const t3 = useTranslations("heading");
+  const { users } = useSelector((state: RootState) => state.user);
 
-  if (!user) return null;
+  if (!userId) return null;
+
+  const user = users.find((u) => u.id === userId) || null;
 
   return (
     <Box component="section">
@@ -48,7 +51,7 @@ export default function UserDetailsModal({
         slotProps={{
           backdrop: {
             sx: {
-              backgroundColor: "rgba(0, 0, 0, 0.1)", // less black, more transparent
+              backgroundColor: "rgba(0, 0, 0, 0.3)",
             },
           },
         }}
@@ -87,7 +90,7 @@ export default function UserDetailsModal({
                 {t1("phoneNumber")}:
               </Typography>
               <Typography variant="h6" sx={{ fontSize: "17px" }}>
-                {user.phoneNumber}
+                {user?.phoneNumber}
               </Typography>
             </Box>
             <Box
@@ -104,8 +107,8 @@ export default function UserDetailsModal({
                 {t1("address")}:
               </Typography>
               <Typography variant="h6" sx={{ fontSize: "17px" }}>
-                {user.addressOne}, {user.addressTwo}, {user.postNumber},{" "}
-                {user.country}, {user.city}
+                {user?.addressOne}, {user?.addressTwo}, {user?.postNumber},{" "}
+                {user?.country}, {user?.city}
               </Typography>
             </Box>
             <Box
@@ -122,7 +125,7 @@ export default function UserDetailsModal({
                 {t1("coordinates")}:
               </Typography>
               <Typography variant="h6" sx={{ fontSize: "17px" }}>
-                {user.latitude}, {user.longitude}
+                {user?.latitude}, {user?.longitude}
               </Typography>
             </Box>
             <Box
@@ -139,7 +142,7 @@ export default function UserDetailsModal({
                 {t2("gender")}:
               </Typography>
               <Typography variant="h6" sx={{ fontSize: "17px" }}>
-                {user.gender === "female" ? t2("female") : t2("male")}
+                {user?.gender === "female" ? t2("female") : t2("male")}
               </Typography>
             </Box>
             <Box
@@ -156,7 +159,7 @@ export default function UserDetailsModal({
                 {t1("deleted")}:
               </Typography>
               <FormGroup>
-                {user.isDeleted === true ? (
+                {user?.isDeleted === true ? (
                   <>
                     <FormControlLabel
                       control={

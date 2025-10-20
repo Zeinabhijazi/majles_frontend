@@ -94,7 +94,8 @@
     "selectReader": "Sélectionner un lecteur",
     "pending": "En attente",
     "completed": "Complété",
-    "rejected": "rejeté"
+    "rejected": "rejeté",
+    "accepted": "Accepté"
   },
   "searchInput": {
     "userSearch": "Rechercher un utilisateur",
@@ -126,8 +127,6 @@
     "pickLocation": "Choisir un emplacement",
     "addUser": "Ajouter un utilisateur",
     "addOrder": "Ajouter une commande",
-    "search": "Rechercher",
-    "reset": "Réinitialiser",
     "delete": "Supprimer",
     "cancel": "Annuler",
     "assign": "Attribuer",
@@ -167,6 +166,7 @@
     "time": "temps",
     "datePickerLabel": "Sélectionnez la date",
     "message": "Message",
-    "subject": "sujette"
+    "subject": "sujette",
+    "day": "jour"
   }
 }

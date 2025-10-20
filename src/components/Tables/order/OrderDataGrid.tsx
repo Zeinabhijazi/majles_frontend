@@ -1,0 +1,127 @@
+"use client";
+import React, { useState } from "react";
+import { Box, Button } from "@mui/material";
+import { GridColDef } from "@mui/x-data-grid";
+import { useLocale, useTranslations } from "next-intl";
+import { Order } from "@/types/order";
+import { fetchOrders } from "@/redux/slices/orderSlice";
+import OpenInNew from "@mui/icons-material/OpenInNew";
+import OrderDetailsModal from "@/components/Modals/OrderDetailsModal";
+import AssignReaderDialog from "@/components/Dialog/assignReaderDialog";
+import OrderTable from "@/components/Tables/order/orderTable";
+import { Dayjs } from "dayjs";
+
+export default function OrderDataGrid({
+  status,
+  selectedDate,
+}: {
+  status: string;
+  selectedDate: Dayjs | null;
+}) {
+  const t1 = useTranslations("button");
+  const t2 = useTranslations("label");
+  const locale = useLocale();
+  const [openDetails, setOpenDetails] = useState(false);
+  const [openAssign, setOpenAssign] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState<number | null>(null);
+
+  // compute start/end once
+  const start = selectedDate
+    ? selectedDate.startOf("day").valueOf()
+    : undefined;
+  const end = selectedDate ? selectedDate.endOf("day").valueOf() : undefined;
+
+  const handleOpenDetails = (id: number) => {
+    setSelectedOrder(id);
+    setOpenDetails(true);
+  };
+
+  const handleOpenAssign = (id: number) => {
+    setSelectedOrder(id);
+    setOpenAssign(true);
+  };
+
+  const handleCloseDetails = () => setOpenDetails(false);
+  const handleCloseAssign = () => setOpenAssign(false);
+
+  const columns: GridColDef<Order>[] = [
+    { field: "id", headerName: t2("id"), width: 70 },
+    {
+      field: "Client",
+      headerName: t2("client"),
+      width: 120,
+      valueGetter: (value, row) =>
+        `${row.client.firstName ?? ""} ${row.client.lastName ?? ""}`,
+    },
+    {
+      field: "Reader",
+      headerName: t2("reader"),
+      width: 120,
+      valueGetter: (value, row) =>
+        `${row.reader?.firstName ?? ""} ${row.reader?.lastName ?? ""}`,
+    },
+    {
+      field: "Date",
+      headerName: t2("date"),
+      width: 190,
+      valueGetter: (value, row) => {
+        const date = new Date(row.orderDate);
+        return `${t2("day")}: ${date.getDate()} - ${date.toLocaleString(locale, { month: "long" })} - ${date.getFullYear()}`;
+      }
+    },
+    {
+      field: "Time",
+      headerName: t2("time"),
+      width: 120,
+      valueGetter: (value, row) => new Date(row.orderDate).toLocaleTimeString(),
+    },
+    {
+      field: "actions",
+      headerName: t2("actions"),
+      width: 300,
+      sortable: false,
+      renderCell: (params) => (
+        <Box sx={{ display: "flex", gap: 1, justifyContent: "center" }}>
+          <Button
+            variant="text"
+            onClick={() => handleOpenDetails(params.row.id)}
+          >
+            <OpenInNew color="secondary" />
+          </Button>
+          <Button
+            variant="contained"
+            color="secondary"
+            disabled={params.row.isAccepted}
+            onClick={() => handleOpenAssign(params.row.id)}
+          >
+            {t1("assign")}
+          </Button>
+        </Box>
+      ),
+    },
+  ];
+
+  return (
+    <>
+      <OrderTable
+        columns={columns}
+        fetchFn={fetchOrders}
+        filters={{ status, start, end }}
+      />
+      {openDetails && selectedOrder && (
+        <OrderDetailsModal
+          open={openDetails}
+          onClose={handleCloseDetails}
+          orderId={selectedOrder}
+        />
+      )}
+      {openAssign && selectedOrder && (
+        <AssignReaderDialog
+          open={openAssign}
+          onClose={handleCloseAssign}
+          orderId={selectedOrder}
+        />
+      )}
+    </>
+  );
+}

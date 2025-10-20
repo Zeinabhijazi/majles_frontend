@@ -4,21 +4,10 @@ import { ApiResponse } from "@/types/apiResponse";
 import { Order } from "@/types/order";
 import { PaginationDto } from "@/types/pagination";
 import { OrderForEdit } from "@/types/orderForEdits";
-interface OrderDetails {
-  id: number;
-  orderDate: Date | null;
-  addressOne: string;
-  addressTwo?: string;
-  city: string;
-  postNumber: number;
-  country: string;
-  latitude: number;
-  longitude: number;
-}
+
 interface OrderState {
   isLoading: boolean;
   orders: Order[];
-  orderDetails: OrderDetails;
   error: string | null;
   successMessage: string | null;
   successType: "assign" | "cancel" | "update" | "accept" | null;
@@ -33,17 +22,6 @@ interface OrderState {
 const initialState: OrderState = {
   isLoading: false,
   orders: [],
-  orderDetails: {
-    id: 0,
-    orderDate: null,
-    addressOne: "",
-    addressTwo: "",
-    city: "",
-    postNumber: 0,
-    country: "",
-    latitude: 0,
-    longitude: 0,
-  },
   error: null,
   successMessage: null,
   successType: null,

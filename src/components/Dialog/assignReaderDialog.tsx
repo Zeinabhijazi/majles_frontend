@@ -7,8 +7,8 @@ import {
   DialogContent,
   DialogTitle,
   FormControl,
-  InputLabel,
   MenuItem,
+  OutlinedInput,
   Select,
   SelectChangeEvent,
   Slide,
@@ -34,16 +34,16 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />;
 });
 interface AssignDialogProps {
+  open: boolean;
+  onClose: () => void;
   orderId: number;
 }
 
-export default function AssignReaderDialog({
-  orderId,
-}: Readonly<AssignDialogProps>) {
+export default function AssignReaderDialog(props: AssignDialogProps) {
   const t1 = useTranslations("heading");
   const t2 = useTranslations("button");
   const t3 = useTranslations("select");
-  const [openAssignModal, setOpenAssignModal] = useState(false);
+  const orderId = props.orderId;
   const { users } = useSelector((state: RootState) => state.user);
   const { successMessage, successType, error } = useSelector(
     (state: RootState) => state.order
@@ -56,6 +56,11 @@ export default function AssignReaderDialog({
   useEffect(() => {
     dispatch(fetchReaders({}));
   }, [dispatch]);
+
+  const handleChange = (event: SelectChangeEvent) => {
+    setAllReaders(event.target.value);
+    setReaderId(Number(event.target.value));
+  };
 
   useEffect(() => {
     if (successType === "assign" && successMessage) {
@@ -75,29 +80,33 @@ export default function AssignReaderDialog({
     }
   }, [successMessage, successType, error]);
 
-  const handleChange = (event: SelectChangeEvent) => {
-    setAllReaders(event.target.value);
-    setReaderId(Number(event.target.value));
-  };
-
-  const handleOpenAssign = () => setOpenAssignModal(true);
-
-  const handleCloseAssign = () => {
-    setAllReaders("");
-    setOpenAssignModal(false);
-  };
+  {
+    successType === "assign" && successMessage && (
+      <Snackbar
+        open={open}
+        autoHideDuration={3000}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert severity="success">{successMessage}</Alert>
+      </Snackbar>
+    );
+  }
+  {
+    error && (
+      <Snackbar
+        open={open}
+        autoHideDuration={3000}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert severity="error">{error}</Alert>
+      </Snackbar>
+    );
+  }
 
   return (
     <React.Fragment>
-      <Button
-        variant="contained"
-        color="secondary"
-        onClick={() => handleOpenAssign()}
-      >
-        {t2("assign")}
-      </Button>
       <Dialog
-        open={openAssignModal}
+        open={props.open}
         TransitionComponent={Transition}
         keepMounted
         PaperProps={{
@@ -106,7 +115,6 @@ export default function AssignReaderDialog({
             height: 250,
             bgcolor: "background.default",
             border: "1px solid #eee",
-            borderRadius: 5,
             boxShadow: 8,
             p: 2,
           },
@@ -114,8 +122,8 @@ export default function AssignReaderDialog({
       >
         <DialogTitle
           sx={{
-            color: "secondary.main",
-            fontWeight: 700,
+            color: "text.primary",
+            fontWeight: 400,
             fontSize: "25px",
             mb: 1,
           }}
@@ -127,13 +135,23 @@ export default function AssignReaderDialog({
             overflow: "visible",
           }}
         >
-          <FormControl fullWidth>
-            <InputLabel>{t3("selectReader")}</InputLabel>
+          <FormControl size="small" fullWidth>
             <Select
               value={allReaders}
               onChange={handleChange}
-              label={t3("selectReader")}
+              displayEmpty
+              input={<OutlinedInput />}
+              sx={{
+                height: 50,
+                color: "primary.text",
+                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                  border: "1px solid #fff",
+                },
+              }}
             >
+              <MenuItem value="" disabled>
+                <em>{t3("selectReader")}</em>
+              </MenuItem>
               {users &&
                 users.length > 0 &&
                 users.map((row) => (
@@ -155,30 +173,12 @@ export default function AssignReaderDialog({
           <Button
             variant="contained"
             color="secondary"
-            onClick={handleCloseAssign}
+            onClick={props.onClose}
           >
             {t2("cancel")}
           </Button>
         </DialogActions>
       </Dialog>
-      {successType === "assign" && successMessage && (
-        <Snackbar
-          open={open}
-          autoHideDuration={3000}
-          anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        >
-          <Alert severity="success">{successMessage}</Alert>
-        </Snackbar>
-      )}
-      {error && (
-        <Snackbar
-          open={open}
-          autoHideDuration={3000}
-          anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        >
-          <Alert severity="error">{error}</Alert>
-        </Snackbar>
-      )}
     </React.Fragment>
   );
 }

@@ -3,7 +3,8 @@ import React from "react";
 import { Box, Modal, Typography } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useTranslations } from "next-intl";
-import { Order } from "@/types/order";
+import { RootState } from "@/redux/store";
+import { useSelector } from "react-redux";
 
 const style = {
   position: "absolute",
@@ -15,25 +16,25 @@ const style = {
   bgcolor: "background.default",
   border: "1px solid #eee",
   borderRadius: 5,
-  boxShadow: 8,
   p: 3,
 };
 
 interface OrderDetailsModalProps {
   open: boolean;
   onClose: () => void;
-  order: Order | null;
+  orderId: number;
 }
 
 export default function OrderDetailsModal({
   open,
   onClose,
-  order,
+  orderId,
 }: Readonly<OrderDetailsModalProps>) {
   const t1 = useTranslations("label");
   const t2 = useTranslations("heading");
-
-  if (!order) return null;
+  const { orders } = useSelector((state: RootState) => state.order);
+  if (!orderId) return null;
+  const order = orders.find((o) => o.id === orderId) || null;
 
   return (
     <Box component="section">
@@ -44,7 +45,7 @@ export default function OrderDetailsModal({
         slotProps={{
           backdrop: {
             sx: {
-              backgroundColor: "rgba(0, 0, 0, 0.1)", // less black, more transparent
+              backgroundColor: "rgba(0, 0, 0, 0.3)", 
             },
           },
         }}
@@ -84,7 +85,7 @@ export default function OrderDetailsModal({
                 {t1("phoneNumber")}:
               </Typography>
               <Typography variant="h6" sx={{ fontSize: "17px" }}>
-                {order.client.phoneNumber}
+                {order?.client.phoneNumber}
               </Typography>
             </Box>
             <Box
@@ -101,8 +102,8 @@ export default function OrderDetailsModal({
                 {t1("address")}:
               </Typography>
               <Typography variant="h6" sx={{ fontSize: "17px" }}>
-                {order.addressOne}, {order.addressTwo}, {order.postNumber},{" "}
-                {order.country}, {order.city}
+                {order?.addressOne}, {order?.addressTwo}, {order?.postNumber},{" "}
+                {order?.country}, {order?.city}
               </Typography>
             </Box>
             <Box
@@ -119,7 +120,7 @@ export default function OrderDetailsModal({
                 {t1("coordinates")}:
               </Typography>
               <Typography variant="h6" sx={{ fontSize: "17px" }}>
-                {order.latitude}, {order.longitude}
+                {order?.latitude}, {order?.longitude}
               </Typography>
             </Box>
           </Box>

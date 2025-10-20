@@ -10,11 +10,10 @@ import {
   Snackbar,
 } from "@mui/material";
 import { TransitionProps } from "@mui/material/transitions";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { useTranslations } from "next-intl";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
-import { clearSuccessMessage} from "@/redux/slices/userSlice";
+import { clearSuccessMessage } from "@/redux/slices/userSlice";
 import { cancelOrder } from "@/redux/slices/orderSlice";
 
 const Transition = React.forwardRef(function Transition(
@@ -25,22 +24,25 @@ const Transition = React.forwardRef(function Transition(
 ) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
-
 interface DeleteDialogProps {
+  open: boolean;
+  onClose: () => void;
   orderId: number;
 }
 
-export default function DeleteOrderDialog({
-  orderId,
-}: Readonly<DeleteDialogProps>) {
+export default function DeleteOrderDialog(props: DeleteDialogProps) {
   const t1 = useTranslations("heading");
   const t2 = useTranslations("button");
-  const [openDelete, setOpenDelete] = useState(false);
-  const [open, setOpen] = useState(false);
   const { successMessage, successType } = useSelector(
     (state: RootState) => state.order
   );
+  const [open, setOpen] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
+
+  // Handle submit
+  const handleDelete = (orderId: number) => {
+    dispatch(cancelOrder(orderId));
+  };
 
   useEffect(() => {
     if (successType === "cancel" && successMessage) {
@@ -51,33 +53,24 @@ export default function DeleteOrderDialog({
       }, 2500);
     }
   }, [successMessage, successType]);
-
-  const handleOpenDelete = (id: number) => {
-    setOpenDelete(true);
-  };
-
-  const handleCloseDelete = () => {
-    setOpenDelete(false);
-  };
-
-  const handleDelete = (orderId: number) => {
-    dispatch(cancelOrder(orderId));
-  };
+  {
+    successType === "cancel" && successMessage && (
+      <Snackbar
+        open={open}
+        autoHideDuration={3000}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert severity="success">{successMessage}</Alert>
+      </Snackbar>
+    );
+  }
 
   return (
     <React.Fragment>
-      <Button
-        variant="text"
-        color="secondary"
-        onClick={() => handleOpenDelete(orderId)}
-      >
-        <DeleteIcon />
-      </Button>
       <Dialog
-        open={openDelete}
+        open={props.open}
         TransitionComponent={Transition}
         keepMounted
-        onClose={handleCloseDelete}
         PaperProps={{
           sx: {
             border: "1px solid #fff",
@@ -92,28 +85,15 @@ export default function DeleteOrderDialog({
           <Button
             variant="contained"
             color="secondary"
-            onClick={() => handleDelete(orderId)}
+            onClick={() => handleDelete(props.orderId)}
           >
             {t2("delete")}
           </Button>
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={handleCloseDelete}
-          >
+          <Button variant="contained" color="secondary" onClick={props.onClose}>
             {t2("cancel")}
           </Button>
         </DialogActions>
       </Dialog>
-      {successType === "cancel" && successMessage && (
-        <Snackbar
-          open={open}
-          autoHideDuration={3000}
-          anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        >
-          <Alert severity="success">{successMessage}</Alert>
-        </Snackbar>
-      )}
     </React.Fragment>
   );
 }

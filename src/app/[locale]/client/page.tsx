@@ -7,7 +7,7 @@ import { AppDispatch } from "@/redux/store";
 import { fetchOrdersForLoggedUser } from "@/redux/slices/orderSlice";
 import SearchInput from "@/components/Forms/SearchInput";
 import AppSelect from "@/components/Forms/AppSelect";
-import ClientDataGrid from "@/components/Tables/order/client";
+import ClientDataGrid from "@/components/Tables/order/ClientDataGrid";
 
 export default function ClientPage() {
   const t1 = useTranslations("heading");
@@ -15,6 +15,7 @@ export default function ClientPage() {
   const t3 = useTranslations("searchInput");
 
   const [status, setStatus] = useState("");
+  const [search, setSearch] = useState("");
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
@@ -22,7 +23,7 @@ export default function ClientPage() {
   }, [dispatch, status]);
 
   const handleUserSearch = (value: string) => {
-    dispatch(fetchOrdersForLoggedUser({ search: value }));
+    setSearch(value);
   };
 
   return (
@@ -55,6 +56,7 @@ export default function ClientPage() {
             { value: "all", label: t2("all") },
             { value: "pending", label: t2("pending") },
             { value: "completed", label: t2("completed") },
+            { value: "accepted", label: t2("accepted") },
             { value: "rejected", label: t2("rejected") },
           ]}
         />
@@ -63,7 +65,7 @@ export default function ClientPage() {
           onSearch={handleUserSearch}
         />
       </Grid>
-      <ClientDataGrid />
+      <ClientDataGrid status={status} search={search} />
     </Box>
   );
 }

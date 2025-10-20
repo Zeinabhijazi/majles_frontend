@@ -7,17 +7,35 @@ import AppSelect from "@/components/Forms/AppSelect";
 import { fetchOrders } from "@/redux/slices/orderSlice"; 
 import { useDispatch } from "react-redux"; 
 import { AppDispatch } from "@/redux/store";  
-import OrderDataGrid from "@/components/Tables/order/order";
+import OrderDataGrid from "@/components/Tables/order/OrderDataGrid";
+import { Dayjs } from "dayjs";
 
 export default function OrdersAdminPage() { 
   const t1 = useTranslations("heading"); 
   const t2 = useTranslations("select"); 
   const [status, setStatus] = useState(""); 
+  const [selectedDate, setSelectedDate] = useState<Dayjs | null>(null);
   const dispatch = useDispatch<AppDispatch>();
 
-  useEffect(() => { 
-    dispatch(fetchOrders({ status: status })); 
-  }, [dispatch, status]); 
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (!selectedDate) {
+        dispatch(fetchOrders({ status }));
+        return;
+      }
+      const start = selectedDate.startOf("day").valueOf();
+      const end = selectedDate.endOf("day").valueOf();
+      dispatch(fetchOrders({ start, end, status }));
+    }, 500);
+
+    return () => clearTimeout(timeout);
+  }, [selectedDate, dispatch, status]);
+
+  useEffect(() => {
+    if (!selectedDate) {
+      dispatch(fetchOrders({ status }));
+    }
+  }, [status, dispatch]);
   
   return ( 
     <Box component="section"> 
@@ -39,7 +57,10 @@ export default function OrdersAdminPage() {
         }} 
       > 
         <Grid size={7}> 
-          <BasicDatePicker /> 
+          <BasicDatePicker 
+            value={selectedDate}
+            onChange={setSelectedDate}
+          /> 
         </Grid> 
         <AppSelect 
           value={status} 
@@ -52,8 +73,10 @@ export default function OrdersAdminPage() {
           ]} 
         /> 
       </Grid> 
-      <OrderDataGrid />
+      <OrderDataGrid 
+        status={status}
+        selectedDate={selectedDate}
+      />
     </Box> 
   ); 
 }
-

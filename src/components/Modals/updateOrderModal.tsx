@@ -14,14 +14,14 @@ import {
 import { useTranslations } from "next-intl";
 import CloseIcon from "@mui/icons-material/Close";
 import EditLocationAltIcon from "@mui/icons-material/EditLocationAlt";
-
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { clearSuccessMessage, updateOrder } from "@/redux/slices/orderSlice";
 import { OrderForEdit } from "@/types/orderForEdits";
+import { Order } from "@/types/order";
 
 const style = {
-  position: "absolute",
+  position: "absolute" as const,
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
@@ -33,98 +33,80 @@ const style = {
   boxShadow: 8,
   p: 3,
 };
-
 interface OrderDetailsModalProps {
   orderId: number;
   open: boolean;
   onClose: () => void;
-  order: OrderForEdit;
 }
 
 export default function UpdateOrderModal({
   orderId,
   open,
-  onClose,
-  order,
+  onClose
 }: Readonly<OrderDetailsModalProps>) {
+  console.log("orderId:", orderId);
   const t1 = useTranslations("label");
   const t2 = useTranslations("button");
   const t3 = useTranslations("heading");
-  const [isEditting, setIsEditting] = useState(false);
-  const [formData, setFormData] = useState<OrderForEdit>(order);
-  const [tempData, setTempData] = useState<OrderForEdit>({
-    readerId: order.readerId,
-    orderDate: order.orderDate,
-    longitude: order.longitude,
-    latitude: order.latitude,
-    addressOne: order.addressOne,
-    addressTwo: order.addressTwo,
-    country: order.country,
-    city: order.city,
-    postNumber: order.postNumber,
-  });
-  const { successType, successMessage, error } = useSelector(
+  const { orders, successType, successMessage } = useSelector(
     (state: RootState) => state.order
   );
   const dispatch = useDispatch<AppDispatch>();
+  const [formData, setFormData] = useState<Order | null>(null);
+  const [tempData, setTempData] = useState<OrderForEdit | null>(null);
+  const [isEditting, setIsEditting] = useState(false);
   const [successAlert, setSuccessAlert] = useState(false);
-  const [warningAlert, setWarningAlert] = useState(false);
   const [alertText, setAlertText] = useState<string | null>("");
 
-  // When order changes (selected from table)
+  // When modal opens, pick the correct order
   useEffect(() => {
-    if (order) {
-      setFormData(order);
-      setTempData(order);
+    if (!open) return;
+    const selectedOrder = orders.find((o) => o.id === orderId) || null;
+    setFormData(selectedOrder);
+    if (selectedOrder) {
+      setTempData({
+        orderDate: selectedOrder.orderDate,
+        longitude: Number(selectedOrder.longitude) || 0,
+        latitude: Number(selectedOrder.latitude) || 0,
+        addressOne: selectedOrder.addressOne || "",
+        addressTwo: selectedOrder.addressTwo || "",
+        city: selectedOrder.city || "",
+        country: selectedOrder.country || "",
+        postNumber: selectedOrder.postNumber || 0,
+        readerId: selectedOrder.readerId || undefined,
+      });
+      setIsEditting(false); // reset editing state
     }
-  }, [order]);
+  }, [open, orderId, orders]);
 
-  // Handle change
+  // Handle input change
   const handleChange = (
     field: keyof OrderForEdit,
     value: string | number | Date
   ) => {
-    setTempData((prev: any) => ({
-      ...prev,
-      [field]: value,
-    }));
+    setTempData((prev) => prev ? { ...prev, [field]: value } : prev);
   };
 
-  // Handle edit button
-  const handleEditClick = () => {
-    setTempData(formData);
-    setIsEditting(true);
-  };
+  // Edit / cancel
+  const handleEditClick = () => setIsEditting(true);
+  const handleEditingClose = () => setIsEditting(false);
 
-  const handleEditingClose = () => {
-    setFormData(tempData);
-    setIsEditting(false);
-  };
-
-  // To get the currect location
+  // Geolocation
   const handleGetLocation = () => {
     if (!navigator.geolocation) {
-      alert("Geolocation is not supported by your browser.");
+      alert("Geolocation not supported");
       return;
     }
     navigator.geolocation.getCurrentPosition(
       (pos) => {
-        const { latitude, longitude } = pos.coords;
-        handleChange("latitude", latitude);
-        handleChange("longitude", longitude);
+        handleChange("latitude", pos.coords.latitude);
+        handleChange("longitude", pos.coords.longitude);
       },
-      (err) => {
-        console.error("Error getting location:", err);
-        alert("Could not get your location.");
-      },
-      {
-        enableHighAccuracy: true,
-        timeout: 5000,
-        maximumAge: 0,
-      }
+      () => alert("Could not get location")
     );
   };
 
+  // Show success message
   useEffect(() => {
     if (successType === "update" && successMessage) {
       setAlertText(successMessage);
@@ -136,92 +118,60 @@ export default function UpdateOrderModal({
     }
   }, [successMessage, successType]);
 
-  // To update data
-  const handleSave = async (e: React.FormEvent) => {
+  const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
-    const {
-      orderDate,
-      longitude,
-      latitude,
-      addressOne,
-      addressTwo,
-      city,
-      country,
-      postNumber,
-    } = tempData;
-
-    // Build the payload
-    const formData: OrderForEdit = {
-      orderDate,
-      longitude,
-      latitude,
-      addressOne,
-      addressTwo,
-      city,
-      country,
-      postNumber
-    };
-    dispatch(updateOrder({ formData, orderId }));
-    setFormData((prev: any) => ({ ...prev, ...tempData }));
+    if (!tempData || !formData) return;
+    dispatch(updateOrder({ formData: tempData, orderId: formData.id }));
+    //setFormData({ ...formData, ...tempData });
     setIsEditting(false);
   };
 
-  if (!order) return null;
+  // Disable editing
+  const isDisabled = (formData?.isAccepted || formData?.isDeleted || formData?.isCompleted) ?? false;
+
   return (
     <Box component="section">
-      <Modal
+      <Modal 
         open={open}
-        slotProps={{
-          backdrop: {
-            sx: {
-              backgroundColor: "rgba(0, 0, 0, 0.1)", // less black, more transparent
-            },
-          },
+        slotProps={{ 
+          backdrop: { 
+            sx: { 
+              backgroundColor: "rgba(0, 0, 0, 0.3)", 
+            }, 
+          }, 
         }}
       >
         <Box sx={style}>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
+          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
             <Typography variant="h5" sx={{ fontWeight: "bold" }}>
               {t3("orderDetailsModel")}
             </Typography>
-            <CloseIcon onClick={onClose} sx={{ alignItems: "flex-end" }} />
+            <CloseIcon onClick={onClose} sx={{ cursor: "pointer" }} />
           </Box>
+
           <Box
             component="form"
             onSubmit={handleSave}
-            sx={{
-              mt: 5,
-              display: "flex",
-              flexDirection: "column",
-              gap: 3,
-            }}
+            sx={{ mt: 3, display: "flex", flexDirection: "column", gap: 3 }}
           >
             <Grid container>
-              <Grid size={4}>
-                <Typography>
-                  <strong>{t1("coordinates")}:</strong>
-                </Typography>
+              <Grid size={3}>
+                <Typography><strong>{t1("coordinates")}:</strong></Typography>
               </Grid>
-              <Grid size={8}>
+              <Grid size={9}>
                 {isEditting ? (
                   <Box sx={{ display: "flex", gap: 2 }}>
                     <TextField
-                      value={tempData.latitude}
+                      value={tempData?.latitude}
                       size="small"
-                      sx={{ width: "50%" }}
                       InputProps={{ readOnly: true }}
+                      sx={{ width: "50%" }}
                     />
                     <TextField
-                      value={tempData.longitude}
+                      value={tempData?.longitude}
                       size="small"
-                      sx={{ width: "50%" }}
                       InputProps={{ readOnly: true }}
+                      sx={{ width: "50%" }}
                     />
                     <IconButton onClick={handleGetLocation}>
                       <EditLocationAltIcon color="secondary" />
@@ -236,52 +186,42 @@ export default function UpdateOrderModal({
             </Grid>
 
             <Grid container>
-              <Grid size={4}>
-                <Typography>
-                  <strong>{t1("address")}:</strong>
-                </Typography>
+              <Grid size={3}>
+                <Typography><strong>{t1("address")}:</strong></Typography>
               </Grid>
-              <Grid size={8}>
-                {isEditting ? (
-                  <Box
-                    sx={{ display: "flex", flexDirection: "column", gap: 1 }}
-                  >
+              <Grid size={9}>
+                {isEditting  ? (
+                  <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
                     <Box sx={{ display: "flex", gap: 1 }}>
                       <TextField
-                        value={tempData.addressOne}
-                        onChange={(e) =>
-                          handleChange("addressOne", e.target.value)
-                        }
+                        value={tempData?.addressOne}
+                        onChange={(e) => handleChange("addressOne", e.target.value)}
                         size="small"
                         fullWidth
                       />
                       <TextField
-                        value={tempData.addressTwo}
-                        onChange={(e) =>
-                          handleChange("addressTwo", e.target.value)
-                        }
+                        value={tempData?.addressTwo}
+                        onChange={(e) => handleChange("addressTwo", e.target.value)}
                         size="small"
                         fullWidth
                       />
                     </Box>
                     <Box sx={{ display: "flex", gap: 1 }}>
                       <TextField
-                        value={tempData.city}
+                        value={tempData?.city}
                         onChange={(e) => handleChange("city", e.target.value)}
                         size="small"
                         fullWidth
                       />
                       <TextField
-                        value={tempData.postNumber}
-                        onChange={(e) =>
-                          handleChange("postNumber", e.target.value)
-                        }
+                        value={tempData?.postNumber}
+                        onChange={(e) => handleChange("postNumber", Number(e.target.value))}
                         size="small"
                         fullWidth
                       />
                     </Box>
                     <TextField
-                      value={tempData.country}
+                      value={tempData?.country}
                       onChange={(e) => handleChange("country", e.target.value)}
                       size="small"
                       fullWidth
@@ -289,58 +229,36 @@ export default function UpdateOrderModal({
                   </Box>
                 ) : (
                   <span>
-                    {formData?.addressOne}, {formData?.addressTwo},{" "}
-                    {formData?.postNumber}, {formData?.country},{" "}
-                    {formData?.city}
+                    {formData?.addressOne}, {formData?.addressTwo}, {formData?.postNumber}, {formData?.country}, {formData?.city}
                   </span>
                 )}
               </Grid>
             </Grid>
 
-            <Grid
-              container
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                gap: 3,
-                marginLeft: "auto",
-              }}
-            >
+            {!isDisabled && (
+              <Box sx={{ display: "flex", gap: 2, marginLeft: "auto" }}>
                 {!isEditting ? (
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    onClick={handleEditClick}
-                  >
+                  <Button variant="contained" color="secondary" onClick={handleEditClick}>
                     Edit
                   </Button>
                 ) : (
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    onClick={handleEditingClose}
-                  >
-                    Cancel
+                  <Button variant="contained" color="secondary" onClick={handleEditingClose}>
+                    {t2("cancel")}
                   </Button>
                 )}
-              <Button variant="contained" color="secondary" type="submit">
-                {t2("save")}
-              </Button>
-            </Grid>
+                {isEditting && (
+                  <Button variant="contained" color="secondary" type="submit">
+                    {t2("save")}
+                  </Button>
+                )}
+              </Box>
+            )}
           </Box>
         </Box>
       </Modal>
-      <Snackbar
-        open={successAlert}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      >
+
+      <Snackbar open={successAlert} anchorOrigin={{ vertical: "top", horizontal: "right" }}>
         <Alert severity="success">{alertText}</Alert>
-      </Snackbar>
-      <Snackbar
-        open={warningAlert}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      >
-        <Alert severity="warning">{alertText}</Alert>
       </Snackbar>
     </Box>
   );

@@ -24,4 +24,5 @@ export interface Order {
   city: string;
   isDeleted: boolean;
   isAccepted: boolean;
+  isCompleted?: boolean; 
 }

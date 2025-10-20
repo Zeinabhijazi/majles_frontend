@@ -264,7 +264,7 @@ export default function RegisterModal({
         <Grid size={6}>
           <TextField //First Name
             variant="outlined"
-            label={t2("firstName")}
+            placeholder={t2("firstName")}
             value={formData.firstName}
             color="secondary"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -278,7 +278,7 @@ export default function RegisterModal({
         <Grid size={6}>
           <TextField //Last Name
             variant="outlined"
-            label={t2("lastName")}
+            placeholder={t2("lastName")}
             color="secondary"
             value={formData.lastName}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -292,7 +292,7 @@ export default function RegisterModal({
       </Grid>
       <TextField // Email
         variant="outlined"
-        label={t2("email")}
+        placeholder={t2("email")}
         color="secondary"
         value={formData.email}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -305,7 +305,7 @@ export default function RegisterModal({
       <TextField // Password
         variant="outlined"
         color="secondary"
-        label={t2("password")}
+        placeholder={t2("password")}
         type="password"
         autoComplete="current-password"
         value={formData.password}
@@ -319,7 +319,7 @@ export default function RegisterModal({
       <TextField // Confirm Password
         variant="outlined"
         color="secondary"
-        label={t2("confirmPassword")}
+        placeholder={t2("confirmPassword")}
         type="password"
         autoComplete="current-password"
         value={formData.confirmPassword}
@@ -333,7 +333,7 @@ export default function RegisterModal({
       <TextField // Phone Number
         variant="outlined"
         color="secondary"
-        label={t2("phoneNumber")}
+        placeholder={t2("phoneNumber")}
         value={formData.phoneNumber}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           handleChange("phoneNumber", e.target.value)
@@ -442,7 +442,7 @@ export default function RegisterModal({
       <TextField // Address One
         variant="outlined"
         color="secondary"
-        label={t2("addressOne")}
+        placeholder={t2("addressOne")}
         value={formData.addressOne}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           handleChange("addressOne", e.target.value)
@@ -455,7 +455,7 @@ export default function RegisterModal({
       <TextField // Address Two
         variant="outlined"
         color="secondary"
-        label={t2("addressTwo")}
+        placeholder={t2("addressTwo")}
         value={formData.addressTwo}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           handleChange("addressTwo", e.target.value)
@@ -478,7 +478,7 @@ export default function RegisterModal({
           <TextField // City
             variant="outlined"
             color="secondary"
-            label={t2("city")}
+            placeholder={t2("city")}
             value={formData.city}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               handleChange("city", e.target.value)
@@ -492,7 +492,7 @@ export default function RegisterModal({
           <TextField // Post Code
             variant="outlined"
             color="secondary"
-            label={t2("postCode")}
+            placeholder={t2("postCode")}
             value={formData.postNumber}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               handleChange("postNumber", e.target.value)
@@ -506,7 +506,7 @@ export default function RegisterModal({
       <TextField // Country
         variant="outlined"
         color="secondary"
-        label={t2("country")}
+        placeholder={t2("country")}
         value={formData.country}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           handleChange("country", e.target.value)
@@ -529,7 +529,7 @@ export default function RegisterModal({
           <TextField // Latitude
             variant="outlined"
             color="secondary"
-            label={t2("latitude")}
+            placeholder={t2("latitude")}
             value={formData.latitude}
             InputProps={{ readOnly: true }}
             required
@@ -541,7 +541,7 @@ export default function RegisterModal({
           <TextField // Longitude
             variant="outlined"
             color="secondary"
-            label={t2("longitude")}
+            placeholder={t2("longitude")}
             value={formData.longitude}
             InputProps={{ readOnly: true }}
             required

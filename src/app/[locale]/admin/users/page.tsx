@@ -8,7 +8,7 @@ import AppSelect from "@/components/Forms/AppSelect";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { fetchUsers } from "@/redux/slices/userSlice";
-import UserTable from "@/components/Tables/user";
+import UserDataGrid from "@/components/Tables/UserDataGrid";
 import SearchInput from "@/components/Forms/SearchInput";
 
 export default function UsersAdminPage() {
@@ -23,15 +23,29 @@ export default function UsersAdminPage() {
 
   const [userType, setUserType] = useState("");
   const [isDeleted, setIsDeleted] = useState("");
+  const [search, setSearch] = useState("");
+  const [paginationModel, setPaginationModel] = useState({
+    page: 0,
+    pageSize: 10,
+  });
   const dispatch = useDispatch<AppDispatch>();
 
   const handleUserSearch = (value: string) => {
-    dispatch(fetchUsers({ search: value }));
+    setSearch(value);
+    setPaginationModel({ page: 0, pageSize: paginationModel.pageSize });
   };
 
   useEffect(() => {
-    dispatch(fetchUsers({ userType: userType, isDeleted: isDeleted }));
-  }, [dispatch, userType, isDeleted]);
+    dispatch(
+      fetchUsers({
+        page: paginationModel.page + 1,
+        limit: paginationModel.pageSize,
+        userType,
+        isDeleted,
+        search,
+      })
+    );
+  }, [dispatch, paginationModel, userType, isDeleted, search]);
 
   return (
     <Box component="section">
@@ -110,7 +124,10 @@ export default function UsersAdminPage() {
           />
         </Grid>
       </Grid>
-      <UserTable />
+      <UserDataGrid
+        paginationModel={paginationModel}
+        setPaginationModel={setPaginationModel}
+      />
     </Box>
   );
 }

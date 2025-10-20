@@ -94,7 +94,8 @@
     "selectReader": "تعيين قارئ",
     "pending": "قيد الانتظار",
     "completed": "مكتمل",
-    "rejected": "مرفوض"
+    "rejected": "مرفوض",
+    "accepted": "مقبول"
   },
   "searchInput": {
     "userSearch": "البحث عن مستخدم",
@@ -126,8 +127,6 @@
     "pickLocation": "اختر الموقع",
     "addUser": "إضافة مستخدم",
     "addOrder": "إضافة طلب",
-    "search": "بحث",
-    "reset": "إعادة تعيين",
     "delete": "حذف",
     "cancel": "إلغاء",
     "assign": "تعيين",
@@ -167,6 +166,7 @@
     "time": "وقت",
     "datePickerLabel": "حدد التاريخ",
     "message": "رسالة",
-    "subject": "موضوع"
+    "subject": "موضوع",
+    "day": "يوم"
   }
 }

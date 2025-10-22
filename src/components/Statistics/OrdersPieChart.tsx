@@ -19,16 +19,17 @@ export default function OrdersPieChart() {
   }, [dispatch]);
 
   const data = {
-    labels: [t("accepted"), t("pending"), t("cancelled")],
+    labels: [t("accepted"), t("pending"), t("cancelled"), t("completed")],
     datasets: [
       {
         data: [
           orderStatus.accepted,
           orderStatus.pending,
           orderStatus.cancelled,
+          orderStatus.completed,
         ],
-        backgroundColor: ["#242329", "#2d2b35", "#363441"],
-        borderColor: ["#fff", "#fff", "#fff"],
+        backgroundColor: ["#242329", "#2d2b35", "#363441", "#201e29"],
+        borderColor: ["#fff", "#fff", "#fff", "#fff"],
         borderWidth: 1,
       },
     ],
@@ -49,7 +50,7 @@ export default function OrdersPieChart() {
   };
 
   return (
-    <div className="w-96 h-96">
+    <div className="w-100 h-96">
       <Pie data={data} options={options} />
     </div>
   );

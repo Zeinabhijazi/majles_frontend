@@ -60,7 +60,8 @@
     "orderOverive": "نظرة عامة على الطلبات",
     "cancelled": "ملغي",
     "pending": "معلق",
-    "accepted": "مقبول"
+    "accepted": "مقبول",
+    "completed": "مكتمل"
   },
   "readerDashboard": {
     "pendingOrder": "الطلبات المعلقة",
@@ -166,7 +167,6 @@
     "time": "وقت",
     "datePickerLabel": "حدد التاريخ",
     "message": "رسالة",
-    "subject": "موضوع",
-    "day": "يوم"
+    "subject": "موضوع"
   }
 }

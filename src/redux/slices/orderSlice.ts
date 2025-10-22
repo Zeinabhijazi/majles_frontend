@@ -40,6 +40,7 @@ type FetchOrdersArgs = {
   start?: number; // timestamp (ms)
   end?: number; // timestamp (ms)
   search?: string;
+  thisMonth?: boolean;
 };
 
 // Fetch all orders
@@ -100,7 +101,7 @@ export const handleAssignReader = createAsyncThunk<
 export const fetchOrdersForLoggedUser = createAsyncThunk(
   "FETCHORDERSFORLOGGEDUSER",
   async (
-    { page = 1, limit = 10, status, search }: FetchOrdersArgs,
+    { page = 1, limit = 10, status, search, start, end, thisMonth }: FetchOrdersArgs,
     { rejectWithValue }
   ) => {
     try {
@@ -110,12 +111,15 @@ export const fetchOrdersForLoggedUser = createAsyncThunk(
           params: {
             ...(status && status !== "all" ? { status } : {}),
             ...(search ? { search } : {}),
+            ...(start ? { start } : {}),
+            ...(end ? { end } : {}),
+            ...(thisMonth ? { thisMonth } : {}),
           },
         }
       );
       return response.data.data;
     } catch (error: any) {
-      return rejectWithValue("Failed to fetch orders of this client");
+      return rejectWithValue("Failed to fetch orders of this user");
     }
   }
 );

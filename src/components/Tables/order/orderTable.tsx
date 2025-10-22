@@ -14,6 +14,7 @@ interface OrderTableProps {
     search?: string;
     start?: number;
     end?: number;
+    thisMonth?: boolean;
   };
 }
 
@@ -31,7 +32,7 @@ const OrderTable: React.FC<OrderTableProps> = ({ columns, fetchFn, filters }) =>
       fetchFn({
         page: paginationModel.page + 1,
         limit: paginationModel.pageSize,
-        ...filters, // keep filters when paginating
+        ...filters, 
       })
     );
   }, [dispatch, fetchFn, paginationModel, filters]);
@@ -52,7 +53,7 @@ const OrderTable: React.FC<OrderTableProps> = ({ columns, fetchFn, filters }) =>
         onPaginationModelChange={setPaginationModel}
         pageSizeOptions={[10, 25, 100]}
         disableRowSelectionOnClick
-        disableColumnMenu
+        disableColumnMenu={true}
         sx={{
           bgcolor: "primary.main",
           "& .MuiDataGrid-columnHeaders": {

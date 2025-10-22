@@ -45,43 +45,49 @@ export default function OrderDataGrid({
   const handleCloseAssign = () => setOpenAssign(false);
 
   const columns: GridColDef<Order>[] = [
-    { field: "id", headerName: t2("id"), width: 70 },
+    { field: "id", headerName: t2("id"), flex: 1 },
     {
       field: "Client",
       headerName: t2("client"),
-      width: 120,
+      flex: 1,
       valueGetter: (value, row) =>
         `${row.client.firstName ?? ""} ${row.client.lastName ?? ""}`,
     },
     {
       field: "Reader",
       headerName: t2("reader"),
-      width: 120,
+      flex: 1,
       valueGetter: (value, row) =>
         `${row.reader?.firstName ?? ""} ${row.reader?.lastName ?? ""}`,
     },
     {
       field: "Date",
       headerName: t2("date"),
-      width: 190,
+      flex: 2,
       valueGetter: (value, row) => {
         const date = new Date(row.orderDate);
-        return `${t2("day")}: ${date.getDate()} - ${date.toLocaleString(locale, { month: "long" })} - ${date.getFullYear()}`;
+        return `${date.getDate()} - ${date.toLocaleString(locale, { month: "long" })} - ${date.getFullYear()}`;
       }
     },
     {
       field: "Time",
       headerName: t2("time"),
-      width: 120,
+      flex: 1,
       valueGetter: (value, row) => new Date(row.orderDate).toLocaleTimeString(),
     },
     {
       field: "actions",
       headerName: t2("actions"),
-      width: 300,
+      flex: 2,
       sortable: false,
       renderCell: (params) => (
-        <Box sx={{ display: "flex", gap: 1, justifyContent: "center" }}>
+        <Box 
+          sx={{ 
+            display: "flex",
+            mt: 0.9,
+            gap: 1
+          }}
+        >
           <Button
             variant="text"
             onClick={() => handleOpenDetails(params.row.id)}

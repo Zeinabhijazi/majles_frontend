@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Button, Grid, Typography } from "@mui/material";
 import { useTranslations } from "next-intl";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
@@ -8,12 +8,15 @@ import { fetchOrdersForLoggedUser } from "@/redux/slices/orderSlice";
 import SearchInput from "@/components/Forms/SearchInput";
 import AppSelect from "@/components/Forms/AppSelect";
 import ClientDataGrid from "@/components/Tables/order/ClientDataGrid";
+import CreateOrderModal from "@/components/Forms/CreateOrderModal";
 
 export default function ClientPage() {
   const t1 = useTranslations("heading");
   const t2 = useTranslations("select");
   const t3 = useTranslations("searchInput");
+  const t4 = useTranslations("button");
 
+  const [open, setOpen] = useState(false);
   const [status, setStatus] = useState("");
   const [search, setSearch] = useState("");
   const dispatch = useDispatch<AppDispatch>();
@@ -26,18 +29,39 @@ export default function ClientPage() {
     setSearch(value);
   };
 
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   return (
     <Box component={"section"}>
-      <Typography
-        variant="h2"
+      <Box
         sx={{
-          fontSize: 23,
-          fontWeight: 700,
-          color: "primary.main",
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
         }}
       >
-        {t1("clientPageTitle")}
-      </Typography>
+        <Typography
+          variant="h2"
+          sx={{
+            fontSize: 23,
+            fontWeight: 700,
+            color: "primary.main",
+          }}
+        >
+          {t1("clientPageTitle")}
+        </Typography>
+        <Button
+          size="small"
+          variant="contained"
+          color="secondary"
+          onClick={handleOpen}
+        >
+          {t4("addOrder")}
+        </Button>
+      </Box>
+      <CreateOrderModal open={open} onClose={handleClose} />
       <Grid
         spacing={10}
         sx={{

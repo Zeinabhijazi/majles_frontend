@@ -60,7 +60,8 @@
     "orderOverive": "Aperçu des commandes ",
     "cancelled": "Annulé",
     "pending": "En attente",
-    "accepted": "Accepté"
+    "accepted": "Accepté",
+    "completed": "Complété"
   },
   "readerDashboard": {
     "pendingOrder": "Commandes en attente",
@@ -166,7 +167,6 @@
     "time": "temps",
     "datePickerLabel": "Sélectionnez la date",
     "message": "Message",
-    "subject": "sujette",
-    "day": "jour"
+    "subject": "sujette"
   }
 }

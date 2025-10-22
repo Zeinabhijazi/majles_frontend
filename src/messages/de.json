@@ -60,7 +60,8 @@
     "orderOverive": "Bestellübersicht",
     "cancelled": "Abgebrochen",
     "pending": "Ausstehend",
-    "accepted": "Akzeptiert"
+    "accepted": "Akzeptiert",
+    "completed": "vollendet"
   },
   "readerDashboard": {
     "pendingOrder": "Ausstehende Bestellungen",
@@ -166,7 +167,6 @@
     "time": "Zeit",
     "datePickerLabel": "Datell auswählen",
     "message": "Nachricht",
-    "subject": "Thema",
-    "day": "Tag"
+    "subject": "Thema"
   }
 }

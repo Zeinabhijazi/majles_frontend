@@ -20,8 +20,6 @@ import LoginModal from "../Forms/LoginModal";
 import RegisterModal from "../Forms/RegisterModal";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 
-
-
 export default function MenuAppBar() {
   const t1 = useTranslations("navbar");
   const t2 = useTranslations("button");
@@ -123,14 +121,16 @@ export default function MenuAppBar() {
             <Language />  
 
             {!isLogin ? (
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={handleOpenLogin}
-              >
-                {t2("login")}
-              </Button>
-            ) : (
+              userDetails.userType !== "admin" && ( 
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={handleOpenLogin}
+                >
+                  {t2("login")}
+                </Button>
+              )
+            ): (
               <Box sx={{ flexGrow: 0 }}>
                 <IconButton onClick={handleOpenUserMenu}>
                   <AccountCircle color="secondary" />

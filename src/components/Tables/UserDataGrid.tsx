@@ -53,20 +53,20 @@ export default function UserDataGrid(props: UserDataGridProps) {
   };
 
   const columns: GridColDef<User>[] = [
-    { field: "id", headerName: t2("id"), width: 90 },
+    { field: "id", headerName: t2("id"), flex: 1 },
     {
       field: "name",
       headerName: t2("name"),
-      width: 150,
+      flex: 1,
       // valueGetter() => string: Render a combination of different fields
       valueGetter: (value, row) =>
         `${row.firstName ?? ""} ${row.lastName ?? ""}`,
     },
-    { field: "email", headerName: t2("email"), width: 174 },
+    { field: "email", headerName: t2("email"), flex: 2 },
     {
       field: "userType",
       headerName: t2("type"),
-      width: 120,
+      flex: 1,
       valueGetter: (value, row) => {
         return row.userType === "reader"
           ? t1("reader")
@@ -80,11 +80,11 @@ export default function UserDataGrid(props: UserDataGridProps) {
     {
       field: "actions",
       headerName: t2("actions"),
-      width: 350,
+      flex: 4,
       sortable: false,
       // renderCell() => ReactElement
       renderCell: (params) => (
-        <Box sx={{ display: "flex", gap: 1 }}>
+        <Box sx={{ display: "flex", gap: 1, mt: 1 }}>
           <Button
             variant="text"
             onClick={() => handleOpenDetails(params.row.id)}
@@ -116,7 +116,6 @@ export default function UserDataGrid(props: UserDataGridProps) {
           paginationModel={props.paginationModel}
           onPaginationModelChange={props.setPaginationModel}
           pageSizeOptions={[10, 25, 100]}
-          checkboxSelection
           disableRowSelectionOnClick
           disableColumnMenu={true}
           sx={{

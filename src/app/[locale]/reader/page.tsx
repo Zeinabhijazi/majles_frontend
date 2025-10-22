@@ -1,6 +1,6 @@
 "use client";
-import React, { useEffect } from "react";
-import { Box, Grid, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Box, Typography } from "@mui/material";
 import CardData from "@/components/Statistics/dataCard";
 import { AppDispatch, RootState } from "@/redux/store";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,20 +8,34 @@ import { fetchOrdersForLoggedUser } from "@/redux/slices/orderSlice";
 import { useLocale, useTranslations } from "next-intl";
 import PendingOrdersDataGrid from "@/components/Tables/order/pendingOrders";
 import ReaderDataGrid from "@/components/Tables/order/ReaderDataGrid";
+import BasicDatePicker from "@/components/Forms/datePicker";
+import { Dayjs } from "dayjs";
 
 export default function ReaderPage() {
   const t = useTranslations("readerDashboard");
   const { totalOrders, pendingItemsCount, completedItemsCount } = useSelector(
     (state: RootState) => state.order
   );
+  const [selectedDate, setSelectedDate] = useState<Dayjs | null>(null);
+  const locale = useLocale();
+  const currentMonth = new Date().toLocaleString(locale, { month: "long" });
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    dispatch(fetchOrdersForLoggedUser({}));
-  }, [dispatch]);
+    const timeout = setTimeout(() => {
+      if (!selectedDate) {
+        dispatch(fetchOrdersForLoggedUser({}));
+        return;
+      }
+      const start = selectedDate.startOf("day").valueOf();
+      const end = selectedDate.endOf("day").valueOf();
+      dispatch(fetchOrdersForLoggedUser({ start, end }));
+    }, 500);
 
-  const locale = useLocale();
-  const currentMonth = new Date().toLocaleString(locale, { month: "long" });
+    return () => clearTimeout(timeout);
+  }, [selectedDate, dispatch]);
+
+ 
 
   return (
     <Box component="section">
@@ -37,23 +51,38 @@ export default function ReaderPage() {
         <CardData text={t("completedOrder")} data={completedItemsCount} />
         <CardData text={t("allOrders")} data={totalOrders} />
       </Box>
-      <Grid
-        container
-        sx={{ height: 430, display: "flex", flexDirection: "row", gap: 2, mt: 2 }}
+      <Box
+        component={"section"}
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 2,
+          mt: 2,
+        }}
       >
-        <Grid size={6}>
+        <Box>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              mb: 1,
+            }}
+          >
+            <Typography variant="h5" color="primary">
+              {currentMonth} Orders:
+            </Typography>
+            <BasicDatePicker value={selectedDate} onChange={setSelectedDate} />
+          </Box>
+          <ReaderDataGrid />
+        </Box>
+        <Box>
           <Typography variant="h5" color="primary">
             Pending Orders:
           </Typography>
           <PendingOrdersDataGrid />
-        </Grid>
-        <Grid size={5.8}>
-          <Typography variant="h5" color="primary">
-            Orders in this {currentMonth}:
-          </Typography>
-          <ReaderDataGrid />
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
     </Box>
   );
 }

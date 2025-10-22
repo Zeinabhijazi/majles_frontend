@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { Box, Button, IconButton, Typography } from "@mui/material";
+import { Box, Button, Chip, IconButton, Stack, Typography } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 import { useLocale, useTranslations } from "next-intl";
 import { Order } from "@/types/order";
@@ -39,52 +39,69 @@ export default function ClientDataGrid({
   const handleCloseDelete = () => setOpenDelete(false);
 
   const columns: GridColDef<Order>[] = [
-    { field: "id", headerName: t2("id"), width: 70 },
+    { field: "id", headerName: t2("id"), flex: 1 },
     {
       field: "Reader",
       headerName: t2("reader"),
-      width: 120,
+      flex: 1,
       valueGetter: (value, row) =>
         `${row.reader?.firstName ?? ""} ${row.reader?.lastName ?? ""}`,
     },
     {
       field: "Date",
       headerName: t2("date"),
-      width: 200,
+      flex: 1,
       valueGetter: (value, row) => {
         const date = new Date(row.orderDate);
-        return `${t2("day")}: ${date.getDate()} - ${date.toLocaleString(locale, { month: "long" })} - ${date.getFullYear()}`;
+        return `${date.getDate()} - ${date.toLocaleString(locale, { month: "long" })} - ${date.getFullYear()}`;
       }
     },
     {
       field: "Time",
       headerName: t2("time"),
-      width: 120,
+      flex: 1,
       valueGetter: (value, row) => new Date(row.orderDate).toLocaleTimeString(),
     },
     {
       field: "status",
       headerName: t1("status"),
-      width: 150,
+      flex: 1,
       renderCell: (params) => {
         const row = params.row;
         if (!row.isAccepted && !row.isDeleted && !row.isCompleted)
-          return <Typography variant="body2">{t1("pending")}</Typography>;
+        return  (
+          <Stack spacing={1} sx={{ width: "65%", mt: 1.5 }}>
+            <Chip label={t1("pending")} color="warning" size="small" />
+          </Stack>
+        )
+           
         if (row.isCompleted)
-          return <Typography variant="body2">{t1("completed")}</Typography>;
+          return  (
+            <Stack spacing={1} sx={{ width: "65%", mt: 1.5 }}>
+              <Chip label={t1("completed")} color="success" size="small"/>
+            </Stack>
+          )
         if (row.isDeleted)
-          return <Typography variant="body2">{t1("rejected")}</Typography>;
+          return  (
+            <Stack spacing={1} sx={{ width: "65%", mt: 1.5 }}>
+              <Chip label={t1("rejected")} color="error" size="small" />
+            </Stack>
+          )
         if (row.isAccepted)
-          return <Typography variant="body2">{t1("accepted")}</Typography>;
+          return  (
+            <Stack spacing={1} sx={{ width: "65%", mt: 1.5 }}>
+              <Chip label={t1("accepted")} color="secondary" size="small" />
+            </Stack>
+          )
       },
     },
     {
       field: "actions",
       headerName: t2("actions"),
-      width: 250,
+      flex: 1,
       sortable: false,
       renderCell: (params) => (
-        <Box sx={{ display: "flex", gap: 1, justifyContent: "center" }}>
+        <Box sx={{ display: "flex", gap: 1, mt: 0.5 }}>
           <IconButton
             color="secondary"
             onClick={() => handleOpenDetails(Number(params.row.id))}

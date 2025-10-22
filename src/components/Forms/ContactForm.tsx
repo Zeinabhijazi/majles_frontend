@@ -48,7 +48,6 @@ export default function ContactForm() {
     firstname: z.string("Should be a Character"),
     lastname: z.string("Should be a Character"),
     email: z.string().email("Invalid email"),
-    phoneNumber: z.number().min(8),
     subject: z
       .string()
       .min(5, "Subject is required."),

@@ -3,13 +3,13 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 interface DashboardState {
   userCounts: { readers: number; clients: number };
-  orderStatus: { accepted: number; cancelled: number; pending: number };
+  orderStatus: { accepted: number; cancelled: number; pending: number; completed: number };
   error: string | null;
 }
 
 const initialState: DashboardState = {
   userCounts: { readers: 0, clients: 0 },
-  orderStatus: { accepted: 0, cancelled: 0, pending: 0 },
+  orderStatus: { accepted: 0, cancelled: 0, pending: 0, completed: 0 },
   error: null,
 };
 

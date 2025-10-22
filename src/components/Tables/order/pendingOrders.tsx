@@ -1,11 +1,10 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { Alert, Box, Button, Snackbar } from "@mui/material";
+import React, { useState } from "react";
+import { Box, Button } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Order } from "@/types/order";
 import {
-  clearSuccessMessage,
   fetchOrdersForLoggedUser,
   handleAccept,
 } from "@/redux/slices/orderSlice";
@@ -18,77 +17,45 @@ import { AppDispatch, RootState } from "@/redux/store";
 export default function PendingOrdersDataGrid() {
   const t1 = useTranslations("button");
   const t2 = useTranslations("label");
+  const locale = useLocale();
   const dispatch = useDispatch<AppDispatch>();
-  const [open, setOpen] = useState(false);
   const { userDetails } = useSelector((state: RootState) => state.user);
-  const { successType, successMessage, error } = useSelector(
-    (state: RootState) => state.order
-  );
   if (!userDetails?.id) return;
   const readerId = userDetails.id;
-  useEffect(() => {
-    if (successType === "accept" && successMessage) {
-      dispatch(fetchOrdersForLoggedUser({}));
-      setOpen(true);
-      setTimeout(() => {
-        setOpen(false);
-        dispatch(clearSuccessMessage());
-      }, 2500);
-    }
-    if (error) {
-      setOpen(true);
-      setTimeout(() => {
-        setOpen(false);
-        dispatch(clearSuccessMessage());
-      }, 2500);
-    }
-  }, [successMessage, successType, error]);
+  const [openDelete, setOpenDelete] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState<number | null>(null);
 
-  {
-    successType === "assign" && successMessage && (
-      <Snackbar
-        open={open}
-        autoHideDuration={3000}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      >
-        <Alert severity="success">{successMessage}</Alert>
-      </Snackbar>
-    );
-  }
-  {
-    error && (
-      <Snackbar
-        open={open}
-        autoHideDuration={3000}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      >
-        <Alert severity="error">{error}</Alert>
-      </Snackbar>
-    );
-  }
+  const handleOpenDelete = (id: number) => {
+    setOpenDelete(true);
+    setSelectedOrder(id);
+  };
+  const handleCloseDelete = () => setOpenDelete(false);
 
   const columns: GridColDef<Order>[] = [
-    { field: "id", headerName: t2("id"), width: 70 },
+    { field: "id", headerName: t2("id"), flex: 1 },
     {
       field: "Date",
       headerName: t2("date"),
-      width: 100,
-      valueGetter: (value, row) => new Date(row.orderDate).toLocaleDateString(),
+      flex: 2,
+      valueGetter: (value, row) => {
+        const date = new Date(row.orderDate);
+        return `${date.getDate()} - ${date.toLocaleString(locale, { month: "long" })} - ${date.getFullYear()}`;
+      }
     },
     {
       field: "Time",
       headerName: t2("time"),
-      width: 100,
+      flex: 2,
       valueGetter: (value, row) => new Date(row.orderDate).toLocaleTimeString(),
     },
     {
       field: "actions",
       headerName: t2("actions"),
-      width: 200,
+      flex: 4,
       sortable: false,
       renderCell: (params) => {
         return (
-          <Box sx={{ display: "flex", gap: 1, justifyContent: "center" }}>
+          <Box sx={{ display: "flex", gap: 1, mt: 1 }}>
             <Button
               variant="contained"
               color="secondary"
@@ -100,18 +67,32 @@ export default function PendingOrdersDataGrid() {
             >
               {t1("accept")}
             </Button>
-            {params.row.isAccepted || params.row.isDeleted ? (
-              <Button variant="text" disabled>
-                <DeleteIcon />
-              </Button>
-            ) : (
-              <DeleteOrderDialog orderId={params.row.id} />
-            )}
+            <Button
+              variant="text"
+              color="secondary"
+              disabled={params.row.isDeleted || params.row.isAccepted}
+              onClick={() => handleOpenDelete(params.row.id)}
+            >
+              <DeleteIcon />
+            </Button>
           </Box>
         );
       },
     },
   ];
-
-  return <OrderTable columns={columns} fetchFn={fetchOrdersForLoggedUser} />;
+  return (
+    <>
+      <OrderTable 
+        columns={columns} 
+        fetchFn={fetchOrdersForLoggedUser}
+      />
+      {openDelete && selectedOrder && (
+        <DeleteOrderDialog
+          open={openDelete}
+          onClose={handleCloseDelete}
+          orderId={selectedOrder}
+        />
+      )}
+    </>
+  );
 }

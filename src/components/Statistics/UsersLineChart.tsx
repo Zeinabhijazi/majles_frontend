@@ -11,10 +11,10 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { useTranslations } from "next-intl";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
-import { fetchStatus } from "@/redux/slices/dashboardSlice";
+import { fetchUserRegistrationStatus } from "@/redux/slices/dashboardSlice";
+import { useTranslations } from "next-intl";
 
 ChartJS.register(
   CategoryScale,
@@ -26,29 +26,54 @@ ChartJS.register(
   Legend
 );
 
-export default function UsersLineChart() {
-  const t1 = useTranslations("adminDashboard");
-  const t2 = useTranslations("dashboard");
-  const { orderStatus } = useSelector((state: RootState) => state.dashboard);
+export default function UserRegistrationChart() {
+  const t = useTranslations("adminDashboard");
   const dispatch = useDispatch<AppDispatch>();
+  const { userRegistrationStatus } = useSelector(
+    (state: RootState) => state.dashboard
+  );
 
   useEffect(() => {
-    dispatch(fetchStatus());
+    dispatch(fetchUserRegistrationStatus());
   }, [dispatch]);
 
+  // Default labels (Months)
+  const monthLabels = [
+    t("jan"),
+    t("feb"),
+    t("mar"),
+    t("apr"),
+    t("may"),
+    t("jun"),
+    t("jul"),
+    t("aug"),
+    t("sep"),
+    t("oct"),
+    t("nov"),
+    t("dec"),
+  ];
+
+  // Map your data to monthly order
+  const monthlyData = monthLabels.map((month, index) => {
+    const key = `${new Date().getFullYear()}-${String(index + 1).padStart(
+      2,
+      "0"
+    )}`;
+    return userRegistrationStatus?.[key] || 0; // fallback 0 if no data
+  });
+
   const data = {
-    labels: [t1("accepted"), t1("pending"), t1("cancelled")], // x-axis labels
+    labels: monthLabels,
     datasets: [
       {
-        label: t2("users"),
-        data: [
-          orderStatus.accepted,
-          orderStatus.pending,
-          orderStatus.cancelled,
-        ],
-        borderColor: "#36A2EB",
-        backgroundColor: ["#242329", "#212b36", "#e72544"],
-        tension: 0.4, // curve the line
+        label: t("userCounts"),
+        data: monthlyData,
+        borderColor: "#42A5F5",
+        backgroundColor: "rgba(66, 165, 245, 0.2)",
+        fill: true,
+        tension: 0.4,
+        pointBackgroundColor: "#1E88E5",
+        pointRadius: 4,
       },
     ],
   };
@@ -61,32 +86,23 @@ export default function UsersLineChart() {
       },
       title: {
         display: true,
-        text: t1("userOverview"),
+        text: t("userOverview"),
       },
     },
     scales: {
       x: {
-        grid: {
-          display: false,
-        },
-        border: {
-          display: true,
-        },
+        grid: { display: false },
       },
       y: {
-        grid: {
-          display: false,
-        },
-        border: {
-          display: true,
-        },
+        beginAtZero: true,
+        ticks: { stepSize: 5 },
       },
     },
   };
 
   return (
     <div className="w-full h-full">
-      <Line data={data} options={options} height={"215px"} />
+      <Line data={data} options={options} height={220} />
     </div>
   );
 }

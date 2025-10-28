@@ -1,14 +1,14 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Box, Typography } from "@mui/material";
-import CardData from "@/components/Statistics/dataCard";
+import CardData from "@/app/[locale]/components/Statistics/dataCard";
 import { AppDispatch, RootState } from "@/redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchOrdersForLoggedUser } from "@/redux/slices/orderSlice";
 import { useLocale, useTranslations } from "next-intl";
-import PendingOrdersDataGrid from "@/components/Tables/order/pendingOrders";
-import ReaderDataGrid from "@/components/Tables/order/ReaderDataGrid";
-import BasicDatePicker from "@/components/Forms/datePicker";
+import PendingOrdersDataGrid from "@/app/[locale]/components/Tables/order/pendingOrders";
+import ReaderDataGrid from "@/app/[locale]/components/Tables/order/ReaderDataGrid";
+import BasicDatePicker from "@/app/[locale]/components/Forms/datePicker";
 import { Dayjs } from "dayjs";
 
 export default function ReaderPage() {
@@ -35,7 +35,6 @@ export default function ReaderPage() {
     return () => clearTimeout(timeout);
   }, [selectedDate, dispatch]);
 
- 
 
   return (
     <Box component="section">

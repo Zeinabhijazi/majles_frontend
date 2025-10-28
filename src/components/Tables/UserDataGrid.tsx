@@ -8,7 +8,7 @@ import OpenInNew from "@mui/icons-material/OpenInNew";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useTranslations } from "next-intl";
 import UserDetailsModal from "../Modals/UserDetailsModal";
-import DeleteDialog from "../Dialog/deleteDialog";
+import ConfirmDeleteDialog from "../Dialog/ConfirmDeleteDialog";
 
 interface UserDataGridProps {
   paginationModel: {
@@ -57,7 +57,7 @@ export default function UserDataGrid(props: Readonly<UserDataGridProps>) {
     {
       field: "name",
       headerName: t2("name"),
-      flex: 1,
+      flex: 2,
       // valueGetter() => string: Render a combination of different fields
       valueGetter: (value, row) =>
         `${row.firstName ?? ""} ${row.lastName ?? ""}`,
@@ -136,10 +136,11 @@ export default function UserDataGrid(props: Readonly<UserDataGridProps>) {
         />
       )}
       {openDelete && selectedUser && (
-        <DeleteDialog
+        <ConfirmDeleteDialog
           open={openDelete}
           onClose={handleCloseDelete}
           userId={selectedUser}
+          type="user"
         />
       )}
     </>

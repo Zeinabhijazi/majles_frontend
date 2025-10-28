@@ -2,7 +2,7 @@
 import React, { useEffect } from "react";
 import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
-import { loadUserData } from "@/redux/slices/userSlice";
+// { loadUserData } from "@/redux/slices/userSlice";
 import { AppDispatch } from "@/redux/store";
 import { useDispatch } from "react-redux";
 
@@ -13,9 +13,9 @@ export default function ThemeRegistry({
 }: Readonly<{ children: React.ReactNode }>) {
   const dispatch = useDispatch<AppDispatch>();
 
-  useEffect(() => {
+  /*useEffect(() => {
     dispatch(loadUserData());
-  }, [dispatch]);
+  }, [dispatch]);*/
 
   return <CacheProvider value={cache}>{children}</CacheProvider>;
 }

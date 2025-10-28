@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
 import Paper from "@mui/material/Paper";
-import Header from "@/components/Dashboard/Header";
-import DashboardSidebar from "@/components/Dashboard/dashboardSidebar";
+import Header from "@/app/[locale]/components/Dashboard/Header";
+import DashboardSidebar from "@/app/[locale]/components/Dashboard/dashboardSidebar";
 interface ReaderRootLayoutProps {
   children: React.ReactNode;
 }

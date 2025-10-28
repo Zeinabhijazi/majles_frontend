@@ -91,7 +91,7 @@ export default function ReaderDetailsModal({
                 href={`mailto:${user?.email}`}
                 sx={{
                   fontSize: "17px",
-                  textDecoration: "none",
+                  textDecoration: "underline",
                   "&:hover": { textDecoration: "none", opacity: 0.8 },
                 }}
               >
@@ -118,7 +118,7 @@ export default function ReaderDetailsModal({
                 href={`tel:${user?.phoneNumber}`}
                 sx={{
                   fontSize: "17px",
-                  textDecoration: "none",
+                  textDecoration: "underline",
                   "&:hover": { textDecoration: "none", opacity: 0.8 },
                 }}
               >

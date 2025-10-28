@@ -7,20 +7,26 @@ import { AppDispatch, RootState } from "@/redux/store";
 import { Order } from "@/types/order";
 
 interface OrderTableProps {
-  columns: GridColDef<Order>[]; 
-  fetchFn: (params: { page: number; limit: number }) => any; 
-  filters?: {
-    status?: string;
-    search?: string;
-    start?: number;
-    end?: number;
-    thisMonth?: boolean;
-  };
+  columns: GridColDef<Order>[];
+  fetchFn: (params: { page: number; limit: number }) => any;
+  filters?: Record<string, any>;
+  dataType?: "general" | "monthly" | "pending";
 }
 
-const OrderTable: React.FC<OrderTableProps> = ({ columns, fetchFn, filters }) => {
+const OrderTable: React.FC<OrderTableProps> = ({ columns, fetchFn, filters, dataType }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { orders, itemsCount } = useSelector((state: RootState) => state.order);
+  const { orders, monthlyOrders, pendingOrders, itemsCount, itemsCountMonthly, itemsCountPending } =
+  useSelector((state: RootState) => state.order);
+
+  const rows =
+    dataType === "monthly" ? monthlyOrders :
+    dataType === "pending" ? pendingOrders :
+    orders;
+
+  const rowCount =
+    dataType === "monthly" ? itemsCountMonthly :
+    dataType === "pending" ? itemsCountPending :
+    itemsCount;
 
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
@@ -45,10 +51,10 @@ const OrderTable: React.FC<OrderTableProps> = ({ columns, fetchFn, filters }) =>
     <Paper sx={{ overflow: "hidden", width: "100%" }}>
       <DataGrid<Order>
         className="table_scrollbar"
-        rows={orders}
+        rows={rows}
         columns={columns}
         paginationMode="server"
-        rowCount={itemsCount}
+        rowCount={rowCount}
         paginationModel={paginationModel}
         onPaginationModelChange={setPaginationModel}
         pageSizeOptions={[10, 25, 100]}

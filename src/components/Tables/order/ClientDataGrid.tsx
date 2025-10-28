@@ -1,23 +1,23 @@
 "use client";
 import React, { useState } from "react";
-import { Box, Button, Chip, IconButton, Stack, Typography } from "@mui/material";
+import { Box, Button, Chip, IconButton, Stack } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 import { useLocale, useTranslations } from "next-intl";
 import { Order } from "@/types/order";
 import { fetchOrdersForLoggedUser } from "@/redux/slices/orderSlice";
-import DeleteOrderDialog from "@/components/Dialog/deleteOrder";
 import DeleteIcon from "@mui/icons-material/Delete";
 import UpdateOrderModal from "@/components/Modals/updateOrderModal";
 import EditIcon from "@mui/icons-material/Edit";
 import OrderTable from "@/components/Tables/order/orderTable";
+import ConfirmDeleteDialog from "@/components/Dialog/ConfirmDeleteDialog";
 
 export default function ClientDataGrid({
   status,
   search,
-}: {
+}: Readonly<{
   status: string;
   search: string;
-}) {
+}>) {
   const t1 = useTranslations("select");
   const t2 = useTranslations("label");
   const locale = useLocale();
@@ -53,8 +53,10 @@ export default function ClientDataGrid({
       flex: 1,
       valueGetter: (value, row) => {
         const date = new Date(row.orderDate);
-        return `${date.getDate()} - ${date.toLocaleString(locale, { month: "long" })} - ${date.getFullYear()}`;
-      }
+        return `${date.getDate()} - ${date.toLocaleString(locale, {
+          month: "long",
+        })} - ${date.getFullYear()}`;
+      },
     },
     {
       field: "Time",
@@ -68,31 +70,32 @@ export default function ClientDataGrid({
       flex: 1,
       renderCell: (params) => {
         const row = params.row;
-        if (!row.isAccepted && !row.isDeleted && !row.isCompleted)
-        return  (
-          <Stack spacing={1} sx={{ width: "65%", mt: 1.5 }}>
-            <Chip label={t1("pending")} color="warning" size="small" />
-          </Stack>
-        )
-           
-        if (row.isCompleted)
-          return  (
+        if (!row.isAccepted && !row.isDeleted && !row.isCompleted){
+          return (
             <Stack spacing={1} sx={{ width: "65%", mt: 1.5 }}>
-              <Chip label={t1("completed")} color="success" size="small"/>
+              <Chip label={t1("pending")} color="warning" size="small" />
             </Stack>
-          )
+          );
+        }
+
+        if (row.isCompleted)
+          return (
+            <Stack spacing={1} sx={{ width: "65%", mt: 1.5 }}>
+              <Chip label={t1("completed")} color="success" size="small" />
+            </Stack>
+          );
         if (row.isDeleted)
-          return  (
+          return (
             <Stack spacing={1} sx={{ width: "65%", mt: 1.5 }}>
               <Chip label={t1("rejected")} color="error" size="small" />
             </Stack>
-          )
+          );
         if (row.isAccepted)
-          return  (
+          return (
             <Stack spacing={1} sx={{ width: "65%", mt: 1.5 }}>
               <Chip label={t1("accepted")} color="secondary" size="small" />
             </Stack>
-          )
+          );
       },
     },
     {
@@ -125,21 +128,22 @@ export default function ClientDataGrid({
     <>
       <OrderTable
         columns={columns}
-        fetchFn={fetchOrdersForLoggedUser}
+        fetchFn={(params) => fetchOrdersForLoggedUser({ ...params, target: "general" })}
         filters={{ status, search }}
       />
       {openDetails && selectedOrder && (
         <UpdateOrderModal
-          orderId={selectedOrder!!}
+          orderId={selectedOrder}
           onClose={handleCloseDetails}
           open={openDetails}
         />
       )}
       {openDelete && selectedOrder && (
-        <DeleteOrderDialog
+        <ConfirmDeleteDialog
           open={openDelete}
           onClose={handleCloseDelete}
           orderId={selectedOrder}
+          type="order"
         />
       )}
     </>

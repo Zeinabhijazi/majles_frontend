@@ -120,7 +120,7 @@ export default function LoginModal({
             setSuccessAlert(false);
             onClose();
             router.replace("/");
-            window.location.reload();
+            globalThis.location.reload();
           }, 1000);
         }
       }

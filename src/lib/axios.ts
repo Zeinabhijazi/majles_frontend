@@ -1,8 +1,7 @@
-import { useRouter } from "@/i18n/navigation";
 import axios, { AxiosResponse } from "axios";
 
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000", // Nest API base URL
+  baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api", // Nest API base URL
   timeout: 10000, // optional: 10 seconds
   headers: {
     "Content-Type": "application/json",

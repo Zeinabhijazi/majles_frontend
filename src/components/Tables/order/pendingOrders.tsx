@@ -8,22 +8,22 @@ import {
   fetchOrdersForLoggedUser,
   handleAccept,
 } from "@/redux/slices/orderSlice";
-import DeleteOrderDialog from "@/components/Dialog/deleteOrder";
 import DeleteIcon from "@mui/icons-material/Delete";
-import OrderTable from "@/components/Tables/order/orderTable";
+import OrderTable from "@/app/[locale]/components/Tables/order/orderTable";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
+import ConfirmDeleteDialog from "@/app/[locale]/components/Dialog/ConfirmDeleteDialog";
 
 export default function PendingOrdersDataGrid() {
   const t1 = useTranslations("button");
   const t2 = useTranslations("label");
+  const [openDelete, setOpenDelete] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState<number | null>(null);
   const locale = useLocale();
   const dispatch = useDispatch<AppDispatch>();
   const { userDetails } = useSelector((state: RootState) => state.user);
   if (!userDetails?.id) return;
   const readerId = userDetails.id;
-  const [openDelete, setOpenDelete] = useState(false);
-  const [selectedOrder, setSelectedOrder] = useState<number | null>(null);
 
   const handleOpenDelete = (id: number) => {
     setOpenDelete(true);
@@ -84,13 +84,14 @@ export default function PendingOrdersDataGrid() {
     <>
       <OrderTable 
         columns={columns} 
-        fetchFn={fetchOrdersForLoggedUser}
+        fetchFn={(params) => fetchOrdersForLoggedUser({ ...params, status: "pending", target: "pending" })}
       />
       {openDelete && selectedOrder && (
-        <DeleteOrderDialog
+        <ConfirmDeleteDialog
           open={openDelete}
           onClose={handleCloseDelete}
           orderId={selectedOrder}
+          type="order"
         />
       )}
     </>

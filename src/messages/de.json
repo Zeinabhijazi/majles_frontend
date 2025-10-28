@@ -56,12 +56,26 @@
     "clientNumber": "Anzahl der Kunden",
     "readerNumber": "Anzahl der Leser",
     "orderNumber": "Anzahl der Bestellungen",
-    "userOverview": "Benutzerübersicht",
     "orderOverive": "Bestellübersicht",
     "cancelled": "Abgebrochen",
     "pending": "Ausstehend",
     "accepted": "Akzeptiert",
-    "completed": "vollendet"
+    "completed": "vollendet",
+    "rejected": "Abgelehnt",
+    "userOverview": "Benutzerübersicht",
+    "userCounts": "Benutzeranzahl",
+    "jan": "Jan", 
+    "feb": "Feb",  
+    "mar": "Mar",  
+    "apr": "Apr", 
+    "may": "May",  
+    "jun": "Jun", 
+    "jul": "Jul",  
+    "aug": "Aug",  
+    "sep": "Sep",  
+    "oct": "Okt",  
+    "nov": "Nov",  
+    "dec":  "Dez"
   },
   "readerDashboard": {
     "pendingOrder": "Ausstehende Bestellungen",
@@ -101,8 +115,8 @@
   "searchInput": {
     "userSearch": "Nach einem Benutzer suchen",
     "orderSearch": "Suche nach einer Bestellung",
-    "countrySearch": "Land ...",
-    "nameSearch": "Name"
+    "readerSearch": "Suche nach einem Leser",
+    "countrySearch": "Land ..."
   },
   "heading": {
     "aboutSectionTitle": "Über uns",
@@ -115,9 +129,10 @@
     "userDetailsModel": "Benutzerdetails",
     "orderDetailsModel": "Bestelldetails",
     "deleteDialog": "Bestätigen Sie Löschen",
+    "confirmDialog": "Zuweisung bestätigen",
     "deleteDialogQuestion": "Möchten Sie diesen Benutzer wirklich löschen?",
     "deleteOrderDialogQuestion": "Möchten Sie diese Bestellung wirklich löschen?",
-    "assignDialog": "Leser zuweisen",
+    "assignDialogQuestion": "Möchten Sie diesen Leser wirklich zuweisen?",
     "addOrderModal": "Bestellung hinzufügen",
     "clientPageTitle": "Liste meiner Bestellungen"
   },
@@ -136,7 +151,8 @@
     "save": "Speichern",
     "send": "Schicken",
     "changePassword": "Kennwort ändern",
-    "accept": "akzeptieren"
+    "accept": "akzeptieren",
+    "choose": "Wählen"
   },
   "label": {
     "id": "ID",

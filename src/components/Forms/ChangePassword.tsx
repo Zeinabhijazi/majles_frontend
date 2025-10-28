@@ -73,10 +73,10 @@ export default function ChangePassword() {
     }
 
     const fieldErrors: Partial<Passwords> = {};
-    result.error.issues.forEach((issue) => {
+    for (const issue of result.error.issues) {
       const field = issue.path[0] as keyof Passwords;
       fieldErrors[field] = issue.message;
-    });
+    }
 
     setErrors(fieldErrors);
     return false;
@@ -98,7 +98,7 @@ export default function ChangePassword() {
       }
 
       // Call backend to change password
-      const response = await api.put("/api/user/changePassword", {
+      const response = await api.put("user/changePassword", {
         oldPassword: passwords.oldPassword,
         newPassword: passwords.newPassword,
       });
@@ -319,8 +319,7 @@ export default function ChangePassword() {
             fontStyle: "normal",
             fontWeight: "medium",
             textTransform: "capitalize",
-            mt: 2,
-            float: "right",
+            float: "inline-end",
           }}
           onClick={() => {}}
         >

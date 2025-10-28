@@ -74,7 +74,7 @@ export default function ClientPage() {
       >
         <AppSelect
           value={status}
-          onChange={(e) => setStatus(e.target.value as string)}
+          onChange={(e) => setStatus(e.target.value)}
           placeholder={t2("status")}
           options={[
             { value: "all", label: t2("all") },
@@ -85,7 +85,7 @@ export default function ClientPage() {
           ]}
         />
         <SearchInput
-          placeholder={t3("orderSearch")}
+          placeholder={t3("readerSearch")}
           onSearch={handleUserSearch}
         />
       </Grid>

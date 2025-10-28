@@ -56,12 +56,26 @@
     "clientNumber": "Number of Clients",
     "readerNumber": "Number of Readers",
     "orderNumber":  "Number of Orders",
-    "userOverview": "Users Overview",
     "orderOverive": "Orders Overview",
     "cancelled": "Cancelled",
     "pending": "Pending",
     "accepted": "Accepted",
-    "completed": "Completed"
+    "completed": "Completed",
+    "rejected": "Rejected",
+    "userOverview": "Users Overview",
+    "userCounts": "User Counts",
+    "jan": "Jan", 
+    "feb": "Feb",  
+    "mar": "Mar",  
+    "apr": "Apr", 
+    "may": "May",  
+    "jun": "Jun", 
+    "jul": "Jul",  
+    "aug": "Aug",  
+    "sep": "Sep",  
+    "oct": "Oct",  
+    "nov": "Nov",  
+    "dec":  "Dec"
   },
   "readerDashboard": {
     "pendingOrder": "Pending Orders",
@@ -101,8 +115,8 @@
   "searchInput": {
     "userSearch": "Search for a user",
     "orderSearch": "Search for an order",
-    "countrySearch": "Country ...",
-    "nameSearch": "Name ..." 
+    "readerSearch": "Search for a reader",
+    "countrySearch": "Country ..."
   },
   "heading": {
     "aboutSectionTitle": "About Us",
@@ -115,9 +129,10 @@
     "orderDetailsModel": "Order Details",
     "readerDetailsModel": "Reader Details",
     "deleteDialog": "Confirm Delete",
-    "deleteDialogQuestion": "Are you sure you want to delete this user?",
-    "deleteOrderDialogQuestion": "Are you sure you want to delete this order?",
-    "assignDialog": "Assign Reader",
+    "confirmDialog": "Confirm Assign",
+    "deleteDialogQuestion": "Are you sure you want to delete this user ?",
+    "deleteOrderDialogQuestion": "Are you sure you want to delete this order ?",
+    "assignDialogQuestion": "Are you sure you want to assign this reader ?",
     "addOrderModal": "Add Order",
     "clientPageTitle": "List of my orders"
   },
@@ -136,7 +151,8 @@
     "save": "Save",
     "send": "Send",
     "changePassword": "Change Password",
-    "accept": "Accept"
+    "accept": "Accept",
+    "choose": "Choose"
   },
   "label": {
     "id": "Id",

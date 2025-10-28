@@ -4,7 +4,7 @@ import { GridColDef } from "@mui/x-data-grid";
 import { useLocale, useTranslations } from "next-intl";
 import { Order } from "@/types/order";
 import { fetchOrdersForLoggedUser } from "@/redux/slices/orderSlice";
-import OrderTable from "@/components/Tables/order/orderTable";
+import OrderTable from "@/app/[locale]/components/Tables/order/orderTable";
 
 export default function ReaderDataGrid() {
   const t2 = useTranslations("label");
@@ -34,5 +34,5 @@ export default function ReaderDataGrid() {
       valueGetter: (value, row) => `${row?.addressOne ?? ""}, ${row?.addressTwo ?? ""}, ${row?.postNumber ?? ""}, ${row?.city ?? ""} `,
     },
   ];
-  return <OrderTable columns={columns} fetchFn={fetchOrdersForLoggedUser} />;
+  return <OrderTable columns={columns} fetchFn={(params) => fetchOrdersForLoggedUser({ ...params, thisMonth: true, target: "monthly" })}/>;
 }

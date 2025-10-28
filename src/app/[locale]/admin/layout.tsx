@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 import Paper from "@mui/material/Paper";
 import { CircularProgress } from "@mui/material";
 import { useRouter } from "@/i18n/navigation";
-import Header from "@/components/Dashboard/Header";
 import DashboardSidebar from "@/components/Dashboard/dashboardSidebar";
+import Header from "@/components/Dashboard/Header";
 
 export default function AdminRootLayout({
   children

@@ -144,10 +144,10 @@ export default function UpdateUserForm() {
     }
 
     const fieldErrors: Partial<Record<keyof UpdateUser, string>> = {};
-    result.error.issues.forEach((issue) => {
+    for (const issue of result.error.issues) {
       const field = issue.path[0] as keyof UpdateUser;
       fieldErrors[field] = issue.message;
-    });
+    }
     setInputErrors(fieldErrors);
     return false;
   };
@@ -455,7 +455,7 @@ export default function UpdateUserForm() {
             variant="contained"
             color="secondary"
             type="submit"
-            sx={{ float: "end", width: "18%", mt: 1.2 }}
+            sx={{ float: "inline-end", width: "18%", mt: 1.2 }}
           >
             {t2("save")}
           </Button>

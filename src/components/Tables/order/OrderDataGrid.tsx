@@ -14,10 +14,10 @@ import { Link } from "@/i18n/navigation";
 export default function OrderDataGrid({
   status,
   selectedDate,
-}: {
+}: Readonly<{
   status: string;
   selectedDate: Dayjs | null;
-}) {
+}>) {
   const t1 = useTranslations("button");
   const t2 = useTranslations("label");
   const locale = useLocale();

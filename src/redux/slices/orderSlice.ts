@@ -17,6 +17,10 @@ interface OrderState {
   pendingItemsCount: number;
   completedItemsCount: number;
   totalOrders: number;
+  monthlyOrders: Order[];
+  pendingOrders: Order[];
+  itemsCountMonthly: number;
+  itemsCountPending: number;
 }
 
 const initialState: OrderState = {
@@ -31,6 +35,10 @@ const initialState: OrderState = {
   pendingItemsCount: 0,
   completedItemsCount: 0,
   totalOrders: 0,
+  monthlyOrders: [],
+  pendingOrders: [],
+  itemsCountMonthly: 0,
+  itemsCountPending: 0,
 };
 
 type FetchOrdersArgs = {
@@ -41,6 +49,7 @@ type FetchOrdersArgs = {
   end?: number; // timestamp (ms)
   search?: string;
   thisMonth?: boolean;
+  target?: "general" | "monthly" | "pending";
 };
 
 // Fetch all orders
@@ -52,7 +61,7 @@ export const fetchOrders = createAsyncThunk(
   ) => {
     try {
       const response = await api.get<ApiResponse<PaginationDto<Order>>>(
-        `api/admin/allOrders?page=${page}&limit=${limit}`,
+        `admin/allOrders?page=${page}&limit=${limit}`,
         {
           params: {
             ...(status && status !== "all" ? { status } : {}),
@@ -97,7 +106,7 @@ export const handleAssignReader = createAsyncThunk<
 export const fetchOrdersForLoggedUser = createAsyncThunk(
   "FETCHORDERSFORLOGGEDUSER",
   async (
-    { page = 1, limit = 10, status, search, start, end, thisMonth }: FetchOrdersArgs,
+    { page = 1, limit = 10, status, search, start, end, thisMonth, target = "general" }: FetchOrdersArgs,
     { rejectWithValue }
   ) => {
     try {
@@ -113,7 +122,7 @@ export const fetchOrdersForLoggedUser = createAsyncThunk(
           },
         }
       );
-      return response.data.data;
+      return { ...response.data.data, target };
     } catch (error: any) {
       return rejectWithValue("Failed to fetch orders of this user");
     }
@@ -234,12 +243,24 @@ const orderSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(fetchOrdersForLoggedUser.fulfilled, (state, action) => {
-        state.orders = action.payload.content;
-        state.itemsCount = action.payload.itemsCount;
-        state.pageCount = action.payload.pageCount;
-        state.completedItemsCount = action.payload.completedItemsCount;
-        state.pendingItemsCount = action.payload.pendingItemsCount;
-        state.totalOrders = action.payload.totalOrders;
+        state.isLoading = false;
+
+    const { target, content, itemsCount, pageCount, completedItemsCount, pendingItemsCount, totalOrders } = action.payload;
+        // Decide which list to update
+        if (target === "monthly") {
+          state.monthlyOrders = content;
+          state.itemsCountMonthly = itemsCount;
+        } else if (target === "pending") {
+          state.pendingOrders = content;
+          state.itemsCountPending = itemsCount;
+        } else {
+          state.orders = content;
+          state.itemsCount = itemsCount;
+          state.pageCount = pageCount;
+        }
+        state.completedItemsCount = completedItemsCount;
+        state.pendingItemsCount = pendingItemsCount;
+        state.totalOrders = totalOrders;
       })
       .addCase(fetchOrdersForLoggedUser.rejected, (state, action) => {
         state.error =

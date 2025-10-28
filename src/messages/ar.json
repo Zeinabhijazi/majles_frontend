@@ -56,12 +56,27 @@
     "clientNumber": "عدد العملاء",
     "readerNumber": "عدد القراء",
     "orderNumber": "عدد الطلبات",
-    "userOverview": "نظرة عامة على المستخدمين",
     "orderOverive": "نظرة عامة على الطلبات",
     "cancelled": "ملغي",
     "pending": "معلق",
     "accepted": "مقبول",
-    "completed": "مكتمل"
+    "completed": "مكتمل",
+    "rejected": "مرفوض",
+    "userOverview": "نظرة عامة على المستخدمين",
+    "userCounts": "عدد المستخدمين",
+    "jan": "يناير", 
+    "feb": "فبراير",  
+    "mar": "مار",  
+    "apr": "أبريل", 
+    "may": "مايو",  
+    "jun": "يونيو", 
+    "jul": "يوليو",  
+    "aug": "أغسطس",  
+    "sep": "سبتمبر",  
+    "oct": "أكنوبر",  
+    "nov": "نوفمبر",  
+    "dec":  "ديسمبر"
+    
   },
   "readerDashboard": {
     "pendingOrder": "الطلبات المعلقة",
@@ -101,8 +116,8 @@
   "searchInput": {
     "userSearch": "البحث عن مستخدم",
     "orderSearch": "البحث عن طلب",
-    "countrySearch": "دولة...",
-    "nameSearch": "الاسم"
+    "readerSearch": "ابحث عن قارئ",
+    "countrySearch": "دولة..."
   },
   "heading": {
     "aboutSectionTitle": "نبذة عنا",
@@ -115,9 +130,10 @@
     "orderDetailsModel": " تفاصيل الطلب",
     "readerDetailsModel": "تفاصيل القارئ",
     "deleteDialog":"تأكيد الحذف",
+    "confirmDialog": "تأكيد التعيين",
     "deleteDialogQuestion": "هل أنت متأكد من حذف هذا المستخدم؟",
     "deleteOrderDialogQuestion": "هل أنت متأكد أنك تريد حذف هذا الطلب؟",
-    "assignDialog": "اختيار قارئ",
+    "assignDialogQuestion": "هل أنت متأكد من رغبتك في تعيين هذا القارئ؟",
     "addOrderModal": "إضافة الطلب",
     "clientPageTitle": "قائمة طلبياتي"
   },
@@ -136,7 +152,8 @@
     "save": "حفظ",
     "send": "إرسال",
     "changePassword": "تغيير كلمة المرور",
-    "accept": "يقبل"
+    "accept": "يقبل",
+    "choose": "يختار"
   },
   "label": {
     "id": "المعرف",

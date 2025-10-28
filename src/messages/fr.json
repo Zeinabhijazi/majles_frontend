@@ -56,12 +56,26 @@
     "clientNumber": "Nombre de clients",
     "readerNumber": "Nombre de lecteurs",
     "orderNumber":  "Nombre de commandes",
-    "userOverview": "utilisateurs",
     "orderOverive": "Aperçu des commandes ",
     "cancelled": "Annulé",
     "pending": "En attente",
     "accepted": "Accepté",
-    "completed": "Complété"
+    "completed": "Complété",
+    "rejected": "Rejetée",
+    "userOverview": "utilisateurs",
+    "userCounts": "Nombre d'utilisateurs",
+    "jan": "Jan", 
+    "feb": "Févr",  
+    "mar": "Mar",  
+    "apr": "Avr", 
+    "may": "Mai",  
+    "jun": "Jun", 
+    "jul": "Juillet",  
+    "aug": "Août",  
+    "sep": "Sep",  
+    "oct": "Oct",  
+    "nov": "Nov",  
+    "dec": "Déc"
   },
   "readerDashboard": {
     "pendingOrder": "Commandes en attente",
@@ -101,8 +115,8 @@
   "searchInput": {
     "userSearch": "Rechercher un utilisateur",
     "orderSearch": "Rechercher une commande",
-    "countrySearch": "Pays ...",
-    "nameSearch": "Nom ..." 
+    "readerSearch": "Rechercher un lecteur",
+    "countrySearch": "Pays ..."
   },
   "heading": {
     "aboutSectionTitle": "À propos de nous",
@@ -115,9 +129,10 @@
     "orderDetailsModel": "Détails de la commande",
     "readerDetailsModel": "Détails du lecteur",
     "deleteDialog": "Confirmer la suppression",
+    "confirmDialog": "Confirmer l'attribution",
     "deleteDialogQuestion": "Voulez-vous vraiment supprimer cet utilisateur?",
     "deleteOrderDialogQuestion": "Êtes-vous sûr de vouloir supprimer cette commande ?",
-    "assignDialog": "Affecter un lecteur",
+    "assignDialogQuestion": "Êtes-vous sûr de vouloir attribuer ce lecteur ?",
     "addOrderModal": "Ajouter une commande",
     "clientPageTitle": "Liste de mes commandes"
   },
@@ -136,7 +151,8 @@
     "save": "Sauvegarder",
     "send": "Envoyer",
     "changePassword": "Changer le mot de passe",
-    "accept": "accepter"
+    "accept": "accepter",
+    "choose": "Choisir"
   },
   "label": {
     "id": "Identifiant",

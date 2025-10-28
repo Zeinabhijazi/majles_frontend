@@ -5,7 +5,7 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { useTranslations } from "next-intl";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
-import { fetchStatus } from "@/redux/slices/dashboardSlice";
+import { fetchOrderStatus } from "@/redux/slices/dashboardSlice";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -15,18 +15,25 @@ export default function OrdersPieChart() {
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    dispatch(fetchStatus());
+    dispatch(fetchOrderStatus());
   }, [dispatch]);
 
   const data = {
-    labels: [t("accepted"), t("pending"), t("cancelled"), t("completed")],
+    labels: [
+      t("accepted"),
+      t("completed"),
+      t("cancelled"),
+      t("pending"),
+      t("rejected"),
+    ],
     datasets: [
       {
         data: [
           orderStatus.accepted,
-          orderStatus.pending,
-          orderStatus.cancelled,
           orderStatus.completed,
+          orderStatus.deleted,
+          orderStatus.pending,
+          orderStatus.rejected,
         ],
         backgroundColor: ["#242329", "#2d2b35", "#363441", "#201e29"],
         borderColor: ["#fff", "#fff", "#fff", "#fff"],

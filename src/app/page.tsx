@@ -9,11 +9,11 @@ export default function Page() {
   useEffect(() => {
     if (pathname === "/") {
       // do something, then maybe:
-      router.replace("/en");
+      router.replace("/ar");
     }
   }, [pathname, router]);
 
-  return <html lang="en" >
+  return <html lang="ar" >
     <body>
     </body>
   </html>;

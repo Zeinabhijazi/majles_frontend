@@ -122,7 +122,6 @@ export default function UpdateOrderModal({
     e.preventDefault();
     if (!tempData || !formData) return;
     dispatch(updateOrder({ formData: tempData, orderId: formData.id }));
-    //setFormData({ ...formData, ...tempData });
     setIsEditting(false);
   };
 
@@ -131,14 +130,14 @@ export default function UpdateOrderModal({
 
   return (
     <Box component="section">
-      <Modal 
+      <Modal
         open={open}
-        slotProps={{ 
-          backdrop: { 
-            sx: { 
-              backgroundColor: "rgba(0, 0, 0, 0.3)", 
-            }, 
-          }, 
+        slotProps={{
+          backdrop: {
+            sx: {
+              backgroundColor: "rgba(0, 0, 0, 0.3)",
+            },
+          },
         }}
       >
         <Box sx={style}>
@@ -190,7 +189,7 @@ export default function UpdateOrderModal({
                 <Typography><strong>{t1("address")}:</strong></Typography>
               </Grid>
               <Grid size={9}>
-                {isEditting  ? (
+                {isEditting ? (
                   <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
                     <Box sx={{ display: "flex", gap: 1 }}>
                       <TextField

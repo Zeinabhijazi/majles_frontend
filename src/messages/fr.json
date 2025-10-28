@@ -101,7 +101,8 @@
   "searchInput": {
     "userSearch": "Rechercher un utilisateur",
     "orderSearch": "Rechercher une commande",
-    "countrySearch": "Pays ..."
+    "countrySearch": "Pays ...",
+    "nameSearch": "Nom ..." 
   },
   "heading": {
     "aboutSectionTitle": "À propos de nous",
@@ -112,6 +113,7 @@
     "ordersPageTitle": "Liste des commandes",
     "userDetailsModel": "Détails de l'utilisateur",
     "orderDetailsModel": "Détails de la commande",
+    "readerDetailsModel": "Détails du lecteur",
     "deleteDialog": "Confirmer la suppression",
     "deleteDialogQuestion": "Voulez-vous vraiment supprimer cet utilisateur?",
     "deleteOrderDialogQuestion": "Êtes-vous sûr de vouloir supprimer cette commande ?",
@@ -167,6 +169,7 @@
     "time": "temps",
     "datePickerLabel": "Sélectionnez la date",
     "message": "Message",
-    "subject": "sujette"
+    "subject": "sujette",
+    "page": "Page"
   }
 }

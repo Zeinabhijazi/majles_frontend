@@ -1,7 +1,9 @@
 import MenuAppBar from "@/components/includes/MenuAppBar";
 import Footer from "@/components/includes/Footer";
 
-export default function DefaultLayout({ children }: { children: React.ReactNode }) {
+export default function DefaultLayout({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <>
       <MenuAppBar />

@@ -17,11 +17,11 @@ export default function BasicTimeline() {
   const t = useTranslations("timeLine");
   return (
     <Timeline
-      sx={{
+      sx={(theme) => ({
         [`& .${timelineOppositeContentClasses.root}`]: {
-          flex: 0.2,
+          flex: theme.direction === "rtl" ? 0.05 : 0.2,
         },
-      }}
+      })}
     >
       <TimelineItem sx={{ mb: 2 }}>
         <TimelineOppositeContent color="text.secondary">

@@ -7,9 +7,9 @@ import { Order } from "@/types/order";
 import { fetchOrders } from "@/redux/slices/orderSlice";
 import OpenInNew from "@mui/icons-material/OpenInNew";
 import OrderDetailsModal from "@/components/Modals/OrderDetailsModal";
-import AssignReaderDialog from "@/components/Dialog/assignReaderDialog";
 import OrderTable from "@/components/Tables/order/orderTable";
 import { Dayjs } from "dayjs";
+import { Link } from "@/i18n/navigation";
 
 export default function OrderDataGrid({
   status,
@@ -22,7 +22,6 @@ export default function OrderDataGrid({
   const t2 = useTranslations("label");
   const locale = useLocale();
   const [openDetails, setOpenDetails] = useState(false);
-  const [openAssign, setOpenAssign] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<number | null>(null);
 
   // compute start/end once
@@ -35,14 +34,7 @@ export default function OrderDataGrid({
     setSelectedOrder(id);
     setOpenDetails(true);
   };
-
-  const handleOpenAssign = (id: number) => {
-    setSelectedOrder(id);
-    setOpenAssign(true);
-  };
-
   const handleCloseDetails = () => setOpenDetails(false);
-  const handleCloseAssign = () => setOpenAssign(false);
 
   const columns: GridColDef<Order>[] = [
     { field: "id", headerName: t2("id"), flex: 1 },
@@ -66,8 +58,10 @@ export default function OrderDataGrid({
       flex: 2,
       valueGetter: (value, row) => {
         const date = new Date(row.orderDate);
-        return `${date.getDate()} - ${date.toLocaleString(locale, { month: "long" })} - ${date.getFullYear()}`;
-      }
+        return `${date.getDate()} - ${date.toLocaleString(locale, {
+          month: "long",
+        })} - ${date.getFullYear()}`;
+      },
     },
     {
       field: "Time",
@@ -81,11 +75,10 @@ export default function OrderDataGrid({
       flex: 2,
       sortable: false,
       renderCell: (params) => (
-        <Box 
-          sx={{ 
+        <Box
+          sx={{
             display: "flex",
-            mt: 0.9,
-            gap: 1
+            gap: 1,
           }}
         >
           <Button
@@ -94,14 +87,15 @@ export default function OrderDataGrid({
           >
             <OpenInNew color="secondary" />
           </Button>
-          <Button
-            variant="contained"
-            color="secondary"
-            disabled={params.row.isAccepted}
-            onClick={() => handleOpenAssign(params.row.id)}
-          >
-            {t1("assign")}
-          </Button>
+          <Link href={`/admin/orders/${params.row.id}/assign`}>
+            <Button
+              variant="contained"
+              color="secondary"
+              disabled={params.row.isAccepted}
+            >
+              {t1("assign")}
+            </Button>
+          </Link>
         </Box>
       ),
     },
@@ -118,13 +112,6 @@ export default function OrderDataGrid({
         <OrderDetailsModal
           open={openDetails}
           onClose={handleCloseDetails}
-          orderId={selectedOrder}
-        />
-      )}
-      {openAssign && selectedOrder && (
-        <AssignReaderDialog
-          open={openAssign}
-          onClose={handleCloseAssign}
           orderId={selectedOrder}
         />
       )}

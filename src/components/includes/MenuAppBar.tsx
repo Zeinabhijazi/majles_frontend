@@ -55,7 +55,7 @@ export default function MenuAppBar() {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("userDetails");
-    window.location.reload();
+    globalThis.location.reload();
   };
 
   // Actions for login modal
@@ -131,39 +131,41 @@ export default function MenuAppBar() {
                 </Button>
               )
             ): (
-              <Box sx={{ flexGrow: 0 }}>
-                <IconButton onClick={handleOpenUserMenu}>
-                  <AccountCircle color="secondary" />
-                </IconButton>
-                <Menu
-                  sx={{ mt: "45px" }}
-                  id="menu-appbar"
-                  anchorEl={anchorElUser}
-                  anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  open={Boolean(anchorElUser)}
-                  onClose={handleCloseUserMenu}
-                >
-                  {userDetails.userType === "reader" ? (
-                    <MenuItem>
-                      <Link href="/reader">{t1("myAccount")}</Link>
-                    </MenuItem>
-                  ) : (
-                    <MenuItem>
-                      <Link href="/client">{t1("myAccount")}</Link>
-                    </MenuItem>
-                  )}
+              userDetails.userType !== "admin" && ( 
+                <Box sx={{ flexGrow: 0 }}>
+                  <IconButton onClick={handleOpenUserMenu}>
+                    <AccountCircle color="secondary" />
+                  </IconButton>
+                  <Menu
+                    sx={{ mt: "45px" }}
+                    id="menu-appbar"
+                    anchorEl={anchorElUser}
+                    anchorOrigin={{
+                      vertical: "top",
+                      horizontal: "right",
+                    }}
+                    keepMounted
+                    transformOrigin={{
+                      vertical: "top",
+                      horizontal: "right",
+                    }}
+                    open={Boolean(anchorElUser)}
+                    onClose={handleCloseUserMenu}
+                  >
+                    {userDetails.userType === "reader" ? (
+                      <MenuItem>
+                        <Link href="/reader">{t1("myAccount")}</Link>
+                      </MenuItem>
+                    ) : (
+                      <MenuItem>
+                        <Link href="/client">{t1("myAccount")}</Link>
+                      </MenuItem>
+                    )}
 
-                  <MenuItem onClick={handleLogout}>{t1("logout")}</MenuItem>
-                </Menu>
-              </Box>
+                    <MenuItem onClick={handleLogout}>{t1("logout")}</MenuItem>
+                  </Menu>
+                </Box>
+              )
             )}
           </Toolbar>
         </Container>

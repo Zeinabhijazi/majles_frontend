@@ -23,7 +23,7 @@ interface UserDataGridProps {
   >;
 }
 
-export default function UserDataGrid(props: UserDataGridProps) {
+export default function UserDataGrid(props: Readonly<UserDataGridProps>) {
   const t1 = useTranslations("radioButton");
   const t2 = useTranslations("label");
   const { users, itemsCount } = useSelector((state: RootState) => state.user);
@@ -124,7 +124,7 @@ export default function UserDataGrid(props: UserDataGridProps) {
               backgroundColor: "primary.main",
               color: "white",
             },
-            maxHeight: 420,
+            maxHeight: 410,
           }}
         />
       </Paper>
@@ -132,14 +132,14 @@ export default function UserDataGrid(props: UserDataGridProps) {
         <UserDetailsModal
           open={openDetails}
           onClose={handleCloseDetails}
-          userId={selectedUser!!}
+          userId={selectedUser}
         />
       )}
       {openDelete && selectedUser && (
         <DeleteDialog
           open={openDelete}
           onClose={handleCloseDelete}
-          userId={selectedUser!!}
+          userId={selectedUser}
         />
       )}
     </>

@@ -11,30 +11,32 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 470,
-  height: 380,
+  width: 400,
+  height: 220,
   bgcolor: "background.default",
   border: "1px solid #eee",
   borderRadius: 5,
   p: 3,
 };
 
-interface OrderDetailsModalProps {
+interface ReaderDetailsModalProps {
   open: boolean;
   onClose: () => void;
-  orderId: number;
+  userId: number;
 }
 
-export default function OrderDetailsModal({
+export default function ReaderDetailsModal({
   open,
   onClose,
-  orderId,
-}: Readonly<OrderDetailsModalProps>) {
+  userId,
+}: Readonly<ReaderDetailsModalProps>) {
   const t1 = useTranslations("label");
   const t2 = useTranslations("heading");
-  const { orders } = useSelector((state: RootState) => state.order);
-  if (!orderId) return null;
-  const order = orders.find((o) => o.id === orderId) || null;
+  const { users } = useSelector((state: RootState) => state.user);
+
+  if (!userId) return null;
+
+  const user = users.find((u) => u.id === userId) || null;
 
   return (
     <Box component="section">
@@ -45,7 +47,7 @@ export default function OrderDetailsModal({
         slotProps={{
           backdrop: {
             sx: {
-              backgroundColor: "rgba(0, 0, 0, 0.3)",
+              backgroundColor: "rgba(0, 0, 0, 0.6)",
             },
           },
         }}
@@ -58,17 +60,16 @@ export default function OrderDetailsModal({
               alignItems: "center",
             }}
           >
-            <Typography variant="h5" sx={{ fontWeight: "bold" }}>
-              {t2("orderDetailsModel")}
+            <Typography variant="h5" sx={{ fontWeight: "bold", mt: 0.5 }}>
+              {t2("readerDetailsModel")}
             </Typography>
             <CloseIcon onClick={onClose} sx={{ alignItems: "flex-end" }} />
           </Box>
-
           <Box
             sx={{
               width: "100%",
               height: "90%",
-              mt: 10,
+              marginTop: 5,
             }}
           >
             <Box
@@ -82,12 +83,22 @@ export default function OrderDetailsModal({
                 variant="h5"
                 sx={{ fontSize: "18px", fontWeight: 700 }}
               >
-                {t1("phoneNumber")}:
+                {t1("email")} :
               </Typography>
-              <Typography variant="h6" sx={{ fontSize: "17px" }}>
-                {order?.client.phoneNumber}
+              <Typography
+                variant="h6"
+                component="a"
+                href={`mailto:${user?.email}`}
+                sx={{
+                  fontSize: "17px",
+                  textDecoration: "none",
+                  "&:hover": { textDecoration: "none", opacity: 0.8 },
+                }}
+              >
+                {user?.email}
               </Typography>
             </Box>
+
             <Box
               sx={{
                 display: "flex",
@@ -99,28 +110,19 @@ export default function OrderDetailsModal({
                 variant="h5"
                 sx={{ fontSize: "18px", fontWeight: 700 }}
               >
-                {t1("address")}:
+                {t1("phoneNumber")} :
               </Typography>
-              <Typography variant="h6" sx={{ fontSize: "17px" }}>
-                {order?.addressOne}, {order?.addressTwo}, {order?.postNumber},{" "}
-                {order?.country}, {order?.city}
-              </Typography>
-            </Box>
-            <Box
-              sx={{
-                display: "flex",
-                gap: 2,
-                mb: 2,
-              }}
-            >
               <Typography
-                variant="h5"
-                sx={{ fontSize: "18px", fontWeight: 700 }}
+                variant="h6"
+                component="a"
+                href={`tel:${user?.phoneNumber}`}
+                sx={{
+                  fontSize: "17px",
+                  textDecoration: "none",
+                  "&:hover": { textDecoration: "none", opacity: 0.8 },
+                }}
               >
-                {t1("coordinates")}:
-              </Typography>
-              <Typography variant="h6" sx={{ fontSize: "17px" }}>
-                {order?.latitude}, {order?.longitude}
+                {user?.phoneNumber}
               </Typography>
             </Box>
           </Box>

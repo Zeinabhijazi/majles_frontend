@@ -101,7 +101,8 @@
   "searchInput": {
     "userSearch": "Nach einem Benutzer suchen",
     "orderSearch": "Suche nach einer Bestellung",
-    "countrySearch": "Land ..."
+    "countrySearch": "Land ...",
+    "nameSearch": "Name"
   },
   "heading": {
     "aboutSectionTitle": "Über uns",
@@ -110,6 +111,7 @@
     "readersPage": "Unsere Leser",
     "usersPageTitle": "Liste der Benutzer",
     "ordersPageTitle": "Liste der Bestellungen",
+    "readerDetailsModel": "Leserdetails",
     "userDetailsModel": "Benutzerdetails",
     "orderDetailsModel": "Bestelldetails",
     "deleteDialog": "Bestätigen Sie Löschen",
@@ -167,6 +169,7 @@
     "time": "Zeit",
     "datePickerLabel": "Datell auswählen",
     "message": "Nachricht",
-    "subject": "Thema"
+    "subject": "Thema",
+    "page": "Seite"
   }
 }

@@ -38,7 +38,7 @@ const AccordionSummary = styled((props: AccordionSummaryProps) => (
       transform: "rotate(90deg)",
     },
   [`& .${accordionSummaryClasses.content}`]: {
-    marginLeft: theme.spacing(1),
+    marginInlineStart: theme.spacing(1),
   },
 }));
 

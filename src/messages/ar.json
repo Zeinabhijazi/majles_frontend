@@ -73,7 +73,7 @@
     "accountDetails": "الأمن"
   },
   "radioButton": {
-    "gender": "الجنس",
+    "gender": "الجنس ",
     "female": "أنثى",
     "male": "ذكر",
     "userType": "نوع المستخدم",
@@ -101,17 +101,19 @@
   "searchInput": {
     "userSearch": "البحث عن مستخدم",
     "orderSearch": "البحث عن طلب",
-    "countrySearch": "دولة..."
+    "countrySearch": "دولة...",
+    "nameSearch": "الاسم"
   },
   "heading": {
     "aboutSectionTitle": "نبذة عنا",
     "readerSectionTitle": "قرائنا",
     "contactSectionTitle": "تواصل معنا",
     "readersPage": "قرائنا",
-    "usersPageTitle": "قائمةالمستخدمين",
+    "usersPageTitle": "قائمة المستخدمين",
     "ordersPageTitle": "قائمة الطلبات",
     "userDetailsModel": "تفاصيل المستخدم",
     "orderDetailsModel": " تفاصيل الطلب",
+    "readerDetailsModel": "تفاصيل القارئ",
     "deleteDialog":"تأكيد الحذف",
     "deleteDialogQuestion": "هل أنت متأكد من حذف هذا المستخدم؟",
     "deleteOrderDialogQuestion": "هل أنت متأكد أنك تريد حذف هذا الطلب؟",
@@ -141,14 +143,14 @@
     "firstName": "الاسم الأول",
     "lastName": "اسم العائلة",
     "email": "البريد الإلكتروني",
-    "phoneNumber": "رقم الهاتف",
-    "address": "العنوان",
+    "phoneNumber": "رقم الهاتف ",
+    "address": "العنوان ",
     "addressOne": "العنوان الأول",
     "addressTwo": "العنوان الثاني",
     "city": "المدينة",
     "postCode": "الرمز البريدي",
     "country": "البلد",
-    "coordinates": "الإحداثيات",
+    "coordinates": "الإحداثيات ",
     "longitude": "خط الطول",
     "latitude": "خط العرض",
     "password": "كلمة المرور",
@@ -158,7 +160,7 @@
     "actions":"الإجراءات",
     "name": "الاسم",
     "type": "النوع",
-    "deleted": "تم حذفه",
+    "deleted": "تم حذفه ",
     "yes": "نعم",
     "no": "لا",
     "client": "عميل",
@@ -167,6 +169,7 @@
     "time": "وقت",
     "datePickerLabel": "حدد التاريخ",
     "message": "رسالة",
-    "subject": "موضوع"
+    "subject": "موضوع",
+    "page": "صفحة"
   }
 }

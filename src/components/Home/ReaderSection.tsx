@@ -11,7 +11,8 @@ export default function ReaderSection() {
         variant="h4"
         sx={{
           fontWeight: "700",
-          textAlign: "left",
+          textAlign: "start",
+          paddingInlineStart: 2,
           mt: 7,
           mb: 5,
           pl: 2,

@@ -16,7 +16,7 @@ export default function Footer() {
         justifyContent: "end",
         alignItems: "center",
         boxShadow: 24,
-        paddingInlineStart: 5
+        paddingInlineEnd: 1,
       }}
     >
       <CopyrightIcon sx={{ fontSize: "20px", pr: 0.5 }} />

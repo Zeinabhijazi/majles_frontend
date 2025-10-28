@@ -9,49 +9,48 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* Reader Page */
+.reader_page .css-101ugo9-MuiSvgIcon-root {
+  color: grey !important; 
+}
+
+.reader_page .css-1umw9bq-MuiSvgIcon-root {
+  color: grey !important; 
+}
+
+.reader_page .css-1od07t3-MuiFormControl-root-MuiTextField-root .MuiOutlinedInput-input {
+  color: white !important; 
+}
+
+/* Date Picker*/ 
 .css-djzwxv-MuiPickersInputBase-root-MuiPickersOutlinedInput-root {
   color: black !important;
   border: 1px solid #000  !important;
   border-radius: 4px !important;
 }
 
-.swiper-pagination-bullet {
-  background: #e72544 !important;
-}
+/* Tables */
+.css-wbhcvm-MuiDataGrid-root .MuiDataGrid-row:hover {
+  background-color: transparent !important;
+} 
 
-.swiper-pagination-fraction, .swiper-pagination-custom, .swiper-horizontal > .swiper-pagination-bullets, .swiper-pagination-bullets.swiper-pagination-horizontal{
-  top: 140px !important;
-}
-
+/* Scrollbar for table : Remove */
 .table_scrollbar::-webkit-scrollbar,
 .css-1ablnqd::-webkit-scrollbar {
-  width: 6px !important; /* Set the width of the scrollbar */
+  width: 6px !important; 
 }
 
-.table_scrollbar::-webkit-scrollbar-track,
-.css-1ablnqd::-webkit-scrollbar-track {
+.table_scrollbar::-webkit-scrollbar-track {
   background: "red" !important; 
 }
 
-.table_scrollbar::-webkit-scrollbar-thumb,
-.css-1ablnqd::-webkit-scrollbar-thumb {
+.table_scrollbar::-webkit-scrollbar-thumb {
   background: #e72544 !important;
   border-radius: 3px !important; 
 }
 
-.table_scrollbar::-webkit-scrollbar-thumb:hover,
-.css-1ablnqd::-webkit-scrollbar-thumb:hover {
+.table_scrollbar::-webkit-scrollbar-thumb:hover {
   background-color: #e72544 !important;
-}
-
-.css-735piw,
-.css-1tdeh38 {
-  display: none !important;
-}
-
-
-.css-wbhcvm-MuiDataGrid-root .MuiDataGrid-row:hover {
-  background-color: transparent !important;
 }
 
 .css-wbhcvm-MuiDataGrid-root .MuiDataGrid-columnHeader,
@@ -59,4 +58,9 @@ body {
 .css-wbhcvm-MuiDataGrid-root .MuiDataGrid-columnHeaders .MuiDataGrid-filler {
   background-color: #242329 !important; 
 }
+
+
+
+
+
 

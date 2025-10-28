@@ -64,7 +64,7 @@ export default function OrdersAdminPage() {
         </Grid> 
         <AppSelect 
           value={status} 
-          onChange={(e) => setStatus(e.target.value as string)} 
+          onChange={(e) => setStatus(e.target.value)} 
           placeholder={t2("status")} 
           options={[ 
             { value: "all", label: t2("all") },

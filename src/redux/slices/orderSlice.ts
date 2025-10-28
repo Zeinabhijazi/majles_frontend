@@ -74,10 +74,6 @@ export const handleAssignReader = createAsyncThunk<
   { readerId: number; orderId: number }, // arguments
   { rejectValue: string }
 >("ASSIGNREADER", async ({ readerId, orderId }, { rejectWithValue }) => {
-  if (!readerId) {
-    return rejectWithValue("Please select a reader first");
-  }
-
   try {
     const response = await api.put(`api/admin/${orderId}`, {
       readerId: readerId,

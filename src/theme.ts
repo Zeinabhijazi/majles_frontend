@@ -16,7 +16,7 @@ const darkTheme = createTheme({
     },
     text: {
       primary: "#ffffff",
-      secondary: "#aaaaaa",
+      secondary: "#000000",
     },
     grey: {
       500: "#9e9e9e", // default gray

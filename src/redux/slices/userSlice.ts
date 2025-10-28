@@ -64,6 +64,7 @@ type FetchUsersArgs = {
   userType?: string;
   isDeleted?: string;
   search?: string;
+  name?: string;
 };
 
 // Fetch all users
@@ -115,7 +116,7 @@ export const deleteUser = createAsyncThunk<
 export const fetchReaders = createAsyncThunk(
   "FETCHREADERS",
   async (
-    { page = 1, limit = 10, search }: FetchUsersArgs,
+    { page = 1, limit = 10, search, name }: FetchUsersArgs,
     { rejectWithValue }
   ) => {
     try {
@@ -124,6 +125,7 @@ export const fetchReaders = createAsyncThunk(
         {
           params: {
             ...(search ? { search } : {}),
+            ...(name ? { name } : {}),
           },
         }
       );

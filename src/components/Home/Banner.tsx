@@ -1,5 +1,5 @@
-import { Grid, Typography } from "@mui/material";
 import React from "react";
+import { Grid, Typography } from "@mui/material";
 import CustomizedAccordions from "./accordion";
 import Image from "next/image";
 import { useTranslations } from "next-intl";

@@ -17,13 +17,13 @@ export default function Language() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   // Create the array
-  const languageArray: Language [] = [
-    {id: "en", language: "English"},
-    {id: "ar", language: "Arabic"},
-    {id: "fr", language: "French"},
-    {id: "de", language: "Deutsch"}
-  ]
- 
+  const languageArray: Language[] = [
+    { id: "en", language: "English" },
+    { id: "ar", language: "Arabic" },
+    { id: "fr", language: "French" },
+    { id: "de", language: "Deutsch" },
+  ];
+
   const handleClick = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -54,7 +54,9 @@ export default function Language() {
         onClose={handleClose}
       >
         {languageArray.map((item) => (
-          <MenuItem key={item.id} onClick={() => changeLanguage(item.id)}>{item.language}</MenuItem>
+          <MenuItem key={item.id} onClick={() => changeLanguage(item.id)}>
+            {item.language}
+          </MenuItem>
         ))}
       </Menu>
     </div>

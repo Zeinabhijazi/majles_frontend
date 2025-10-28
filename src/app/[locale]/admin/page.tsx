@@ -10,7 +10,7 @@ import { AppDispatch, RootState } from "@/redux/store";
 import { fetchUserCounts } from "@/redux/slices/dashboardSlice";
 import { fetchOrders } from "@/redux/slices/orderSlice";
 
-export default function AdminPage() {
+export default function AdminPage(){
   const t = useTranslations("adminDashboard");
   const { userCounts } = useSelector((state: RootState) => state.dashboard);
   const { itemsCountWithDel } = useSelector((state: RootState) => state.order);

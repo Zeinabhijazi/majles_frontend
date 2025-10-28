@@ -20,7 +20,7 @@ function TabPanel(props: Readonly<TabPanelProps>) {
       hidden={value !== index}
       id={`vertical-tabpanel-${index}`}
       aria-labelledby={`vertical-tab-${index}`}
-      style={{ height: "480px" }}
+      style={{ height: "464px" }}
       {...other}
     >
       {value === index && (

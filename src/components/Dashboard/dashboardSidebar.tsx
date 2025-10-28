@@ -22,7 +22,7 @@ interface SidebarProps {
   role: "client" | "admin" | "reader";
 }
 
-export default function DashboardSidebar({ role }: SidebarProps) {
+export default function DashboardSidebar({ role }: Readonly<SidebarProps>) {
   const t = useTranslations("dashboard");
   const router = useRouter();
   const [selectedIndex, setSelectedIndex] = useState(0);

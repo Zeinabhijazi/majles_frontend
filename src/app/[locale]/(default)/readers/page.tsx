@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { fetchReaders } from "@/redux/slices/userSlice";
 import { AppDispatch, RootState } from "@/redux/store";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,12 +18,23 @@ import CreateOrderModal from "@/components/Forms/CreateOrderModal";
 import LoginModal from "@/components/Forms/LoginModal";
 import RegisterModal from "@/components/Forms/RegisterModal";
 import SearchInput from "@/components/Forms/SearchInput";
+import ReaderDetailsModal from "@/components/Modals/ReaderDetailsModal";
 
-export default function Readers() {
+export default function Readers({
+  params,
+}: Readonly<{ params: Promise<{ locale: string }> }>) {
+  const { locale } = use(params);
+
+  useEffect(() => {
+    document.documentElement.lang = locale;
+    document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
+  }, [locale]);
+
   const t1 = useTranslations("heading");
   const t2 = useTranslations("label");
   const t3 = useTranslations("button");
   const t4 = useTranslations("searchInput");
+  const t5 = useTranslations("radioButton");
 
   const dispatch = useDispatch<AppDispatch>();
   const { users, userDetails } = useSelector((state: RootState) => state.user);
@@ -31,6 +42,18 @@ export default function Readers() {
   const [loginOpen, setLoginOpen] = useState(false);
   const [registerOpen, setRegisterOpen] = useState(false);
   const [createOrderOpen, setCreateOrderOpen] = useState(false);
+  const [openDetails, setOpenDetails] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<number | null>(null);
+
+  const handleOpenDetails = (id: number) => {
+    setSelectedUser(id);
+    setOpenDetails(true);
+  };
+
+  const handleCloseDetails = () => {
+    setSelectedUser(null);
+    setOpenDetails(false);
+  };
 
   const handleReaderSearch = (value: string) => {
     dispatch(fetchReaders({ search: value }));
@@ -61,6 +84,7 @@ export default function Readers() {
   return (
     <Box
       component="section"
+      className="reader_page"
       sx={{
         p: 2,
         bgcolor: "Background.default",
@@ -90,14 +114,14 @@ export default function Readers() {
           <Grid
             size={3}
             key={user.id}
-            height="345px"
+            height="340px"
             sx={{
               boxShadow: 20,
               borderBottomLeftRadius: 4,
               borderBottomRightRadius: 4,
             }}
           >
-            <CardActionArea>
+            <CardActionArea onClick={() => handleOpenDetails(user.id)}>
               <CardMedia
                 component="img"
                 image="/mainSection.jpg"
@@ -117,18 +141,22 @@ export default function Readers() {
                   {user.firstName} {user.lastName}
                 </Typography>
                 <Typography variant="body2" gutterBottom color="grey">
-                  <strong>{t2("country")}: </strong>
+                  <strong>{t5("gender")} : </strong>{" "}
+                  {user?.gender === "female" ? t5("female") : t5("male")}
+                </Typography>
+                <Typography variant="body2" gutterBottom color="grey">
+                  <strong>{t2("country")} : </strong>
                   {user.country}
                 </Typography>
                 <Typography
                   variant="body2"
                   gutterBottom
                   color="grey"
-                  sx={{ height: " 45px" }}
+                  sx={{ height: " 20px" }}
                 >
-                  <strong>{t2("address")}: </strong>
+                  <strong>{t2("address")} : </strong>
                   {user.addressOne}, {user.addressTwo}, {user.postNumber},{" "}
-                  {user.country}, {user.city}
+                  {user.city}
                 </Typography>
               </CardContent>
             </CardActionArea>
@@ -172,6 +200,13 @@ export default function Readers() {
           </Grid>
         ))}
       </Grid>
+      {openDetails && selectedUser && (
+        <ReaderDetailsModal
+          open={openDetails}
+          onClose={handleCloseDetails}
+          userId={selectedUser}
+        />
+      )}
     </Box>
   );
 }

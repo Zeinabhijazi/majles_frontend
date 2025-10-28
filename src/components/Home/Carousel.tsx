@@ -10,16 +10,22 @@ import { AppDispatch, RootState } from "@/redux/store";
 import { fetchReaders } from "@/redux/slices/userSlice";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
+import { useTranslations } from "next-intl";
 
 export default function Carousel() {
+  const t = useTranslations("label");
   const dispatch = useDispatch<AppDispatch>();
   const { users, itemsCount } = useSelector((state: RootState) => state.user);
-  const [page, setPage] = useState(1); 
+  const [page, setPage] = useState(1);
   const [rowsPerPage] = useState(5);
   const pageCount = Math.ceil(itemsCount / rowsPerPage);
+  const [isRtl, setIsRtl] = useState(false);
 
   useEffect(() => {
-    // Fetch users for current page
+    setIsRtl(document.dir === "rtl");
+  }, []);
+
+  useEffect(() => {
     dispatch(fetchReaders({ page, limit: rowsPerPage }));
   }, [dispatch, page, rowsPerPage]);
 
@@ -73,17 +79,17 @@ export default function Carousel() {
       {/* Pagination Buttons */}
       <Box display="flex" justifyContent="center" mt={2} gap={2}>
         <IconButton color="secondary" disabled={page <= 1} onClick={handlePrev}>
-          <KeyboardArrowLeftIcon />
+          {isRtl ? <ChevronRightIcon /> : <KeyboardArrowLeftIcon />}
         </IconButton>
-        <Typography variant="body2" align="center">
-          Page {page} / {pageCount}
+        <Typography variant="body2" align="center" sx={{ mt: 1.2 }}>
+          {t("page")} {page} / {pageCount}
         </Typography>
         <IconButton
           color="secondary"
           disabled={page >= pageCount}
           onClick={handleNext}
         >
-          <ChevronRightIcon />
+          {isRtl ? <KeyboardArrowLeftIcon /> : <ChevronRightIcon />}
         </IconButton>
       </Box>
     </Box>

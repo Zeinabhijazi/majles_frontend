@@ -73,7 +73,7 @@ export default function UsersAdminPage() {
           color="secondary"
           sx={{
             height: "38px",
-            ml: "auto",
+            me: "auto",
           }}
           onClick={handleOpen}
         >
@@ -102,7 +102,7 @@ export default function UsersAdminPage() {
         <Grid size={5} sx={{ display: "flex", justifyContent: "end", gap: 2 }}>
           <AppSelect
             value={userType}
-            onChange={(e) => setUserType(e.target.value as string)}
+            onChange={(e) => setUserType(e.target.value)}
             placeholder={t("userType")}
             options={[
               { value: "all", label: t("all") },
@@ -114,7 +114,7 @@ export default function UsersAdminPage() {
 
           <AppSelect
             value={isDeleted}
-            onChange={(e) => setIsDeleted(e.target.value as string)}
+            onChange={(e) => setIsDeleted(e.target.value)}
             placeholder={t("status")}
             options={[
               { value: "all", label: t("all") },

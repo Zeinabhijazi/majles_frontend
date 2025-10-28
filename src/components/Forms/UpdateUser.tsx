@@ -55,7 +55,6 @@ export default function UpdateUserForm() {
     Partial<Record<keyof UpdateUser, string>>
   >({});
   const [successAlert, setSuccessAlert] = useState(false);
-  const [warningAlert, setWarningAlert] = useState(false);
   const [alertText, setAlertText] = useState("");
 
   // Sync formData with user when it’s fetched
@@ -223,7 +222,7 @@ export default function UpdateUserForm() {
           onClick={handleEditClick}
           color="secondary"
           size="small"
-          sx={{ marginLeft: "auto" }}
+          sx={{ marginInlineStart: "auto" }}
         >
           <EditIcon fontSize="small" />
         </IconButton>
@@ -232,7 +231,7 @@ export default function UpdateUserForm() {
           onClick={handleEditingClose}
           color="secondary"
           size="small"
-          sx={{ marginLeft: "auto" }}
+          sx={{ marginInlineStart: "auto" }}
         >
           <CloseIcon fontSize="small" />
         </IconButton>
@@ -253,10 +252,10 @@ export default function UpdateUserForm() {
               sx={{
                 width: "50%",
                 "& .MuiFormHelperText-root": {
-                  marginTop: "4px", 
+                  marginTop: "4px",
                   fontSize: "0.75rem",
                   lineHeight: 1.2,
-                  color: "#f44336", 
+                  color: "#f44336",
                 },
               }}
               required
@@ -339,7 +338,7 @@ export default function UpdateUserForm() {
                 label={t3("female")}
               />
               <FormHelperText sx={{ color: "#d32f2f" }}>
-                {!!inputErrors.gender ? "Please select a gender" : ""}
+                {inputErrors.gender ? "Please select a gender" : ""}
               </FormHelperText>
             </RadioGroup>
           ) : (
@@ -450,19 +449,18 @@ export default function UpdateUserForm() {
         </Grid>
       </Grid>
 
-      {isEditting && 
+      {isEditting && (
         <Grid>
           <Button
             variant="contained"
             color="secondary"
             type="submit"
-            sx={{ float: "right", width: "18%", mt: 1.2 }}
+            sx={{ float: "end", width: "18%", mt: 1.2 }}
           >
             {t2("save")}
           </Button>
         </Grid>
-      }      
-      
+      )}
 
       {/* Alerts */}
       <Snackbar
@@ -470,12 +468,6 @@ export default function UpdateUserForm() {
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
       >
         <Alert severity="success">{alertText}</Alert>
-      </Snackbar>
-      <Snackbar
-        open={warningAlert}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      >
-        <Alert severity="warning">{alertText}</Alert>
       </Snackbar>
     </Box>
   );

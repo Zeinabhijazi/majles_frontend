@@ -23,7 +23,6 @@ interface ReaderListSectionProps {
   buttonLabel: string;
   onButtonClick: (userId: number) => void;
   headerExtra?: React.ReactNode;
-  searchField?: string;
   variant?: "readers" | "admin";
   className?: string;
 }
@@ -34,14 +33,14 @@ const ReaderListSection: React.FC<ReaderListSectionProps> = ({
   buttonLabel,
   onButtonClick,
   headerExtra,
-  searchField = "name",
   variant = "readers",
   className,
 }) => {
   const t1 = useTranslations("searchInput");
+  const t2 = useTranslations("label");
+  const t3 = useTranslations("radioButton");
   const dispatch = useDispatch<AppDispatch>();
   const { users } = useSelector((state: RootState) => state.user);
-
   const [openDetails, setOpenDetails] = useState(false);
   const [selectedUser, setSelectedUser] = useState<number | null>(null);
 
@@ -131,10 +130,10 @@ const ReaderListSection: React.FC<ReaderListSectionProps> = ({
                   {user.firstName} {user.lastName}
                 </Typography>
                 <Typography variant="body2" gutterBottom color="grey">
-                  <strong>Gender:</strong> {user.gender}
+                  <strong>{t3("gender")}:</strong> {user.gender === "female" ? t3("female") : t3("male")}
                 </Typography>
                 <Typography variant="body2" gutterBottom color="grey">
-                  <strong>Country:</strong> {user.country}
+                  <strong>{t2("country")}:</strong> {user.country}
                 </Typography>
                 <Typography
                   variant="body2"
@@ -142,7 +141,7 @@ const ReaderListSection: React.FC<ReaderListSectionProps> = ({
                   color="grey"
                   sx={{ height: "25px" }}
                 >
-                  <strong>Address:</strong> {user.addressOne}, {user.addressTwo}
+                  <strong>{t2("address")}:</strong> {user.addressOne}, {user.addressTwo}
                   , {user.postNumber}, {user.city}
                 </Typography>
               </CardContent>

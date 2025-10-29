@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { Box, Button } from "@mui/material";
+import { Box, Button, Chip, Stack } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 import { useLocale, useTranslations } from "next-intl";
 import { Order } from "@/types/order";
@@ -20,6 +20,8 @@ export default function OrderDataGrid({
 }>) {
   const t1 = useTranslations("button");
   const t2 = useTranslations("label");
+  const t3 = useTranslations("select");
+
   const locale = useLocale();
   const [openDetails, setOpenDetails] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<number | null>(null);
@@ -37,7 +39,7 @@ export default function OrderDataGrid({
   const handleCloseDetails = () => setOpenDetails(false);
 
   const columns: GridColDef<Order>[] = [
-    { field: "id", headerName: t2("id"), flex: 1 },
+    { field: "id", headerName: t2("id"), flex: 0.5 },
     {
       field: "Client",
       headerName: t2("client"),
@@ -55,7 +57,7 @@ export default function OrderDataGrid({
     {
       field: "Date",
       headerName: t2("date"),
-      flex: 2,
+      flex: 1,
       valueGetter: (value, row) => {
         const date = new Date(row.orderDate);
         return `${date.getDate()} - ${date.toLocaleString(locale, {
@@ -70,9 +72,56 @@ export default function OrderDataGrid({
       valueGetter: (value, row) => new Date(row.orderDate).toLocaleTimeString(),
     },
     {
+      field: "status",
+      headerName: t3("status"),
+      flex: 1,
+      renderCell: (params) => {
+        const status = params.row.status;
+        const deleted = status === "deleted";
+        const completed = status === "completed";
+        const accepted = status === "accepted";
+        const rejected = status === "rejected";
+
+        let statusKey:
+          | "pending"
+          | "deleted"
+          | "completed"
+          | "accepted"
+          | "rejected";
+
+        if (deleted) statusKey = "deleted";
+        else if (completed) statusKey = "completed";
+        else if (accepted) statusKey = "accepted";
+        else if (rejected) statusKey = "rejected";
+        else statusKey = "pending";
+
+        const statusMap: Record<
+          typeof statusKey,
+          {
+            label: string;
+            color: "error" | "info" | "secondary" | "success" | "warning";
+          }
+        > = {
+          pending: { label: t3("pending"), color: "warning" },
+          deleted: { label: t2("deleted"), color: "secondary" },
+          completed: { label: t3("completed"), color: "success" },
+          accepted: { label: t3("accepted"), color: "info" },
+          rejected: { label: t3("rejected"), color: "error" },
+        };
+
+        const { label, color } = statusMap[statusKey];
+
+        return (
+          <Stack spacing={1} sx={{ width: "65%", mt: 1.5 }}>
+            <Chip label={label} color={color} size="small" />
+          </Stack>
+        );
+      },
+    },
+    {
       field: "actions",
       headerName: t2("actions"),
-      flex: 2,
+      flex: 1.2,
       sortable: false,
       renderCell: (params) => (
         <Box
@@ -91,7 +140,7 @@ export default function OrderDataGrid({
             <Button
               variant="contained"
               color="secondary"
-              disabled={params.row.isAccepted}
+              disabled={params.row.status !== "pending"}
             >
               {t1("assign")}
             </Button>

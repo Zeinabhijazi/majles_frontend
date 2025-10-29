@@ -66,7 +66,7 @@ export default function UserDataGrid(props: Readonly<UserDataGridProps>) {
     {
       field: "userType",
       headerName: t2("type"),
-      flex: 1,
+      flex: 2,
       valueGetter: (value, row) => {
         return row.userType === "reader"
           ? t1("reader")
@@ -80,7 +80,7 @@ export default function UserDataGrid(props: Readonly<UserDataGridProps>) {
     {
       field: "actions",
       headerName: t2("actions"),
-      flex: 4,
+      flex: 2,
       sortable: false,
       // renderCell() => ReactElement
       renderCell: (params) => (

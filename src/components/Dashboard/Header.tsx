@@ -42,7 +42,7 @@ export default function Header() {
           fontWeight: "bold",
         }}
       >
-        {t("welcome")} {userDetails.firstName} {userDetails.lastName}
+        {t("welcome")} {userDetails?.firstName} {userDetails?.lastName}
       </Typography>
       <Box className="flex flex-row">
         <IconButton

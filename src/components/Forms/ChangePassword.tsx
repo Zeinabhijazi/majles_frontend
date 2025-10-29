@@ -170,7 +170,7 @@ export default function ChangePassword() {
         <TextField
           fullWidth
           variant="outlined"
-          value={userDetails.email}
+          value={userDetails?.email}
           slotProps={{
             input: {
               readOnly: true,

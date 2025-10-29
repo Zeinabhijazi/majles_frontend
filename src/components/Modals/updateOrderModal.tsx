@@ -44,7 +44,6 @@ export default function UpdateOrderModal({
   open,
   onClose
 }: Readonly<OrderDetailsModalProps>) {
-  console.log("orderId:", orderId);
   const t1 = useTranslations("label");
   const t2 = useTranslations("button");
   const t3 = useTranslations("heading");
@@ -58,7 +57,7 @@ export default function UpdateOrderModal({
   const [successAlert, setSuccessAlert] = useState(false);
   const [alertText, setAlertText] = useState<string | null>("");
 
-  // When modal opens, pick the correct order
+  // When modal opens, pick the order
   useEffect(() => {
     if (!open) return;
     const selectedOrder = orders.find((o) => o.id === orderId) || null;
@@ -75,21 +74,42 @@ export default function UpdateOrderModal({
         postNumber: selectedOrder.postNumber || 0,
         readerId: selectedOrder.readerId || undefined,
       });
-      setIsEditting(false); // reset editing state
+      setIsEditting(false); 
     }
   }, [open, orderId, orders]);
 
   // Handle input change
   const handleChange = (
     field: keyof OrderForEdit,
-    value: string | number | Date
+    value: string | number | Date 
   ) => {
     setTempData((prev) => prev ? { ...prev, [field]: value } : prev);
   };
 
   // Edit / cancel
-  const handleEditClick = () => setIsEditting(true);
-  const handleEditingClose = () => setIsEditting(false);
+  const handleEditClick = () => {
+    if (formData) {
+      setTempData({
+        orderDate: formData.orderDate,
+        longitude: formData.longitude ?? 0,
+        latitude: formData.latitude ?? 0,
+        addressOne: formData.addressOne ?? "",
+        addressTwo: formData.addressTwo ?? "",
+        city: formData.city,
+        country: formData.country ?? "",
+        postNumber: formData.postNumber ?? 0,
+        readerId: formData.readerId ?? undefined,
+      });
+      setIsEditting(true);
+    }
+  }
+
+  const handleEditingClose = () => {
+    if (tempData) {
+      setFormData((prev) => prev ? { ...prev, ...tempData } : prev);
+    }
+    setIsEditting(false);
+  };
 
   // Geolocation
   const handleGetLocation = () => {
@@ -126,7 +146,7 @@ export default function UpdateOrderModal({
   };
 
   // Disable editing
-  const isDisabled = (formData?.isAccepted || formData?.isDeleted || formData?.isCompleted) ?? false;
+  const isDisabled = formData?.status !== 'pending';
 
   return (
     <Box component="section">
@@ -238,7 +258,7 @@ export default function UpdateOrderModal({
               <Box sx={{ display: "flex", gap: 2, marginLeft: "auto" }}>
                 {!isEditting ? (
                   <Button variant="contained" color="secondary" onClick={handleEditClick}>
-                    Edit
+                    {t2("edit")}
                   </Button>
                 ) : (
                   <Button variant="contained" color="secondary" onClick={handleEditingClose}>

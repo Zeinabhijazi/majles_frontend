@@ -66,10 +66,10 @@ export default function ContactForm() {
 
     // Build the fieldErrors object from Zod errors
     const fieldErrors: { [key: string]: string } = {};
-    result.error.issues.forEach((err) => {
-      const fieldName = err.path[0] as string;
-      fieldErrors[fieldName] = err.message;
-    });
+    for (const issue of result.error.issues) {
+      const fieldName = issue.path[0] as string;
+      fieldErrors[fieldName] = issue.message;
+    }
 
     setError(fieldErrors);
     return false;

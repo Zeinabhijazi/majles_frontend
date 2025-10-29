@@ -69,33 +69,46 @@ export default function ClientDataGrid({
       headerName: t1("status"),
       flex: 1,
       renderCell: (params) => {
-        const row = params.row;
-        if (!row.isAccepted && !row.isDeleted && !row.isCompleted){
-          return (
-            <Stack spacing={1} sx={{ width: "65%", mt: 1.5 }}>
-              <Chip label={t1("pending")} color="warning" size="small" />
-            </Stack>
-          );
-        }
+        const status = params.row.status;
+        const deleted = status === "deleted";
+        const completed = status === "completed";
+        const accepted = status === "accepted";
+        const rejected = status === "rejected";
 
-        if (row.isCompleted)
-          return (
-            <Stack spacing={1} sx={{ width: "65%", mt: 1.5 }}>
-              <Chip label={t1("completed")} color="success" size="small" />
-            </Stack>
-          );
-        if (row.isDeleted)
-          return (
-            <Stack spacing={1} sx={{ width: "65%", mt: 1.5 }}>
-              <Chip label={t1("rejected")} color="error" size="small" />
-            </Stack>
-          );
-        if (row.isAccepted)
-          return (
-            <Stack spacing={1} sx={{ width: "65%", mt: 1.5 }}>
-              <Chip label={t1("accepted")} color="secondary" size="small" />
-            </Stack>
-          );
+        let statusKey:
+          | "pending"
+          | "deleted"
+          | "completed"
+          | "accepted"
+          | "rejected";
+
+        if (deleted) statusKey = "deleted";
+        else if (completed) statusKey = "completed";
+        else if (accepted) statusKey = "accepted";
+        else if (rejected) statusKey = "rejected";
+        else statusKey = "pending";
+
+        const statusMap: Record<
+          typeof statusKey,
+          {
+            label: string;
+            color: "error" | "info" | "secondary" | "success" | "warning";
+          }
+        > = {
+          pending: { label: t1("pending"), color: "warning" },
+          deleted: { label: t2("deleted"), color: "secondary" },
+          completed: { label: t1("completed"), color: "success" },
+          accepted: { label: t1("accepted"), color: "info" },
+          rejected: { label: t1("rejected"), color: "error" },
+        };
+
+        const { label, color } = statusMap[statusKey];
+
+        return (
+          <Stack spacing={1} sx={{ width: "65%", mt: 1.5 }}>
+            <Chip label={label} color={color} size="small" />
+          </Stack>
+        );
       },
     },
     {
@@ -114,7 +127,7 @@ export default function ClientDataGrid({
           <Button
             variant="text"
             color="secondary"
-            disabled={params.row.isDeleted || params.row.isAccepted}
+            disabled={params.row.status !== "pending"}
             onClick={() => handleOpenDelete(params.row.id)}
           >
             <DeleteIcon />
@@ -128,7 +141,7 @@ export default function ClientDataGrid({
     <>
       <OrderTable
         columns={columns}
-        fetchFn={(params) => fetchOrdersForLoggedUser({ ...params, target: "general" })}
+        fetchFn={fetchOrdersForLoggedUser}
         filters={{ status, search }}
       />
       {openDetails && selectedOrder && (

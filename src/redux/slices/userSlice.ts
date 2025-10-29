@@ -27,7 +27,7 @@ interface UserState {
   users: User[];
   pageCount: number;
   itemsCount: number;
-  userDetails: UserDetails;
+  userDetails: UserDetails | null;
   successMessage: string | null;
   successType: "delete" | "update" | null;
 }
@@ -38,21 +38,7 @@ const initialState: UserState = {
   users: [],
   pageCount: 0,
   itemsCount: 0,
-  userDetails: {
-    id: 0,
-    firstName: "",
-    lastName: "",
-    gender: "",
-    latitude: 0,
-    longitude: 0,
-    addressOne: "",
-    addressTwo: "",
-    country: "",
-    city: "",
-    postNumber: 0,
-    phoneNumber: "",
-    email: "",
-  },
+  userDetails: null,
   successMessage: "",
   successType: null,
 }
@@ -177,6 +163,9 @@ const userSlice = createSlice({
         localStorage.getItem("userDetails") ?? "{}"
       );
     },
+    clearUserData: (state) => {
+      state.userDetails = null;
+    },
     clearSuccessMessage: (state) => {
       state.successMessage = null;
       state.error = null;
@@ -251,7 +240,7 @@ const userSlice = createSlice({
   },
 });
 
-export const { loadUserData, clearSuccessMessage } = userSlice.actions;
+export const { loadUserData, clearSuccessMessage, clearUserData } = userSlice.actions;
 
 // Export the created slice
 export default userSlice.reducer;

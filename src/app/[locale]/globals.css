@@ -30,11 +30,22 @@ body {
 }
 
 /* Tables */
-.css-wbhcvm-MuiDataGrid-root .MuiDataGrid-row:hover {
-  background-color: transparent !important;
+.css-6oe8-MuiDataGrid-root .MuiDataGrid-row:hover ,
+.css-wbhcvm-MuiDataGrid-root .MuiDataGrid-row:hover{
+  background-color: #242329 !important;
 } 
 
-/* Scrollbar for table : Remove */
+
+.css-6oe8-MuiDataGrid-root .MuiDataGrid-columnHeaders .MuiDataGrid-scrollbarFiller,
+.css-wbhcvm-MuiDataGrid-root .MuiDataGrid-columnHeaders .MuiDataGrid-scrollbarFiller,
+.css-6oe8-MuiDataGrid-root .MuiDataGrid-columnHeader,
+.css-wbhcvm-MuiDataGrid-root .MuiDataGrid-columnHeader{
+  background-color: #242329 !important;
+}
+
+
+
+/* Scrollbar for Profile */
 .table_scrollbar::-webkit-scrollbar,
 .css-1ablnqd::-webkit-scrollbar {
   width: 6px !important; 
@@ -53,11 +64,9 @@ body {
   background-color: #e72544 !important;
 }
 
-.css-wbhcvm-MuiDataGrid-root .MuiDataGrid-columnHeader,
-.css-wbhcvm-MuiDataGrid-root .MuiDataGrid-columnHeaders .MuiDataGrid-scrollbarFiller,
-.css-wbhcvm-MuiDataGrid-root .MuiDataGrid-columnHeaders .MuiDataGrid-filler {
-  background-color: #242329 !important; 
-}
+
+
+
 
 
 

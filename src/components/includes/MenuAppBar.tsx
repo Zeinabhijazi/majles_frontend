@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   AppBar,
   Box,
@@ -12,13 +12,15 @@ import {
   Typography,
 } from "@mui/material";
 import { Link } from "@/i18n/navigation";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/redux/store";
 import { useTranslations } from "next-intl";
 import Language from "./Language";
 import LoginModal from "../Forms/LoginModal";
 import RegisterModal from "../Forms/RegisterModal";
 import AccountCircle from "@mui/icons-material/AccountCircle";
+import { logout } from "@/redux/slices/authSlice";
+import { clearUserData } from "@/redux/slices/userSlice";
 
 export default function MenuAppBar() {
   const t1 = useTranslations("navbar");
@@ -27,21 +29,13 @@ export default function MenuAppBar() {
   const [loginOpen, setLoginOpen] = useState(false);
   const [registerOpen, setRegisterOpen] = useState(false);
 
-  const [isLogin, setIsLogin] = useState(false);
+  const { isLogin } = useSelector((state: RootState) => state.auth);
   const { userDetails } = useSelector((state: RootState) => state.user);
+  const dispatch = useDispatch<AppDispatch>();
 
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      setIsLogin(true);
-    } else {
-      setIsLogin(false);
-    }
-  }, []);
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
@@ -53,9 +47,8 @@ export default function MenuAppBar() {
 
   // Handle logout
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("userDetails");
-    globalThis.location.reload();
+    dispatch(logout());
+    dispatch(clearUserData());
   };
 
   // Actions for login modal
@@ -108,7 +101,6 @@ export default function MenuAppBar() {
               <Link href="/readers">{t1("readers")}</Link>
             </Box>
 
-            
             <LoginModal
               open={loginOpen}
               onClose={handleCloseLogin}
@@ -118,55 +110,53 @@ export default function MenuAppBar() {
               }}
             />
             <RegisterModal open={registerOpen} onClose={handleCloseRegister} />
-            <Language />  
+            <Language />
 
-            {!isLogin ? (
-              userDetails.userType !== "admin" && ( 
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  onClick={handleOpenLogin}
-                >
-                  {t2("login")}
-                </Button>
-              )
-            ): (
-              userDetails.userType !== "admin" && ( 
-                <Box sx={{ flexGrow: 0 }}>
-                  <IconButton onClick={handleOpenUserMenu}>
-                    <AccountCircle color="secondary" />
-                  </IconButton>
-                  <Menu
-                    sx={{ mt: "45px" }}
-                    id="menu-appbar"
-                    anchorEl={anchorElUser}
-                    anchorOrigin={{
-                      vertical: "top",
-                      horizontal: "right",
-                    }}
-                    keepMounted
-                    transformOrigin={{
-                      vertical: "top",
-                      horizontal: "right",
-                    }}
-                    open={Boolean(anchorElUser)}
-                    onClose={handleCloseUserMenu}
+            {!isLogin
+              ? userDetails?.userType !== "admin" && (
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={handleOpenLogin}
                   >
-                    {userDetails.userType === "reader" ? (
-                      <MenuItem>
-                        <Link href="/reader">{t1("myAccount")}</Link>
-                      </MenuItem>
-                    ) : (
-                      <MenuItem>
-                        <Link href="/client">{t1("myAccount")}</Link>
-                      </MenuItem>
-                    )}
+                    {t2("login")}
+                  </Button>
+                )
+              : userDetails?.userType !== "admin" && (
+                  <Box sx={{ flexGrow: 0 }}>
+                    <IconButton onClick={handleOpenUserMenu}>
+                      <AccountCircle color="secondary" />
+                    </IconButton>
+                    <Menu
+                      sx={{ mt: "45px" }}
+                      id="menu-appbar"
+                      anchorEl={anchorElUser}
+                      anchorOrigin={{
+                        vertical: "top",
+                        horizontal: "right",
+                      }}
+                      keepMounted
+                      transformOrigin={{
+                        vertical: "top",
+                        horizontal: "right",
+                      }}
+                      open={Boolean(anchorElUser)}
+                      onClose={handleCloseUserMenu}
+                    >
+                      {userDetails?.userType === "reader" ? (
+                        <MenuItem>
+                          <Link href="/reader">{t1("myAccount")}</Link>
+                        </MenuItem>
+                      ) : (
+                        <MenuItem>
+                          <Link href="/client">{t1("myAccount")}</Link>
+                        </MenuItem>
+                      )}
 
-                    <MenuItem onClick={handleLogout}>{t1("logout")}</MenuItem>
-                  </Menu>
-                </Box>
-              )
-            )}
+                      <MenuItem onClick={handleLogout}>{t1("logout")}</MenuItem>
+                    </Menu>
+                  </Box>
+                )}
           </Toolbar>
         </Container>
       </AppBar>

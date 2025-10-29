@@ -152,7 +152,8 @@
     "send": "Send",
     "changePassword": "Change Password",
     "accept": "Accept",
-    "choose": "Choose"
+    "choose": "Choose",
+    "edit": "Edit"
   },
   "label": {
     "id": "Id",

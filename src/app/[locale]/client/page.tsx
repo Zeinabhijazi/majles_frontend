@@ -15,6 +15,7 @@ export default function ClientPage() {
   const t2 = useTranslations("select");
   const t3 = useTranslations("searchInput");
   const t4 = useTranslations("button");
+  const t5 = useTranslations("label");
 
   const [open, setOpen] = useState(false);
   const [status, setStatus] = useState("");
@@ -80,8 +81,9 @@ export default function ClientPage() {
             { value: "all", label: t2("all") },
             { value: "pending", label: t2("pending") },
             { value: "completed", label: t2("completed") },
-            { value: "accepted", label: t2("accepted") },
             { value: "rejected", label: t2("rejected") },
+            { value: "accepted", label: t2("accepted") },
+            { value: "deleted", label: t5("deleted") },
           ]}
         />
         <SearchInput

@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "@/lib/axios";
-//import { loadUserData } from "./userSlice";
+import { loadUserData } from "./userSlice";
 interface AuthState {
   isLoading: boolean;
   error: string | null;
@@ -20,7 +20,7 @@ export const login = createAsyncThunk(
     { dispatch, rejectWithValue }
   ) => {
     try {
-      const response = await api.post("api/auth/signin", { email, password });
+      const response = await api.post("auth/signin", { email, password });
 
       // Save token and user data to LocalStorage
       const { token, ...userData } = response.data.data;
@@ -28,7 +28,7 @@ export const login = createAsyncThunk(
       localStorage.setItem("userDetails", JSON.stringify(userData));
 
       // update userSlice with details
-      //dispatch(loadUserData(userData));
+      dispatch(loadUserData(userData));
 
       return userData;
     } catch (error: any) {
@@ -43,7 +43,8 @@ const authSlice = createSlice({
   reducers: {
     logout: (state) => {
       state.isLogin = false;
-      state.error = null;
+      localStorage.removeItem("token");
+      localStorage.removeItem("userDetails");
     },
   },
   extraReducers: (builder) => {
@@ -64,4 +65,5 @@ const authSlice = createSlice({
 });
 
 export const { logout } = authSlice.actions;
+
 export default authSlice.reducer;

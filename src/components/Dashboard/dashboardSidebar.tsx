@@ -17,6 +17,10 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
+import { AppDispatch } from "@/redux/store";
+import { useDispatch } from "react-redux";
+import { logout } from "@/redux/slices/authSlice";
+import { clearUserData } from "@/redux/slices/userSlice";
 
 interface SidebarProps {
   role: "client" | "admin" | "reader";
@@ -26,6 +30,7 @@ export default function DashboardSidebar({ role }: Readonly<SidebarProps>) {
   const t = useTranslations("dashboard");
   const router = useRouter();
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const dispatch = useDispatch<AppDispatch>();
 
   const menuConfig: Record<
     SidebarProps["role"],
@@ -93,8 +98,8 @@ export default function DashboardSidebar({ role }: Readonly<SidebarProps>) {
     const item = menuItems[index];
 
     if (item.label === t("logout")) {
-      localStorage.removeItem("token");
-      localStorage.removeItem("userDetails");
+      dispatch(logout()); 
+      dispatch(clearUserData());
       router.push("/");
     }
   };

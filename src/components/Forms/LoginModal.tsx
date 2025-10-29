@@ -86,12 +86,10 @@ export default function LoginModal({
     }
 
     const fieldErrors: { email?: string; password?: string } = {};
-    result.error.issues.forEach((issue) => {
+    for (const issue of result.error.issues) {
       const field = issue.path[0] as "email" | "password";
-      if (field) {
-        fieldErrors[field] = issue.message;
-      }
-    });
+      fieldErrors[field] = issue.message;
+    }
 
     setError(fieldErrors);
     return false;
@@ -120,7 +118,6 @@ export default function LoginModal({
             setSuccessAlert(false);
             onClose();
             router.replace("/");
-            globalThis.location.reload();
           }, 1000);
         }
       }

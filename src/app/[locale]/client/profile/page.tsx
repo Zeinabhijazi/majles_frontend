@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { Box } from "@mui/material";
-import UserInformation from "@/app/[locale]/components/Dashboard/UserInformation";
+import UserInformation from "@/components/Dashboard/UserInformation";
 
 export default function ProfileClientPage() {
   return (

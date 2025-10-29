@@ -1,9 +1,9 @@
 "use client";
 import React, { use, useState } from "react";
 import { useTranslations } from "next-intl";
-import IconBreadcrumbs from "@/app/[locale]/components/includes/BreadCrumb";
-import ConfirmAssignDialog from "@/app/[locale]/components/Dialog/ConfirmAssignDialog";
-import ReaderListSection from "@/app/[locale]/components/includes/ReaderListSection";
+import IconBreadcrumbs from "@/components/includes/BreadCrumb";
+import ConfirmAssignDialog from "@/components/Dialog/ConfirmAssignDialog";
+import ReaderListSection from "@/components/includes/ReaderListSection";
 
 export default function AssignReader({
   params,

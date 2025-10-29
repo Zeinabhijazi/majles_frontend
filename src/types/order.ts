@@ -1,6 +1,5 @@
 export interface Order {
   id: number;
-
   clientId: number;
   readerId?: number | null;
   client: {
@@ -12,17 +11,14 @@ export interface Order {
     firstName: string;
     lastName: string;
   } | null;
-
   orderDate: Date;
   userType: string;
-  longitude?: string;
-  latitude?: string;
+  longitude?: number;
+  latitude?: number;
   addressOne?: string;
   addressTwo?: string;
   postNumber?: number;
   country?: string;
   city: string;
-  isDeleted: boolean;
-  isAccepted: boolean;
-  isCompleted?: boolean; 
+  status: string;
 }

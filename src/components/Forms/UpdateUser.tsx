@@ -32,25 +32,16 @@ export default function UpdateUserForm() {
   const t1 = useTranslations("label");
   const t2 = useTranslations("button");
   const t3 = useTranslations("radioButton");
+  
   const { userDetails, successType, successMessage } = useSelector(
     (state: RootState) => state.user
   );
   const dispatch = useDispatch<AppDispatch>();
   const [isEditting, setIsEditting] = useState(false);
-  const [formData, setFormData] = useState<UpdateUser>(userDetails);
-  const [tempData, setTempData] = useState<UpdateUser>({
-    firstName: userDetails.firstName,
-    lastName: userDetails.lastName,
-    gender: userDetails.gender,
-    phoneNumber: userDetails.phoneNumber,
-    longitude: userDetails.longitude,
-    latitude: userDetails.latitude,
-    addressOne: userDetails.addressOne,
-    addressTwo: userDetails.addressTwo,
-    postNumber: userDetails.postNumber,
-    country: userDetails.country,
-    city: userDetails.city,
-  });
+  
+  const [formData, setFormData] = useState<UpdateUser | null>(null);
+  const [tempData, setTempData] = useState<UpdateUser | null>(null);
+
   const [inputErrors, setInputErrors] = useState<
     Partial<Record<keyof UpdateUser, string>>
   >({});
@@ -61,6 +52,7 @@ export default function UpdateUserForm() {
   useEffect(() => {
     if (userDetails) {
       setFormData(userDetails);
+      setTempData(userDetails);
     }
   }, [userDetails]);
 
@@ -70,21 +62,28 @@ export default function UpdateUserForm() {
 
   // Handle edit button
   const handleEditClick = () => {
-    setTempData(formData);
-    setIsEditting(true);
+    if (formData) {
+      setTempData(formData);
+      setIsEditting(true);
+    }
   };
 
   const handleEditingClose = () => {
-    setFormData(tempData);
+    if (tempData) {
+      setFormData(tempData);
+    }
     setIsEditting(false);
   };
 
   // Field change during editing
   const handleChange = (field: keyof UpdateUser, value: string | number) => {
-    setTempData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
+    setTempData((prev) => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        [field]: value,
+      };
+    });
   };
 
   // To get the currect location
@@ -167,6 +166,7 @@ export default function UpdateUserForm() {
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateInputs()) return;
+    if (!formData || !tempData) return null;
     const {
       firstName,
       lastName,
@@ -198,7 +198,8 @@ export default function UpdateUserForm() {
     setFormData((prev) => ({ ...prev, ...tempData }));
     setIsEditting(false);
   };
-
+  
+  if (!formData || !tempData) return null;
   return (
     <Box
       className="table_scrollbar"
@@ -470,5 +471,5 @@ export default function UpdateUserForm() {
         <Alert severity="success">{alertText}</Alert>
       </Snackbar>
     </Box>
-  );
+  )
 }

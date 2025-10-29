@@ -152,7 +152,8 @@
     "send": "Envoyer",
     "changePassword": "Changer le mot de passe",
     "accept": "accepter",
-    "choose": "Choisir"
+    "choose": "Choisir",
+    "edit": "Modifier"
   },
   "label": {
     "id": "Identifiant",

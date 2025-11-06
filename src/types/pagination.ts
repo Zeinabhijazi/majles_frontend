@@ -5,5 +5,6 @@ export interface PaginationDto<T> {
   itemsCountWithDel: number;
   pendingItemsCount: number;
   completedItemsCount: number;
-  totalOrders: number;
+  acceptedItemsCount: number;
+  rejectedItemsCount: number;
 }

@@ -13,6 +13,7 @@ import { Dayjs } from "dayjs";
 export default function OrdersAdminPage() { 
   const t1 = useTranslations("heading"); 
   const t2 = useTranslations("select"); 
+  const t3 = useTranslations("label");
   const [status, setStatus] = useState(""); 
   const [selectedDate, setSelectedDate] = useState<Dayjs | null>(null);
   const dispatch = useDispatch<AppDispatch>();
@@ -56,22 +57,24 @@ export default function OrdersAdminPage() {
           alignItems: "center"
         }} 
       > 
-        <Grid size={7}> 
-          <BasicDatePicker 
-            value={selectedDate}
-            onChange={setSelectedDate}
-          /> 
-        </Grid> 
-        <AppSelect 
-          value={status} 
-          onChange={(e) => setStatus(e.target.value)} 
-          placeholder={t2("status")} 
-          options={[ 
-            { value: "all", label: t2("all") },
-            { value: "assigned", label: t2("assigned") },
-            { value: "notAssigned", label: t2("notAssigned") },
-          ]} 
+        <BasicDatePicker 
+          value={selectedDate}
+          onChange={setSelectedDate}
         /> 
+        <AppSelect
+          value={status}
+          onChange={(e) => setStatus(e.target.value)}
+          placeholder={t2("status")}
+          options={[
+            { value: "all", label: t2("all") },
+            { value: "accepted", label: t2("accepted") },
+            { value: "assigned", label: t2("assigned") },
+            { value: "completed", label: t2("completed") },
+            { value: "deleted", label: t3("deleted") },
+            { value: "pending", label: t2("pending") },
+            { value: "rejected", label: t2("rejected") },
+          ]}
+        />
       </Grid> 
       <OrderDataGrid 
         status={status}

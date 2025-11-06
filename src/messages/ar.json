@@ -76,12 +76,12 @@
     "oct": "أكنوبر",  
     "nov": "نوفمبر",  
     "dec":  "ديسمبر"
-    
   },
   "readerDashboard": {
     "pendingOrder": "الطلبات المعلقة",
     "completedOrder": "الطلبات المكتملة",
-    "allOrders": "جميع الطلبات"
+    "acceptedOrder": "الطلبات المقبولة",
+    "rejectedOrder": "الطلبات المرفوضة"
   },
   "tab": {
     "personalDetails": "التفاصيل الشخصية",

@@ -159,9 +159,11 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     loadUserData: (state) => {
-      state.userDetails = JSON.parse(
-        localStorage.getItem("userDetails") ?? "{}"
-      );
+      const storedUser = localStorage.getItem("userDetails");
+      const storedToken = localStorage.getItem("token");
+      if (storedUser && storedToken) {
+        state.userDetails = JSON.parse(storedUser);
+      }
     },
     clearUserData: (state) => {
       state.userDetails = null;

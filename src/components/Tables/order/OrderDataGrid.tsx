@@ -87,19 +87,21 @@ export default function OrderDataGrid({
           | "deleted"
           | "completed"
           | "accepted"
-          | "rejected";
+          | "rejected"
+          | "assigned";
 
         if (deleted) statusKey = "deleted";
         else if (completed) statusKey = "completed";
         else if (accepted) statusKey = "accepted";
         else if (rejected) statusKey = "rejected";
+        else if(params.row.readerId !== null && status === "pending") statusKey = "assigned";
         else statusKey = "pending";
 
         const statusMap: Record<
           typeof statusKey,
           {
             label: string;
-            color: "error" | "info" | "secondary" | "success" | "warning";
+            color: "error" | "info" | "secondary" | "success" | "warning" | "default";
           }
         > = {
           pending: { label: t3("pending"), color: "warning" },
@@ -107,6 +109,7 @@ export default function OrderDataGrid({
           completed: { label: t3("completed"), color: "success" },
           accepted: { label: t3("accepted"), color: "info" },
           rejected: { label: t3("rejected"), color: "error" },
+          assigned: { label: t3("assigned"), color: "default" },
         };
 
         const { label, color } = statusMap[statusKey];
@@ -140,7 +143,7 @@ export default function OrderDataGrid({
             <Button
               variant="contained"
               color="secondary"
-              disabled={params.row.status !== "pending"}
+              disabled={params.row.status !== "pending" || params.row.readerId !== null }
             >
               {t1("assign")}
             </Button>

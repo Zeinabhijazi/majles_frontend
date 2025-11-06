@@ -80,7 +80,8 @@
   "readerDashboard": {
     "pendingOrder": "Pending Orders",
     "completedOrder": "Completed Orders",
-    "allOrders": "All Orders"
+    "acceptedOrder": "Accepted Orders",
+    "rejectedOrder": "Rejected Orders"
   },
   "tab": {
     "personalDetails": "Personal Details",

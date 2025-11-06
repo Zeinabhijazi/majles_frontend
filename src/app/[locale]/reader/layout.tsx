@@ -1,8 +1,11 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Paper from "@mui/material/Paper";
-import Header from "@/app/[locale]/components/Dashboard/Header";
-import DashboardSidebar from "@/app/[locale]/components/Dashboard/dashboardSidebar";
+import Header from "@/components/Dashboard/Header";
+import DashboardSidebar from "@/components/Dashboard/dashboardSidebar";
+import { useRouter } from "@/i18n/navigation";
+import { CircularProgress } from "@mui/material";
+
 interface ReaderRootLayoutProps {
   children: React.ReactNode;
 }
@@ -10,7 +13,25 @@ interface ReaderRootLayoutProps {
 export default function ReaderRootLayout({
   children,
 }: Readonly<ReaderRootLayoutProps>) {
-  return (
+  const [canAccess, setCanAccess] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("userDetails");
+    const parsedUser = storedUser ? JSON.parse(storedUser) : null;
+
+    if (parsedUser?.userType === "reader") {
+      setCanAccess(true);
+    } else {
+      router.replace("/");
+    }
+  }, []);
+
+  // Loading screen while checking
+  if (canAccess === null) {
+    return <CircularProgress color="secondary" />;
+  }
+  return canAccess === true ? (
     <section className="h-screen w-full flex flex-row overflow-hidden">
       <div className="w-1/5 fixed top-0 left-0 h-screen">
         <DashboardSidebar role={"reader"} />
@@ -36,5 +57,7 @@ export default function ReaderRootLayout({
         </div>
       </div>
     </section>
+  ) : (
+    <CircularProgress color="secondary" />
   );
 }

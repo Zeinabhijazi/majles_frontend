@@ -80,7 +80,7 @@ export default function ClientDataGrid({
           | "deleted"
           | "completed"
           | "accepted"
-          | "rejected";
+          | "rejected"
 
         if (deleted) statusKey = "deleted";
         else if (completed) statusKey = "completed";
@@ -141,8 +141,9 @@ export default function ClientDataGrid({
     <>
       <OrderTable
         columns={columns}
-        fetchFn={fetchOrdersForLoggedUser}
+        fetchFn={(params) => fetchOrdersForLoggedUser({ ...params, target: "general" })}
         filters={{ status, search }}
+        dataType="general"
       />
       {openDetails && selectedOrder && (
         <UpdateOrderModal

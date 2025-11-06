@@ -64,7 +64,7 @@ export default function CreateOrderModal({
   const { userDetails } = useSelector((state: RootState) => state.user);
 
   const style = {
-    position: "absolute" as "absolute",
+    position: "absolute" as const,
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
@@ -111,18 +111,18 @@ export default function CreateOrderModal({
       return;
     }
     const payload: FormData = {
-      orderDate: date!.toDate(), // Convert Dayjs to ISO string
-      addressOne: formData.addressOne || userDetails.addressOne || "",
-      addressTwo: formData.addressTwo || userDetails.addressTwo || "",
-      city: formData.city || userDetails.city || "",
-      postNumber: Number(formData.postNumber) || userDetails.postNumber || 0,
-      country: formData.country || userDetails.country || "",
-      latitude: Number(formData.latitude) || userDetails.latitude || 0,
-      longitude: Number(formData.longitude) || userDetails.longitude || 0,
+      orderDate: date.toDate(), // Convert Dayjs to ISO string
+      addressOne: formData.addressOne || userDetails?.addressOne || "",
+      addressTwo: formData.addressTwo || userDetails?.addressTwo || "",
+      city: formData.city || userDetails?.city || "",
+      postNumber: Number(formData.postNumber) || userDetails?.postNumber || 0,
+      country: formData.country || userDetails?.country || "",
+      latitude: Number(formData.latitude) || userDetails?.latitude || 0,
+      longitude: Number(formData.longitude) || userDetails?.longitude || 0,
     };
 
     try {
-      const response = await api.post("api/order", payload);
+      const response = await api.post("order", payload);
       if (response.data.success) {
         setAlertText("Order added successfully!");
         setSuccessAlert(true);

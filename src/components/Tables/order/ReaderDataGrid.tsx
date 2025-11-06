@@ -4,9 +4,14 @@ import { GridColDef } from "@mui/x-data-grid";
 import { useLocale, useTranslations } from "next-intl";
 import { Order } from "@/types/order";
 import { fetchOrdersForLoggedUser } from "@/redux/slices/orderSlice";
-import OrderTable from "@/app/[locale]/components/Tables/order/orderTable";
+import OrderTable from "@/components/Tables/order/orderTable";
 
 export default function ReaderDataGrid() {
+  const filters = React.useMemo(() => ({ thisMonth: true }), []);
+  const fetchReaderOrders = React.useCallback(
+    (params: Record<string, any>) => fetchOrdersForLoggedUser({ ...params, target: "monthly" }),
+    []
+  );
   const t2 = useTranslations("label");
   const locale = useLocale();
 
@@ -34,5 +39,7 @@ export default function ReaderDataGrid() {
       valueGetter: (value, row) => `${row?.addressOne ?? ""}, ${row?.addressTwo ?? ""}, ${row?.postNumber ?? ""}, ${row?.city ?? ""} `,
     },
   ];
-  return <OrderTable columns={columns} fetchFn={(params) => fetchOrdersForLoggedUser({ ...params, thisMonth: true, target: "monthly" })}/>;
+  
+
+  return <OrderTable columns={columns} fetchFn={fetchReaderOrders} filters={filters} dataType="monthly" />;
 }

@@ -4,6 +4,7 @@ import { Order } from "@/types/order";
 import { OrderForEdit } from "@/types/orderForEdits";
 import { PaginationDto } from "@/types/pagination";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { RootState } from "../store";
 
 interface OrderState {
   isLoading: boolean;
@@ -12,8 +13,16 @@ interface OrderState {
   pageCount: number;
   itemsCount: number;
   itemsCountWithDel: number;
+  pendingItemsCount: number;
+  completedItemsCount: number;
+  acceptedItemsCount: number;
+  rejectedItemsCount: number;
+  monthlyOrders: Order[];
+  pendingOrders: Order[];
+  itemsCountMonthly: number;
+  itemsCountPending: number;
   successMessage: string | null;
-  successType: "assign" | "cancel" | "update" | null;
+  successType: "assign" | "cancel" | "update" | "accept" | null;
 }
 
 const initialState: OrderState = {
@@ -23,6 +32,14 @@ const initialState: OrderState = {
   pageCount: 0,
   itemsCount: 0,
   itemsCountWithDel: 0,
+  pendingItemsCount: 0,
+  completedItemsCount: 0,
+  acceptedItemsCount: 0,
+  rejectedItemsCount: 0,
+  monthlyOrders: [],
+  pendingOrders: [],
+  itemsCountMonthly: 0,
+  itemsCountPending: 0,
   successMessage: null,
   successType: null,
 };
@@ -34,6 +51,8 @@ type FetchOrdersArgs = {
   start?: number; // timestamp (ms)
   end?: number;
   search?: string;
+  thisMonth?: boolean;
+  target?: "general" | "monthly" | "pending";
 };
 
 // Fetch all orders
@@ -81,7 +100,6 @@ export const handleAssignReader = createAsyncThunk<
       readerId,
       message: "Assigned successfully",
     };
-    
   } catch (error: any) {
     return rejectWithValue("Failed to assign reader");
   }
@@ -91,7 +109,14 @@ export const handleAssignReader = createAsyncThunk<
 export const fetchOrdersForLoggedUser = createAsyncThunk(
   "FETCHORDERSFORLOGGEDUSER",
   async (
-    { page = 1, limit = 10, status, search }: FetchOrdersArgs,
+    {
+      page = 1,
+      limit = 10,
+      status,
+      search,
+      thisMonth,
+      target = "general",
+    }: FetchOrdersArgs,
     { rejectWithValue }
   ) => {
     try {
@@ -101,10 +126,11 @@ export const fetchOrdersForLoggedUser = createAsyncThunk(
           params: {
             ...(status && status !== "all" ? { status } : {}),
             ...(search ? { search } : {}),
+            ...(thisMonth ? { thisMonth } : {}),
           },
         }
       );
-      return response.data.data;
+      return { ...response.data.data, target };
     } catch (error: any) {
       return rejectWithValue("Failed to fetch orders of this user");
     }
@@ -135,25 +161,58 @@ export const updateOrder = createAsyncThunk(
   }
 );
 
-// To cancel an order
+// To cancel an order by client or reject by reader
 export const cancelOrder = createAsyncThunk<
-  { orderId: number; message: string },
+  { orderId: number; message: string; status: string },
   number,
-  { rejectValue: string }
->("DELETEDORDER", async (orderId, { rejectWithValue }) => {
+  { state: RootState; rejectValue: string }
+>("DELETEDORDER", async (orderId, { rejectWithValue, getState }) => {
   try {
+    const { user } = getState();
+    const userType = user.userDetails?.userType;
+
     const response = await api.delete(`order/${orderId}`);
     if (!response.data.success) {
-      return rejectWithValue("Failed to delete order");
+      return rejectWithValue("Failed to cancel order");
     }
-    return {
-      orderId,
-      message: "Deleted successfully",
-    };
+
+    // Choose message and new status based on user type
+    const isReader = userType === "reader";
+    const message = isReader
+      ? "Order rejected successfully"
+      : "Order deleted successfully";
+    const newStatus = isReader ? "rejected" : "deleted";
+
+    return { orderId, message, status: newStatus };
   } catch (error) {
-    return rejectWithValue("Failed to delete order");
+    return rejectWithValue("Failed to cancel order");
   }
 });
+
+// Accept order by reader
+export const handleAcceptOrder = createAsyncThunk(
+  "HANDLEACCEPTORDER",
+  async (
+    { formData, orderId }: { formData: OrderForEdit; orderId: number | null },
+    { rejectWithValue }
+  ) => {
+    try {
+      const response = await api.put(`order/${orderId}`, formData);
+
+      if (!response.data.success) {
+        return rejectWithValue("Failed to accept this order");
+      }
+      
+      return {
+        order: response.data.data,
+        message: "Order accepted successfully",
+      };
+      
+    } catch (error: any) {
+      return rejectWithValue("Failed to accept order");
+    }
+  }
+);
 
 const orderSlice = createSlice({
   name: "orders",
@@ -187,7 +246,7 @@ const orderSlice = createSlice({
         const { orderId, readerId, message } = action.payload;
         state.orders = state.orders.map((order) =>
           order.id === orderId
-            ? { ...order, status: "accepted", readerId: readerId }
+            ? { ...order, readerId: readerId }
             : order
         );
         state.successMessage = message;
@@ -201,9 +260,31 @@ const orderSlice = createSlice({
       })
       .addCase(fetchOrdersForLoggedUser.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.orders = action.payload.content;
-        state.itemsCount = action.payload.itemsCount;
-        state.pageCount = action.payload.pageCount;
+        const {
+          target,
+          content,
+          itemsCount,
+          pageCount,
+          completedItemsCount,
+          pendingItemsCount,
+          acceptedItemsCount,
+          rejectedItemsCount,
+        } = action.payload;
+        state.completedItemsCount = completedItemsCount;
+        state.pendingItemsCount = pendingItemsCount;
+        state.acceptedItemsCount = acceptedItemsCount;
+        state.rejectedItemsCount = rejectedItemsCount;
+        if (target === "monthly") {
+          state.monthlyOrders = content;
+          state.itemsCountMonthly = itemsCount;
+        } else if (target === "pending") {
+          state.pendingOrders = content;
+          state.itemsCountPending = itemsCount;
+        } else {
+          state.orders = content;
+          state.itemsCount = itemsCount;
+          state.pageCount = pageCount;
+        }
       })
       .addCase(fetchOrdersForLoggedUser.rejected, (state, action) => {
         state.error =
@@ -233,15 +314,52 @@ const orderSlice = createSlice({
       })
       .addCase(cancelOrder.fulfilled, (state, action) => {
         state.isLoading = false;
-        const { orderId, message } = action.payload;
-        state.orders = state.orders.map((o) =>
-          o.id === orderId ? { ...o, status: "deleted" } : o
+        const { orderId, message, status } = action.payload;
+        state.orders = state.orders.map((order) =>
+          order.id === orderId ? { ...order, status } : order
         );
+        state.pendingOrders = state.pendingOrders.map((order) =>
+          order.id === orderId ? { ...order, status } : order
+        );
+        state.successMessage = message;
         state.successType = "cancel";
-        state.successMessage = message; 
       })
       .addCase(cancelOrder.rejected, (state, action) => {
         state.error = action.payload || "Delete failed";
+      })
+      .addCase(handleAcceptOrder.pending, (state: any) => {
+        state.isLoading = true;
+      })
+      .addCase(handleAcceptOrder.fulfilled, (state, action) => {
+        state.isLoading = false;
+        const updatedOrder = action.payload.order;
+        const index = state.pendingOrders.findIndex((o) => o.id === updatedOrder.id);
+        if (index !== -1) {
+          state.pendingOrders[index] = {
+            ...state.pendingOrders[index],
+            ...updatedOrder,
+          };
+        }
+        const ordersIndex = state.orders.findIndex((o) => o.id === updatedOrder.id);
+        if (ordersIndex !== -1) {
+          state.orders[ordersIndex] = {
+            ...state.orders[ordersIndex],
+            ...updatedOrder,
+          };
+        }
+        const monthlyIndex = state.monthlyOrders.findIndex((o) => o.id === updatedOrder.id);
+        if (ordersIndex !== -1) {
+          state.monthlyOrders[monthlyIndex] = {
+            ...state.monthlyOrders[monthlyIndex],
+            ...updatedOrder,
+          };
+        }
+        state.successType = "accept";
+        state.successMessage = action.payload.message;
+      })
+      .addCase(handleAcceptOrder.rejected, (state, action) => {
+        state.error =
+          action.error.message || "Failed to assign reader to order ";
       });
   },
 });

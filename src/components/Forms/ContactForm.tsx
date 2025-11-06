@@ -78,7 +78,7 @@ export default function ContactForm() {
   // Function to send email
   const sendEmail = async () => {
     try {
-      const response = await api.post("/api/mail/send", formData);
+      const response = await api.post("mail/send", formData);
       if (response.data.success) {
         setAlertText("Email sent");
         setSuccessAlert(true);

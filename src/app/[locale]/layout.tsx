@@ -9,6 +9,7 @@ import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import ThemeWrapper from "../../ThemeWrapper";
 import Providers from "@/providers/Providers";
+import AppInitializer from "@/AppInitializer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -54,6 +55,7 @@ export default async function RootLayout({
             <ThemeRegistry>
               <ThemeWrapper>
                 <main style={{ minHeight: "calc(100vh - 70px)" }}>
+                  <AppInitializer />
                   {children}
                 </main>
               </ThemeWrapper>

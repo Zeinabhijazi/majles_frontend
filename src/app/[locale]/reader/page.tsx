@@ -1,19 +1,20 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Box, Typography } from "@mui/material";
-import CardData from "@/app/[locale]/components/Statistics/dataCard";
+import CardData from "@/components/Statistics/dataCard";
 import { AppDispatch, RootState } from "@/redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchOrdersForLoggedUser } from "@/redux/slices/orderSlice";
 import { useLocale, useTranslations } from "next-intl";
-import PendingOrdersDataGrid from "@/app/[locale]/components/Tables/order/pendingOrders";
-import ReaderDataGrid from "@/app/[locale]/components/Tables/order/ReaderDataGrid";
-import BasicDatePicker from "@/app/[locale]/components/Forms/datePicker";
+import PendingOrdersDataGrid from "@/components/Tables/order/pendingOrders";
+import ReaderDataGrid from "@/components/Tables/order/ReaderDataGrid";
+import BasicDatePicker from "@/components/Forms/datePicker";
 import { Dayjs } from "dayjs";
 
 export default function ReaderPage() {
-  const t = useTranslations("readerDashboard");
-  const { totalOrders, pendingItemsCount, completedItemsCount } = useSelector(
+  const t1 = useTranslations("readerDashboard");
+  const t2 = useTranslations("dashboard");
+  const { acceptedItemsCount, pendingItemsCount, completedItemsCount, rejectedItemsCount } = useSelector(
     (state: RootState) => state.order
   );
   const [selectedDate, setSelectedDate] = useState<Dayjs | null>(null);
@@ -46,9 +47,10 @@ export default function ReaderPage() {
           gap: "20px",
         }}
       >
-        <CardData text={t("pendingOrder")} data={pendingItemsCount} />
-        <CardData text={t("completedOrder")} data={completedItemsCount} />
-        <CardData text={t("allOrders")} data={totalOrders} />
+        <CardData text={t1("pendingOrder")} data={pendingItemsCount} />
+        <CardData text={t1("completedOrder")} data={completedItemsCount} />
+        <CardData text={t1("acceptedOrder")} data={acceptedItemsCount} />
+        <CardData text={t1("rejectedOrder")} data={rejectedItemsCount} />
       </Box>
       <Box
         component={"section"}
@@ -69,7 +71,7 @@ export default function ReaderPage() {
             }}
           >
             <Typography variant="h5" color="primary">
-              {currentMonth} Orders:
+              {currentMonth} {t2("orders")}:
             </Typography>
             <BasicDatePicker value={selectedDate} onChange={setSelectedDate} />
           </Box>
@@ -77,7 +79,7 @@ export default function ReaderPage() {
         </Box>
         <Box>
           <Typography variant="h5" color="primary">
-            Pending Orders:
+            {t1("pendingOrder")}:
           </Typography>
           <PendingOrdersDataGrid />
         </Box>

@@ -25,28 +25,32 @@ import { RootState } from "@/redux/store";
 import api from "@/lib/axios";
 
 type FormData = {
-  orderDate: Date;
-  postNumber: number;
-  country: string;
-  city: string;
+  orderDate: string;
   addressOne: string;
   addressTwo: string;
-  longitude: number;
+  city: string;
+  postNumber: number;
+  country: string;
   latitude: number;
+  longitude: number;
+  readerId: number | null;
 };
 
 interface ModalProps {
   open: boolean;
   onClose: () => void;
+  readerId: number | null;
 }
 
 export default function CreateOrderModal({
   open,
   onClose,
+  readerId
 }: Readonly<ModalProps>) {
   const t1 = useTranslations("label");
   const t2 = useTranslations("button");
   const t3 = useTranslations("heading");
+  
   const [date, setDate] = useState<Dayjs | null>(null);
   const [formData, setFormData] = useState({
     addressOne: "",
@@ -104,14 +108,16 @@ export default function CreateOrderModal({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
     if (!date) {
       setAlertText("Please select a valid date");
       setWarningAlert(true);
       setTimeout(() => setWarningAlert(false), 3000);
       return;
     }
+
     const payload: FormData = {
-      orderDate: date.toDate(), // Convert Dayjs to ISO string
+      orderDate: date.toISOString(), 
       addressOne: formData.addressOne || userDetails?.addressOne || "",
       addressTwo: formData.addressTwo || userDetails?.addressTwo || "",
       city: formData.city || userDetails?.city || "",
@@ -119,6 +125,7 @@ export default function CreateOrderModal({
       country: formData.country || userDetails?.country || "",
       latitude: Number(formData.latitude) || userDetails?.latitude || 0,
       longitude: Number(formData.longitude) || userDetails?.longitude || 0,
+      readerId: readerId || null,
     };
 
     try {
@@ -136,7 +143,7 @@ export default function CreateOrderModal({
           longitude: "",
           latitude: "",
         });
-
+        onClose();
         setTimeout(() => setSuccessAlert(false), 2500);
       }
     } catch (error: any) {
@@ -157,7 +164,7 @@ export default function CreateOrderModal({
         slotProps={{
           backdrop: {
             sx: {
-              backgroundColor: "rgba(0, 0, 0, 0.1)", // less black, more transparent
+              backgroundColor: "rgba(0, 0, 0, 0.3)", 
             },
           },
         }}

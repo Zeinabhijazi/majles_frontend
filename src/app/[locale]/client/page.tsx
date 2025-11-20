@@ -62,7 +62,7 @@ export default function ClientPage() {
           {t4("addOrder")}
         </Button>
       </Box>
-      <CreateOrderModal open={open} onClose={handleClose} />
+      <CreateOrderModal open={open} onClose={handleClose} readerId={null}/>
       <Grid
         spacing={10}
         sx={{

@@ -13,14 +13,19 @@ export default function Readers() {
   const t2 = useTranslations("button");
 
   const { userDetails } = useSelector((state: RootState) => state.user);
+  const [selectedReaderId, setSelectedReaderId] = useState<number | null>(null);
 
   const [loginOpen, setLoginOpen] = useState(false);
   const [registerOpen, setRegisterOpen] = useState(false);
   const [createOrderOpen, setCreateOrderOpen] = useState(false);
 
   const handleAddOrder = (userId: number) => {
-    if (!userDetails?.userType) setLoginOpen(true);
-    else setCreateOrderOpen(true);
+    if (!userDetails?.userType) {
+      setLoginOpen(true);
+    } else {
+      setSelectedReaderId(userId); 
+      setCreateOrderOpen(true);
+    }
   };
 
   return (
@@ -49,6 +54,7 @@ export default function Readers() {
       <CreateOrderModal
         open={createOrderOpen}
         onClose={() => setCreateOrderOpen(false)}
+        readerId={selectedReaderId}
       />
     </>
   );

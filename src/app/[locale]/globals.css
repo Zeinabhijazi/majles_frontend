@@ -64,8 +64,18 @@ body {
   background-color: #e72544 !important;
 }
 
+.register_scrollbar::-webkit-scrollbar {
+  width: 4px !important; 
+}
 
+.register_scrollbar::-webkit-scrollbar-thumb {
+  background: #e72544 !important;
+  border-radius: 3px !important; 
+}
 
+.register_scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #e72544 !important;
+}
 
 
 

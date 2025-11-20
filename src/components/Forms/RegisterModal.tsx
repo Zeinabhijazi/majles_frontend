@@ -16,12 +16,16 @@ import {
   TextField,
   FormHelperText,
   Alert,
+  IconButton,
+  InputAdornment,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useTranslations } from "next-intl";
 import api from "@/lib/axios";
 import Snackbar from "@mui/material/Snackbar";
 import { z } from "zod";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 interface RegisterModalProps {
   open: boolean;
@@ -34,7 +38,7 @@ const style = {
   height: 580,
   bgcolor: "background.default",
   border: "1px solid #e9e9e9",
-  borderRadius: 5,
+  borderRadius: 2,
   boxShadow: 24,
   px: 2,
   py: 3,
@@ -93,6 +97,15 @@ export default function RegisterModal({
   const [warningAlert, setWarningAlert] = useState(false);
   const [alertText, setAlertText] = useState("");
   const [formData, setFormData] = useState(initialFormData);
+  const [showPassword, setShowPassword] = useState({
+      password: false,
+      confirmPassword: false,
+    });
+
+  // Toggle visibility for a password field
+  const handleToggleShow = (key: keyof typeof showPassword) => {
+    setShowPassword((prev) => ({ ...prev, [key]: !prev[key] }));
+  };
 
   // To get current location
   const handleGetLocation = () => {
@@ -306,7 +319,7 @@ export default function RegisterModal({
         variant="outlined"
         color="secondary"
         placeholder={t2("password")}
-        type="password"
+        type={showPassword.password ? "text" : "password"}
         autoComplete="current-password"
         value={formData.password}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -315,12 +328,29 @@ export default function RegisterModal({
         error={!!error.password}
         helperText={error.password}
         required
+        InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  color="secondary"
+                  onClick={() => handleToggleShow("password")}
+                  edge="end"
+                >
+                  {showPassword.password ? (
+                    <VisibilityOff />
+                  ) : (
+                    <Visibility />
+                  )}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
       />
       <TextField // Confirm Password
         variant="outlined"
         color="secondary"
         placeholder={t2("confirmPassword")}
-        type="password"
+        type={showPassword.confirmPassword ? "text" : "password"}
         autoComplete="current-password"
         value={formData.confirmPassword}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -329,6 +359,23 @@ export default function RegisterModal({
         error={!!error.password}
         helperText={error.password}
         required
+        InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  color="secondary"
+                  onClick={() => handleToggleShow("confirmPassword")}
+                  edge="end"
+                >
+                  {showPassword.password ? (
+                    <VisibilityOff />
+                  ) : (
+                    <Visibility />
+                  )}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
       />
       <TextField // Phone Number
         variant="outlined"
@@ -567,7 +614,7 @@ export default function RegisterModal({
         justifyContent: "center",
       }}
     >
-      <Box sx={style} className="table_scrollbar">
+      <Box sx={style} className="register_scrollbar">
         <CloseIcon
           onClick={onClose}
           sx={{ cursor: "pointer", float: "right" }}

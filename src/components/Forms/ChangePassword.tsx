@@ -28,6 +28,7 @@ export default function ChangePassword() {
   const t1 = useTranslations("label");
   const t2 = useTranslations("button");
   const { userDetails } = useSelector((state: RootState) => state.user);
+  if(!userDetails) return;
   const [showPassword, setShowPassword] = useState({
     oldPassword: false,
     newPassword: false,

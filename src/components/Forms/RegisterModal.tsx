@@ -202,7 +202,7 @@ export default function RegisterModal({
   const handleSubmit = async () => {
     try {
       if (validate()) {
-        const response = await api.post(`api/auth/signup`, formData);
+        const response = await api.post(`auth/signup`, formData);
         if (response.data.success) {
           setAlertText("Added successfully");
           setSuccessAlert(true);

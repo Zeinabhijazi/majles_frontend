@@ -135,7 +135,9 @@
     "deleteOrderDialogQuestion": "هل أنت متأكد أنك تريد حذف هذا الطلب؟",
     "assignDialogQuestion": "هل أنت متأكد من رغبتك في تعيين هذا القارئ؟",
     "addOrderModal": "إضافة الطلب",
-    "clientPageTitle": "قائمة طلبياتي"
+    "clientPageTitle": "قائمة طلبياتي",
+    "forgetPasswordTitle": "نسيت كلمة المرور",
+    "resetPassword": "إعادة تعيين كلمة المرور"
   },
   "button": {
     "login": "تسجيل الدخول",
@@ -154,7 +156,8 @@
     "changePassword": "تغيير كلمة المرور",
     "accept": "يقبل",
     "choose": "يختار",
-    "edit": "تغير"
+    "edit": "تغير",
+    "submit": "يُقدِّم"
   },
   "label": {
     "id": "المعرف",
@@ -188,6 +191,8 @@
     "datePickerLabel": "حدد التاريخ",
     "message": "رسالة",
     "subject": "موضوع",
-    "page": "صفحة"
+    "page": "صفحة",
+    "forgetPasswordlabel":"الرجاء إدخال بريدك الإلكتروني"
   }
 }
+ 

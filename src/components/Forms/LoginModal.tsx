@@ -16,7 +16,7 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useTranslations } from "next-intl";
-import { Link, useRouter } from "@/i18n/navigation";
+import { useRouter } from "@/i18n/navigation";
 import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
@@ -40,12 +40,14 @@ interface ModalProps {
   open: boolean;
   onClose: () => void;
   onOpenSecond: () => void;
+  onOpenPassModal?: () => void;
 }
 
 export default function LoginModal({
   open,
   onClose,
   onOpenSecond,
+  onOpenPassModal
 }: Readonly<ModalProps>) {
   const t1 = useTranslations("label");
   const t2 = useTranslations("button");
@@ -262,9 +264,21 @@ export default function LoginModal({
                   mt: 2,
                 }}
               >
-                <Link className="text-xs" href="/not-found">
+                <Button
+                  variant="text"
+                  sx={{
+                    fontSize: 11,
+                    color: "white",
+                    textAlign: "center",
+                    fontStyle: "normal",
+                    fontWeight: 100,
+                    textTransform: "capitalize",
+                    backgroundColor: "transparent",
+                  }}
+                  onClick={onOpenPassModal}
+                >
                   {t3("forgetPassword")}
-                </Link>
+                </Button>
               </Grid>
             </Grid>
             <Box

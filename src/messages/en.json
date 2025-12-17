@@ -135,7 +135,9 @@
     "deleteOrderDialogQuestion": "Are you sure you want to delete this order ?",
     "assignDialogQuestion": "Are you sure you want to assign this reader ?",
     "addOrderModal": "Add Order",
-    "clientPageTitle": "List of my orders"
+    "clientPageTitle": "List of my orders",
+    "forgetPasswordTitle":"Forget Password",
+    "resetPassword": "Reset Password"
   },
   "button": {
     "login": "Login",
@@ -154,7 +156,8 @@
     "changePassword": "Change Password",
     "accept": "Accept",
     "choose": "Choose",
-    "edit": "Edit"
+    "edit": "Edit",
+    "submit": "Submit"
   },
   "label": {
     "id": "Id",
@@ -188,6 +191,7 @@
     "datePickerLabel": "Select Date",
     "message": "Message",
     "subject": "Subject",
-    "page": "Page"
+    "page": "Page",
+    "forgetPasswordlabel":"Please, enter your email"
   }
 }

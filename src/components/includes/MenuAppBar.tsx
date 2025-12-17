@@ -21,6 +21,7 @@ import RegisterModal from "../Forms/RegisterModal";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import { logout } from "@/redux/slices/authSlice";
 import { clearUserData } from "@/redux/slices/userSlice";
+import ForgetPasswordModal from "../Modals/ForgetPasswordModal";
 
 export default function MenuAppBar() {
   const t1 = useTranslations("navbar");
@@ -28,6 +29,7 @@ export default function MenuAppBar() {
 
   const [loginOpen, setLoginOpen] = useState(false);
   const [registerOpen, setRegisterOpen] = useState(false);
+  const [forgetPasswordOpen, setForgetPasswordOpen] = useState(false);
 
   const { isLogin } = useSelector((state: RootState) => state.auth);
   const { userDetails } = useSelector((state: RootState) => state.user);
@@ -58,6 +60,10 @@ export default function MenuAppBar() {
   // Actions for register modal
   const handleOpenRegister = () => setRegisterOpen(true);
   const handleCloseRegister = () => setRegisterOpen(false);
+
+  // Actions for froget password modal
+  const handleOpenForgetPassword = () => setForgetPasswordOpen(true);
+  const handleCloseForgetPassword = () => setForgetPasswordOpen(false);
 
   return (
     <Box>
@@ -108,8 +114,13 @@ export default function MenuAppBar() {
                 handleCloseLogin(); // Close the first modal
                 handleOpenRegister(); // Open the second modal
               }}
+              onOpenPassModal={() => {
+                handleCloseLogin(); // Close the first modal
+                handleOpenForgetPassword(); // Open the second modal
+              }}
             />
             <RegisterModal open={registerOpen} onClose={handleCloseRegister} />
+            <ForgetPasswordModal open={forgetPasswordOpen} onClose={handleCloseForgetPassword} />
             <Language />
 
             {!isLogin

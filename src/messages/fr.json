@@ -135,7 +135,9 @@
     "deleteOrderDialogQuestion": "Êtes-vous sûr de vouloir supprimer cette commande ?",
     "assignDialogQuestion": "Êtes-vous sûr de vouloir attribuer ce lecteur ?",
     "addOrderModal": "Ajouter une commande",
-    "clientPageTitle": "Liste de mes commandes"
+    "clientPageTitle": "Liste de mes commandes",
+    "forgetPasswordTitle": "Mot de passe oublié",
+    "resetPassword": "Réinitialiser le mot de passe"
   },
   "button": {
     "login": "Connexion",
@@ -154,7 +156,8 @@
     "changePassword": "Changer le mot de passe",
     "accept": "accepter",
     "choose": "Choisir",
-    "edit": "Modifier"
+    "edit": "Modifier",
+    "submit": "Soumettre"
   },
   "label": {
     "id": "Identifiant",
@@ -188,6 +191,7 @@
     "datePickerLabel": "Sélectionnez la date",
     "message": "Message",
     "subject": "sujette",
-    "page": "Page"
+    "page": "Page",
+    "forgetPasswordlabel":"Veuillez saisir votre adresse e-mail"
   }
 }

@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from "react";
 import {
   Box,
@@ -15,27 +16,23 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useTranslations } from "next-intl";
 import z from "zod";
 import api from "@/lib/axios";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
+import { useParams } from "next/navigation";
 
 interface Passwords {
-  oldPassword?: string;
   newPassword?: string;
   confirmPassword?: string;
 }
 
-export default function ChangePassword() {
+export default function ResetPassword() {
   const t1 = useTranslations("label");
   const t2 = useTranslations("button");
-  const { userDetails } = useSelector((state: RootState) => state.user);
-  if(!userDetails) return;
+  const t3 = useTranslations("heading");
   const [showPassword, setShowPassword] = useState({
-    oldPassword: false,
     newPassword: false,
     confirmPassword: false,
   });
+  
   const [passwords, setPasswords] = useState<Passwords>({
-    oldPassword: "",
     newPassword: "",
     confirmPassword: "",
   });
@@ -43,7 +40,8 @@ export default function ChangePassword() {
   const [successAlert, setSuccessAlert] = useState(false);
   const [warningAlert, setWarningAlert] = useState(false);
   const [alertText, setAlertText] = useState("");
-
+  const params = useParams();
+  
   // Toggle visibility for a password field
   const handleToggleShow = (key: keyof typeof showPassword) => {
     setShowPassword((prev) => ({ ...prev, [key]: !prev[key] }));
@@ -59,7 +57,6 @@ export default function ChangePassword() {
 
   // Schema
   const passwordSchema = z.object({
-    oldPassword: z.string().nonempty("Current password is required"),
     newPassword: z.string().nonempty("New password is required"),
     confirmPassword: z.string().nonempty("Confirm password is required"),
   });
@@ -84,7 +81,7 @@ export default function ChangePassword() {
   };
 
   // To change password
-  const handleChangePassword = async (e: React.FormEvent) => {
+  const handleResetPassword = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       // Validation
@@ -99,24 +96,22 @@ export default function ChangePassword() {
       }
 
       // Call backend to change password
-      const response = await api.put("user/changePassword", {
-        oldPassword: passwords.oldPassword,
-        newPassword: passwords.newPassword,
+      const response = await api.put("reset-password/resetPassword", {
+        token: params.tokenId, userId: params.userId, newPassword: passwords.newPassword,
       });
 
       // Handle backend response
       if (response.data.success) {
-        setAlertText("Password changed successfully.");
+        setAlertText("Reset password successfully.");
         setSuccessAlert(true);
         setPasswords({
-          oldPassword: "",
           newPassword: "",
           confirmPassword: "",
         });
 
         setTimeout(() => setSuccessAlert(false), 3000);
       } else {
-        setAlertText(response.data.message || "Failed to change password.");
+        setAlertText(response.data.message || "Failed to reset password.");
         setWarningAlert(true);
         setTimeout(() => setWarningAlert(false), 3000);
       }
@@ -140,90 +135,39 @@ export default function ChangePassword() {
     },
     input: { height: "50px", padding: "0 12px" },
   };
+
   return (
     <Box
       component="form"
       noValidate
-      onSubmit={handleChangePassword}
+      onSubmit={handleResetPassword}
       autoComplete="off"
       sx={{
+        border: "1px solid grey",
+        borderRadius: 5,
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        width: 450,
+        height: 400,
         display: "flex",
         flexDirection: "column",
-        width: "70%",
-        height: "100%",
-        margin: "auto",
-        gap: 1.5,
-        mt: 1,
+        gap: 3,
+        p: 2,
       }}
     >
-      <Grid sx={{ width: "70%", margin: "auto" }}>
-        <Typography
-          variant="h6"
-          sx={{
-            fontSize: "13px",
-            fontWeight: 400,
-            color: "grey",
-            pl: 0.5,
-          }}
-        >
-          {t1("email")}
-        </Typography>
-        <TextField
-          fullWidth
-          variant="outlined"
-          value={userDetails?.email}
-          slotProps={{
-            input: {
-              readOnly: true,
-            },
-          }}
-          sx={textFieldSx}
-        />
-      </Grid>
-      <Grid sx={{ width: "70%", margin: "auto" }}>
-        <Typography
-          variant="h6"
-          sx={{
-            fontSize: "13px",
-            fontWeight: 400,
-            color: "grey",
-            pl: 0.5,
-          }}
-        >
-          {t1("currentPassword")} *
-        </Typography>
-        <TextField
-          fullWidth
-          variant="outlined"
-          type={showPassword.oldPassword ? "text" : "password"}
-          value={passwords.oldPassword}
-          onChange={(e) =>
-            hanldeChangePasswordFields("oldPassword", e.target.value)
-          }
-          sx={textFieldSx}
-          error={!!errors.oldPassword}
-          helperText={errors.oldPassword}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  color="secondary"
-                  onClick={() => handleToggleShow("oldPassword")}
-                  edge="end"
-                >
-                  {showPassword.oldPassword ? (
-                    <VisibilityOff />
-                  ) : (
-                    <Visibility />
-                  )}
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-          required
-        />
-      </Grid>
-      <Grid sx={{ width: "70%", margin: "auto" }}>
+      <Typography
+        variant="h2"
+        sx={{
+          fontSize: "30px",
+          fontWeight: "bold",
+          mb: 2,
+        }}
+      >
+        {t3("resetPassword")}
+      </Typography>
+      <Grid>
         <Typography
           variant="h6"
           sx={{
@@ -266,7 +210,7 @@ export default function ChangePassword() {
           required
         />
       </Grid>
-      <Grid sx={{ width: "70%", margin: "auto" }}>
+      <Grid>
         <Typography
           variant="h6"
           sx={{
@@ -309,7 +253,7 @@ export default function ChangePassword() {
           required
         />
       </Grid>
-      <Grid sx={{ width: "70%", margin: "auto" }}>
+      <Grid>
         <Button
           variant="contained"
           color="secondary"

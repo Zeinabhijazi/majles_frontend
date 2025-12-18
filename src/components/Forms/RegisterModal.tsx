@@ -206,13 +206,15 @@ export default function RegisterModal({
         if (response.data.success) {
           setAlertText("Added successfully");
           setSuccessAlert(true);
+          onClose();
           setFormData(initialFormData);
           setTimeout(() => setSuccessAlert(false), 2500);
+          
         }
       }
     } catch (error: any) {
       // Check if the error has a response from server
-      if (error.response && error.response.data) {
+      if (error.response?.data) {
         setAlertText(error.response.data.message || "Server error");
         setWarningAlert(true);
         setTimeout(() => setWarningAlert(false), 3000);
@@ -403,10 +405,9 @@ export default function RegisterModal({
         <Grid size={6}>
           <FormControl>
             <FormLabel
-              color="secondary"
               required
               id="demo-controlled-radio-buttons-group"
-              sx={{ fontSize: "13px" }}
+              sx={{ fontSize: "15px", color: "grey" }}
             >
               {t3("gender")}
             </FormLabel>
@@ -429,7 +430,7 @@ export default function RegisterModal({
                 label={t3("male")}
               />
               <FormHelperText sx={{ color: "#d32f2f" }}>
-                {!!error.gender ? "Please select a gender" : ""}
+                {error.gender ? "Please select a gender" : ""}
               </FormHelperText>
             </RadioGroup>
           </FormControl>
@@ -437,10 +438,9 @@ export default function RegisterModal({
         <Grid size={6}>
           <FormControl>
             <FormLabel
-              color="secondary"
               required
               id="demo-controlled-radio-buttons-group"
-              sx={{ fontSize: "13px" }}
+              sx={{ fontSize: "13px", color: "grey" }}
             >
               {t3("userType")}
             </FormLabel>
@@ -462,7 +462,7 @@ export default function RegisterModal({
                 label={t3("reader")}
               />
               <FormHelperText sx={{ color: "#d32f2f" }}>
-                {!!error.userType ? "Please select a type" : ""}
+                {error.userType ? "Please select a type" : ""}
               </FormHelperText>
             </RadioGroup>
           </FormControl>
@@ -630,10 +630,10 @@ export default function RegisterModal({
                       color: "secondary.main",
                     },
                     "&.MuiStepIcon-root.Mui-active": {
-                      color: "secondary.main",
+                      color: "grey",
                     },
-                    "& .MuiStepIcon-text": {
-                      fill: "#fff",
+                    "&.MuiStepIcon-root.Mui-disabled": {
+                      color: "grey",
                     },
                   },
                 }}
@@ -658,10 +658,9 @@ export default function RegisterModal({
             <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
               <Button
                 variant="text"
-                color="secondary"
                 disabled={activeStep === 0}
                 onClick={handleBack}
-                sx={{ mr: 1 }}
+                sx={{ mr: 1, color: "lightgray" }}
               >
                 {t4("back")}
               </Button>

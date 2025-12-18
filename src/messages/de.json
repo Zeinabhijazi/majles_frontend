@@ -135,7 +135,9 @@
     "deleteOrderDialogQuestion": "Möchten Sie diese Bestellung wirklich löschen?",
     "assignDialogQuestion": "Möchten Sie diesen Leser wirklich zuweisen?",
     "addOrderModal": "Bestellung hinzufügen",
-    "clientPageTitle": "Liste meiner Bestellungen"
+    "clientPageTitle": "Liste meiner Bestellungen",
+    "forgetPasswordTitle": "Passwort vergessen",
+    "resetPassword": "Passwort zurücksetzen"
   },
   "button": {
     "login": "Anmelden",
@@ -154,7 +156,8 @@
     "changePassword": "Kennwort ändern",
     "accept": "akzeptieren",
     "choose": "Wählen",
-    "edit": "Bearbeiten"
+    "edit": "Bearbeiten",
+    "submit": "Einreichen"
   },
   "label": {
     "id": "ID",
@@ -188,6 +191,7 @@
     "datePickerLabel": "Datell auswählen",
     "message": "Nachricht",
     "subject": "Thema",
-    "page": "Seite"
+    "page": "Seite",
+    "forgetPasswordlabel":"Bitte geben Sie Ihre E-Mail-Adresse ein."
   }
 }

@@ -9,6 +9,17 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* Register Form */
+.css-1r4s7tk-MuiStepLabel-labelContainer {
+  color: white !important;
+}
+
+.css-1366ptz-MuiSvgIcon-root-MuiStepIcon-root {
+  color: grey !important;
+}
+
+
+
 /* Reader Page */
 .reader_page .css-101ugo9-MuiSvgIcon-root {
   color: grey !important; 
